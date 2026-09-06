@@ -1,1009 +1,850 @@
-<!doctype html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>JobHunt AI</title>
-
-<style>
-:root{
---bg:#071126;
---panel:#0c1730;
---panel2:#111f3d;
---text:#f7f8ff;
---muted:#9ca9c8;
---line:#22345c;
---green:#55e3bd;
-}
-
-*{box-sizing:border-box}
-
-body{
-margin:0;
-background:radial-gradient(circle at 50% -10%,#273d83 0,#0a1430 38%,#050b1b 100%);
-color:var(--text);
-font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
-.app{
-max-width:430px;
-margin:auto;
-min-height:100vh;
-padding:20px 16px 90px;
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px;
-}
-
-.brand{
-font-weight:800;
-font-size:20px;
-}
-
-.brand span{
-background:linear-gradient(90deg,#58a6ff,#d34dff);
--webkit-background-clip:text;
-color:transparent;
-}
-
-.avatar{
-width:36px;
-height:36px;
-border-radius:50%;
-background:linear-gradient(135deg,#54a5ff,#c64cff);
-display:grid;
-place-items:center;
-font-weight:800;
-}
-
-.screen{
-display:none;
-}
-
-.screen.active{
-display:block;
-}
-
-.hero{
-padding:22px;
-border:1px solid #29447b;
-border-radius:24px;
-background:linear-gradient(145deg,#111f45,#0b1430);
-box-shadow:0 18px 50px #0006;
-}
-
-.hero h1{
-font-size:27px;
-line-height:1.05;
-margin:0 0 8px;
-}
-
-.hero p{
-color:var(--muted);
-margin:0 0 18px;
-}
-
-.btn{
-border:0;
-color:white;
-font-weight:800;
-border-radius:14px;
-padding:13px 17px;
-background:linear-gradient(90deg,#3e9cff,#b94dff);
-cursor:pointer;
-}
-
-.btn.secondary{
-background:#142446;
-border:1px solid #2c4270;
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px;
-margin:16px 0;
-}
-
-.stat{
-background:#0c1730;
-border:1px solid var(--line);
-border-radius:15px;
-padding:12px;
-}
-
-.stat b{
-display:block;
-font-size:20px;
-}
-
-.stat small{
-color:var(--muted);
-}
-
-.section{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin:22px 0 10px;
-}
-
-.section h2{
-font-size:17px;
-margin:0;
-}
-
-.searchbox{
-width:100%;
-padding:14px 16px;
-margin-bottom:12px;
-border-radius:14px;
-border:1px solid #2b416c;
-background:#0c1730;
-color:white;
-font-size:15px;
-outline:none;
-}
-
-.searchbox:focus{
-border-color:#5b8cff;
-}
-
-.filters{
-display:flex;
-gap:7px;
-overflow:auto;
-padding-bottom:4px;
-}
-
-.chip{
-white-space:nowrap;
-border:1px solid #2b416c;
-background:#0c1730;
-color:#b7c4df;
-border-radius:999px;
-padding:8px 11px;
-cursor:pointer;
-}
-
-.chip.active{
-background:#253b75;
-color:#fff;
-}
-
-.card{
-background:linear-gradient(160deg,#101e3c,#0b152b);
-border:1px solid #24385f;
-border-radius:20px;
-padding:15px;
-margin:10px 0;
-cursor:pointer;
-}
-
-.row{
-display:flex;
-gap:12px;
-align-items:flex-start;
-}
-
-.thumb{
-width:58px;
-height:58px;
-border-radius:15px;
-display:grid;
-place-items:center;
-font-size:27px;
-background:linear-gradient(135deg,#213a72,#632c79);
-}
-
-.grow{
-flex:1;
-}
-
-.tag{
-display:inline-block;
-font-size:12px;
-padding:4px 8px;
-border-radius:999px;
-background:#0e4b45;
-color:#56e3bf;
-margin-bottom:5px;
-}
-
-.title{
-font-weight:800;
-font-size:16px;
-}
-
-.meta{
-color:var(--muted);
-font-size:13px;
-margin-top:4px;
-}
-
-.money{
-font-weight:900;
-font-size:18px;
-margin-top:10px;
-}
-
-.match{
-float:right;
-color:#55e3bd;
-font-weight:800;
-}
-
-.box{
-background:#0d1932;
-border:1px solid #2a3d68;
-border-radius:18px;
-padding:15px;
-margin:12px 0;
-}
-
-.score{
-font-size:42px;
-font-weight:900;
-color:#56e3bd;
-}
-
-.back{
-margin-bottom:15px;
-color:#a9b8d8;
-cursor:pointer;
-}
-
-.detail h1{
-font-size:28px;
-line-height:1.1;
-}
-
-.bottom{
-position:fixed;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:min(430px,100%);
-display:flex;
-justify-content:space-around;
-background:#071126ee;
-backdrop-filter:blur(14px);
-border-top:1px solid #1d2e50;
-padding:10px 8px calc(10px + env(safe-area-inset-bottom));
-z-index:5;
-}
-
-.nav{
-background:none;
-border:0;
-color:#8292b5;
-font-size:11px;
-cursor:pointer;
-}
-
-.nav.active{
-color:#fff;
-}
-
-.premium{
-border-color:#7547a9;
-background:linear-gradient(145deg,#25134d,#0e1832);
-}
-
-.empty{
-text-align:center;
-color:var(--muted);
-padding:30px 10px;
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-<div class="top">
-<div class="brand">JobHunt <span>AI</span></div>
-<div class="avatar">A</div>
-</div>
-
-
-<!-- ГЛАВНАЯ -->
-
-<section id="home" class="screen active">
-
-<div class="hero">
-
-<h1>Привет, Алекс 👋</h1>
-
-<p>
-Мы нашли новые возможности заработать,
-которые подходят именно тебе.
-</p>
-
-<button class="btn" onclick="show('search')">
-Найти возможности
-</button>
-
-</div>
-
-
-<div class="stats">
-
-<div class="stat">
-<b>23</b>
-<small>новых</small>
-</div>
-
-<div class="stat">
-<b id="savedCount">5</b>
-<small>сохранено</small>
-</div>
-
-<div class="stat">
-<b>96%</b>
-<small>match</small>
-</div>
-
-</div>
-
-
-<div class="section">
-<h2>🔥 Лучшие для тебя</h2>
-<span style="color:#7f91b6">Сегодня</span>
-</div>
-
-<div id="cards"></div>
-
-</section>
-
-
-
-<!-- ПОИСК -->
-
-<section id="search" class="screen">
-
-<div class="section">
-<h2>🔎 Поиск возможностей</h2>
-</div>
-
-
-<input
-id="keywordSearch"
-class="searchbox"
-type="text"
-placeholder="Например: photographer, designer, developer..."
-oninput="filterJobs()"
->
-
-
-<div class="filters">
-
-<button class="chip active" onclick="setFilter('all',this)">
-Все
-</button>
-
-<button class="chip" onclick="setFilter('remote',this)">
-Удалённо
-</button>
-
-<button class="chip" onclick="setFilter('today',this)">
-Сегодня
-</button>
-
-<button class="chip" onclick="setFilter('high',this)">
-€500+
-</button>
-
-</div>
-
-
-<div id="searchCards"></div>
-
-</section>
-
-
-
-<!-- ДЕТАЛИ -->
-
-<section id="detail" class="screen">
-
-<div class="back" onclick="show('search')">
-← Назад
-</div>
-
-<div id="detailContent"></div>
-
-</section>
-
-
-
-<!-- AI ОТКЛИК -->
-
-<section id="apply" class="screen">
-
-<div class="back" onclick="show('detail')">
-← Назад
-</div>
-
-<div class="box">
-
-<div class="tag">
-AI ОТКЛИК
-</div>
-
-<h2>
-Готовое сообщение клиенту
-</h2>
-
-<p id="msg">
-Hi! I’m a professional specialist and I’m interested
-in your project. I have relevant experience and would
-love to discuss the details. I can also share examples
-of my work.
-</p>
-
-<button
-class="btn secondary"
-onclick="copyMessage()">
-Копировать
-</button>
-
-</div>
-
-<button
-class="btn"
-style="width:100%"
-onclick="alert('Отклик готов! В следующей версии подключим реальные площадки.')">
-
-Откликнуться
-
-</button>
-
-</section>
-
-
-
-<!-- СОХРАНЁННОЕ -->
-
-<section id="saved" class="screen">
-
-<div class="section">
-<h2>♡ Сохранённое</h2>
-</div>
-
-<div id="savedCards"></div>
-
-</section>
-
-
-
-<!-- ПРОФИЛЬ -->
-
-<section id="profile" class="screen">
-
-<div class="hero">
-
-<h1>Алексей</h1>
-
-<p>
-Фотограф · Дизайнер
-</p>
-
-<div class="stats">
-
-<div class="stat">
-<b>23</b>
-<small>возможности</small>
-</div>
-
-<div class="stat">
-<b>4.8</b>
-<small>рейтинг</small>
-</div>
-
-<div class="stat">
-<b>156</b>
-<small>просмотров</small>
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card premium">
-
-<b>⚡ JobHunt AI PRO</b>
-
-<p style="color:#c2b7d8">
-Больше возможностей, больше заработка.
-</p>
-
-<div class="money">
-€9.99 / месяц
-</div>
-
-<button
-class="btn"
-style="margin-top:10px"
-onclick="alert('PRO подключим после проверки первых пользователей.')">
-
-Попробовать PRO
-
-</button>
-
-</div>
-
-</section>
-
-</div>
-
-
-
-<!-- НИЖНЕЕ МЕНЮ -->
-
-<div class="bottom">
-
-<button
-class="nav active"
-onclick="show('home',this)">
-⌂<br>Главная
-</button>
-
-<button
-class="nav"
-onclick="show('search',this)">
-⌕<br>Поиск
-</button>
-
-<button
-class="nav"
-onclick="show('saved',this)">
-♡<br>Сохранённое
-</button>
-
-<button
-class="nav"
-onclick="show('profile',this)">
-◉<br>Профиль
-</button>
-
-</div>
-
-
-
 <script>
 
-const jobs=[
+const API_URL =
+  'https://rapid-wood-80b6.fetis969696.workers.dev/jobs';
 
-{
-icon:'📸',
-title:'Wedding Photographer',
-money:'€650–€900',
-location:'Milan, Italy',
-match:96,
-type:'photographer',
-remote:false,
-today:true
-},
+const COUNTRY = 'gb';
 
-{
-icon:'🎨',
-title:'UX/UI Designer',
-money:'€500–€800',
-location:'Remote',
-match:91,
-type:'designer',
-remote:true,
-today:true
-},
+let jobs = [];
+let currentFilter = 'all';
 
-{
-icon:'💻',
-title:'Full Stack Developer',
-money:'€1,200+',
-location:'Remote · Worldwide',
-match:87,
-type:'developer',
-remote:true,
-today:true
-},
-
-{
-icon:'📱',
-title:'Social Media Manager',
-money:'€400–€700',
-location:'Berlin, Germany',
-match:85,
-type:'social media',
-remote:false,
-today:false
-},
-
-{
-icon:'✍️',
-title:'Copywriter',
-money:'€500–€900',
-location:'Remote · Worldwide',
-match:89,
-type:'copywriter',
-remote:true,
-today:true
-},
-
-{
-icon:'🎬',
-title:'Video Editor',
-money:'€600–€1,000',
-location:'Remote',
-match:88,
-type:'video editor',
-remote:true,
-today:true
-},
-
-{
-icon:'📊',
-title:'Data Analyst',
-money:'€800–€1,400',
-location:'Remote · Europe',
-match:84,
-type:'data analyst',
-remote:true,
-today:false
-}
-
-];
-
-
-let currentFilter='all';
-
-let saved=JSON.parse(
-localStorage.getItem('jobhunt_saved')||'[]'
+let saved = JSON.parse(
+  localStorage.getItem('jobhunt_saved') || '[]'
 );
 
 
-function card(job,index){
+/* =========================
+   ИКОНКА ВАКАНСИИ
+========================= */
 
-const isSaved=saved.includes(index);
+function getIcon(job){
 
-return `
+  const text = (
+    job.title + ' ' +
+    job.type + ' ' +
+    job.category
+  ).toLowerCase();
 
-<div class="card"
-onclick="openJob(${index})">
+  if(text.includes('design')) return '🎨';
+  if(text.includes('photo')) return '📸';
+  if(text.includes('video')) return '🎬';
+  if(text.includes('developer')) return '💻';
+  if(text.includes('software')) return '💻';
+  if(text.includes('marketing')) return '📱';
+  if(text.includes('social')) return '📱';
+  if(text.includes('copy')) return '✍️';
+  if(text.includes('data')) return '📊';
+  if(text.includes('finance')) return '💰';
 
-<div class="row">
-
-<div class="thumb">
-${job.icon}
-</div>
-
-<div class="grow">
-
-<span class="tag">
-${job.match}% match
-</span>
-
-<div class="title">
-${job.title}
-</div>
-
-<div class="meta">
-${job.location}
-</div>
-
-</div>
-
-</div>
-
-<div class="money">
-
-${job.money}
-
-<span class="match">
-${isSaved?'♥':'♡'} ${job.match}%
-</span>
-
-</div>
-
-</div>
-
-`;
-
+  return '💼';
 }
 
+
+/* =========================
+   MATCH SCORE
+========================= */
+
+function getMatch(job){
+
+  const q =
+    document
+      .getElementById('keywordSearch')
+      ?.value
+      .toLowerCase()
+      .trim() || '';
+
+  if(!q) return 85;
+
+  const text = (
+    job.title + ' ' +
+    job.description + ' ' +
+    job.category
+  ).toLowerCase();
+
+  if(job.title.toLowerCase().includes(q)){
+    return 96;
+  }
+
+  if(text.includes(q)){
+    return 90;
+  }
+
+  return 82;
+}
+
+
+/* =========================
+   ЗАРПЛАТА
+========================= */
+
+function formatMoney(job){
+
+  const min = Number(job.salary_min || 0);
+  const max = Number(job.salary_max || 0);
+
+  if(!min && !max){
+    return 'Зарплата не указана';
+  }
+
+  let symbol = '£';
+
+  if(COUNTRY === 'de' ||
+     COUNTRY === 'fr' ||
+     COUNTRY === 'nl' ||
+     COUNTRY === 'ie' ||
+     COUNTRY === 'it' ||
+     COUNTRY === 'es' ||
+     COUNTRY === 'pl'){
+
+    symbol = '€';
+  }
+
+  if(min && max){
+    return `${symbol}${Math.round(min).toLocaleString()}–${symbol}${Math.round(max).toLocaleString()}`;
+  }
+
+  if(min){
+    return `от ${symbol}${Math.round(min).toLocaleString()}`;
+  }
+
+  return `до ${symbol}${Math.round(max).toLocaleString()}`;
+}
+
+
+/* =========================
+   ДАТА
+========================= */
+
+function isToday(date){
+
+  if(!date) return false;
+
+  const d = new Date(date);
+  const now = new Date();
+
+  return (
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate()
+  );
+}
+
+
+function formatDate(date){
+
+  if(!date) return 'Дата не указана';
+
+  const d = new Date(date);
+
+  return d.toLocaleDateString('ru-RU',{
+    day:'2-digit',
+    month:'2-digit',
+    year:'numeric'
+  });
+}
+
+
+/* =========================
+   REMOTE
+========================= */
+
+function isRemote(job){
+
+  const text = (
+    job.title + ' ' +
+    job.description + ' ' +
+    job.location
+  ).toLowerCase();
+
+  return (
+    text.includes('remote') ||
+    text.includes('work from home') ||
+    text.includes('working from home') ||
+    text.includes('hybrid')
+  );
+}
+
+
+/* =========================
+   ЗАГРУЗКА ВАКАНСИЙ
+========================= */
+
+async function loadJobs(){
+
+  const home =
+    document.getElementById('cards');
+
+  const search =
+    document.getElementById('searchCards');
+
+  const loading = `
+    <div class="empty">
+      ⏳ Загружаем реальные вакансии...
+    </div>
+  `;
+
+  if(home) home.innerHTML = loading;
+  if(search) search.innerHTML = loading;
+
+  try{
+
+    const q =
+      document
+        .getElementById('keywordSearch')
+        ?.value
+        .trim() || 'designer';
+
+    const url =
+      `${API_URL}?country=${encodeURIComponent(COUNTRY)}&what=${encodeURIComponent(q)}`;
+
+    const response = await fetch(url);
+
+    if(!response.ok){
+      throw new Error('Ошибка API: ' + response.status);
+    }
+
+    const data = await response.json();
+
+    if(!data.ok){
+      throw new Error(data.error || 'Ошибка сервера');
+    }
+
+    jobs = (data.jobs || []).map((job, index) => {
+
+      const location =
+        job.location?.display_name ||
+        'Location not specified';
+
+      const company =
+        job.company?.display_name ||
+        'Компания не указана';
+
+      const description =
+        job.description ||
+        'Описание вакансии отсутствует.';
+
+      return {
+
+        id: String(
+          job.id ||
+          `${index}-${job.title}`
+        ),
+
+        icon: getIcon({
+          title: job.title || '',
+          type: job.category?.label || '',
+          category: job.category?.tag || ''
+        }),
+
+        title:
+          job.title || 'Без названия',
+
+        money:
+          formatMoney(job),
+
+        location,
+
+        company,
+
+        description,
+
+        category:
+          job.category?.label || '',
+
+        type:
+          job.category?.tag || '',
+
+        remote:
+          isRemote({
+            title: job.title || '',
+            description,
+            location
+          }),
+
+        today:
+          isToday(job.created),
+
+        created:
+          job.created,
+
+        redirect_url:
+          job.redirect_url || '',
+
+        match:
+          85
+      };
+
+    });
+
+    renderHome();
+    renderSearch();
+    renderSaved();
+
+  }catch(error){
+
+    console.error(error);
+
+    const errorHtml = `
+      <div class="empty">
+        ❌ Не удалось загрузить вакансии.
+        <br><br>
+        Проверь соединение с сервером.
+        <br><br>
+        <button
+          class="btn"
+          onclick="loadJobs()">
+          Повторить
+        </button>
+      </div>
+    `;
+
+    if(home) home.innerHTML = errorHtml;
+    if(search) search.innerHTML = errorHtml;
+  }
+}
+
+
+/* =========================
+   КАРТОЧКА
+========================= */
+
+function card(job){
+
+  const isSaved =
+    saved.includes(job.id);
+
+  const match =
+    job.match || getMatch(job);
+
+  return `
+
+    <div
+      class="card"
+      onclick="openJob('${escapeAttr(job.id)}')">
+
+      <div class="row">
+
+        <div class="thumb">
+          ${job.icon}
+        </div>
+
+        <div class="grow">
+
+          <span class="tag">
+            ${match}% match
+          </span>
+
+          <div class="title">
+            ${escapeHtml(job.title)}
+          </div>
+
+          <div class="meta">
+            ${escapeHtml(job.company)}
+          </div>
+
+          <div class="meta">
+            📍 ${escapeHtml(job.location)}
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="money">
+
+        ${escapeHtml(job.money)}
+
+        <span class="match">
+          ${isSaved ? '♥' : '♡'}
+        </span>
+
+      </div>
+
+    </div>
+
+  `;
+}
+
+
+/* =========================
+   ГЛАВНАЯ
+========================= */
 
 function renderHome(){
 
-document.getElementById('cards').innerHTML=
-jobs.slice(0,3).map((j,i)=>card(j,i)).join('');
+  const container =
+    document.getElementById('cards');
 
+  if(!container) return;
+
+  if(!jobs.length){
+
+    container.innerHTML = `
+      <div class="empty">
+        Вакансий пока нет.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    jobs
+      .slice(0,3)
+      .map(job => card(job))
+      .join('');
 }
 
+
+/* =========================
+   ПОИСК
+========================= */
 
 function renderSearch(){
 
-let filtered=getFilteredJobs();
+  const container =
+    document.getElementById('searchCards');
 
-document.getElementById('searchCards').innerHTML=
+  if(!container) return;
 
-filtered.length
+  const filtered =
+    getFilteredJobs();
 
-? filtered.map(i=>card(jobs[i],i)).join('')
+  if(!filtered.length){
 
-: `<div class="empty">
-😕 Ничего не найдено.<br><br>
-Попробуй другое ключевое слово.
-</div>`;
+    container.innerHTML = `
+      <div class="empty">
+        😕 Ничего не найдено.
+        <br><br>
+        Попробуй другое ключевое слово.
+      </div>
+    `;
 
+    return;
+  }
+
+  container.innerHTML =
+    filtered
+      .map(job => card(job))
+      .join('');
 }
 
+
+/* =========================
+   ФИЛЬТРАЦИЯ
+========================= */
 
 function getFilteredJobs(){
 
-const q=document
-.getElementById('keywordSearch')
-.value
-.toLowerCase()
-.trim();
+  const q =
+    document
+      .getElementById('keywordSearch')
+      .value
+      .toLowerCase()
+      .trim();
 
-return jobs
-.map((job,index)=>({job,index}))
-.filter(x=>{
+  return jobs.filter(job => {
 
-const j=x.job;
+    const text = (
 
-const text=(
-j.title+' '+
-j.location+' '+
-j.type+' '+
-j.money
-).toLowerCase();
+      job.title + ' ' +
+      job.location + ' ' +
+      job.company + ' ' +
+      job.type + ' ' +
+      job.description
 
-const matchesSearch=
-!q || text.includes(q);
+    ).toLowerCase();
 
-let matchesFilter=true;
+    const matchesSearch =
+      !q || text.includes(q);
 
-if(currentFilter==='remote')
-matchesFilter=j.remote;
+    let matchesFilter = true;
 
-if(currentFilter==='today')
-matchesFilter=j.today;
+    if(currentFilter === 'remote'){
+      matchesFilter = job.remote;
+    }
 
-if(currentFilter==='high')
-matchesFilter=parseInt(
-j.money.replace(/\D/g,'')
-)>=500;
+    if(currentFilter === 'today'){
+      matchesFilter = job.today;
+    }
 
-return matchesSearch && matchesFilter;
+    if(currentFilter === 'high'){
 
-})
-.map(x=>x.index);
+      const salary =
+        Number(job.salary_min || 0);
 
+      matchesFilter =
+        salary >= 500;
+    }
+
+    return (
+      matchesSearch &&
+      matchesFilter
+    );
+
+  });
 }
 
+
+/* =========================
+   ПОИСК
+========================= */
 
 function filterJobs(){
 
-renderSearch();
+  const q =
+    document
+      .getElementById('keywordSearch')
+      .value
+      .trim();
 
+  if(q.length >= 2){
+
+    loadJobs();
+
+  }else{
+
+    renderSearch();
+
+  }
 }
 
+
+/* =========================
+   ФИЛЬТРЫ
+========================= */
 
 function setFilter(filter,el){
 
-currentFilter=filter;
+  currentFilter = filter;
 
-document
-.querySelectorAll('.chip')
-.forEach(x=>x.classList.remove('active'));
+  document
+    .querySelectorAll('.chip')
+    .forEach(x =>
+      x.classList.remove('active')
+    );
 
-el.classList.add('active');
+  el.classList.add('active');
 
-renderSearch();
-
+  renderSearch();
 }
 
 
-function openJob(index){
+/* =========================
+   ОТКРЫТИЕ ВАКАНСИИ
+========================= */
 
-const j=jobs[index];
+function openJob(id){
 
-const isSaved=saved.includes(index);
+  const j =
+    jobs.find(x => x.id === id);
 
-document.getElementById('detailContent').innerHTML=`
+  if(!j) return;
 
-<div class="tag">
-${j.match}% MATCH
-</div>
+  const isSaved =
+    saved.includes(j.id);
 
-<h1>
-${j.title}
-</h1>
+  const match =
+    j.match || getMatch(j);
 
-<div class="meta">
-📍 ${j.location} · 🕒 сегодня
-</div>
+  const description =
+    j.description
+      .replace(/<[^>]*>/g,' ')
+      .replace(/\s+/g,' ')
+      .trim();
 
-<div class="money">
-${j.money}
-</div>
+  document
+    .getElementById('detailContent')
+    .innerHTML = `
 
+      <div class="tag">
+        ${match}% MATCH
+      </div>
 
-<div class="box">
+      <h1>
+        ${escapeHtml(j.title)}
+      </h1>
 
-<b>
-Почему подходит тебе
-</b>
+      <div class="meta">
+        🏢 ${escapeHtml(j.company)}
+      </div>
 
-<p>
-Твои навыки совпадают с требованиями.
-AI оценил соответствие профиля этой
-возможности в ${j.match}%.
-</p>
+      <div class="meta">
+        📍 ${escapeHtml(j.location)}
+      </div>
 
-<div class="score">
-${j.match}%
-</div>
+      <div class="meta">
+        🕒 ${formatDate(j.created)}
+      </div>
 
-<small style="color:#9ca9c8">
-AI Match Score
-</small>
-
-</div>
-
-
-<div class="box">
-
-<b>
-Что нужно сделать
-</b>
-
-<p>
-Выполнить проект ${j.title}.
-Обсудить детали с заказчиком,
-согласовать сроки и бюджет.
-</p>
-
-</div>
+      <div class="money">
+        ${escapeHtml(j.money)}
+      </div>
 
 
-<button
-class="btn"
-style="width:100%;margin-bottom:10px"
-onclick="show('apply')">
+      <div class="box">
 
-✨ AI подготовит отклик
+        <b>
+          Почему подходит тебе
+        </b>
 
-</button>
+        <p>
+          AI оценил соответствие этой
+          вакансии в ${match}%.
+        </p>
+
+        <div class="score">
+          ${match}%
+        </div>
+
+        <small style="color:#9ca9c8">
+          AI Match Score
+        </small>
+
+      </div>
 
 
-<button
-class="btn secondary"
-style="width:100%"
-onclick="toggleSave(${index})">
+      <div class="box">
 
-${isSaved?'♥ Убрать из сохранённых':'♡ Сохранить'}
+        <b>
+          Описание вакансии
+        </b>
 
-</button>
+        <p>
+          ${escapeHtml(description)}
+        </p>
 
-`;
+      </div>
 
-show('detail');
 
+      <button
+        class="btn"
+        style="width:100%;margin-bottom:10px"
+        onclick="openOriginalJob('${escapeAttr(j.id)}')">
+
+        🔗 Открыть вакансию
+
+      </button>
+
+
+      <button
+        class="btn secondary"
+        style="width:100%;margin-bottom:10px"
+        onclick="show('apply')">
+
+        ✨ AI подготовит отклик
+
+      </button>
+
+
+      <button
+        class="btn secondary"
+        style="width:100%"
+        onclick="toggleSave('${escapeAttr(j.id)}')">
+
+        ${isSaved
+          ? '♥ Убрать из сохранённых'
+          : '♡ Сохранить'}
+
+      </button>
+
+
+      <div
+        style="
+          margin-top:14px;
+          text-align:center;
+          font-size:11px;
+          color:#8292b5;
+        "
+      >
+        Jobs by Adzuna
+      </div>
+
+    `;
+
+  show('detail');
 }
 
 
-function toggleSave(index){
+/* =========================
+   ОТКРЫТЬ ИСТОЧНИК
+========================= */
 
-if(saved.includes(index)){
+function openOriginalJob(id){
 
-saved=saved.filter(x=>x!==index);
+  const j =
+    jobs.find(x => x.id === id);
 
-}else{
+  if(!j || !j.redirect_url) return;
 
-saved.push(index);
-
+  window.open(
+    j.redirect_url,
+    '_blank',
+    'noopener,noreferrer'
+  );
 }
 
-localStorage.setItem(
-'jobhunt_saved',
-JSON.stringify(saved)
-);
 
-document.getElementById('savedCount').innerText=
-saved.length;
+/* =========================
+   СОХРАНЕНИЕ
+========================= */
 
-openJob(index);
+function toggleSave(id){
 
-renderSaved();
+  if(saved.includes(id)){
 
+    saved =
+      saved.filter(x => x !== id);
+
+  }else{
+
+    saved.push(id);
+
+  }
+
+  localStorage.setItem(
+    'jobhunt_saved',
+    JSON.stringify(saved)
+  );
+
+  document
+    .getElementById('savedCount')
+    .innerText = saved.length;
+
+  renderSaved();
+
+  openJob(id);
 }
 
+
+/* =========================
+   СОХРАНЁННЫЕ
+========================= */
 
 function renderSaved(){
 
-const container=
-document.getElementById('savedCards');
+  const container =
+    document.getElementById('savedCards');
 
-if(!saved.length){
+  if(!container) return;
 
-container.innerHTML=
-`<div class="empty">
-Пока ничего не сохранено.
-<br><br>
-Нажми ♡ на интересной возможности.
-</div>`;
+  const savedJobs =
+    saved
+      .map(id =>
+        jobs.find(job => job.id === id)
+      )
+      .filter(Boolean);
 
-return;
+  if(!savedJobs.length){
 
+    container.innerHTML = `
+      <div class="empty">
+        Пока ничего не сохранено.
+        <br><br>
+        Нажми ♡ на интересной возможности.
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML =
+    savedJobs
+      .map(job => card(job))
+      .join('');
 }
 
-container.innerHTML=
-saved.map(i=>card(jobs[i],i)).join('');
 
-}
-
+/* =========================
+   КОПИРОВАНИЕ
+========================= */
 
 function copyMessage(){
 
-const text=
-document.getElementById('msg').innerText;
+  const text =
+    document
+      .getElementById('msg')
+      .innerText;
 
-navigator.clipboard?.writeText(text);
+  navigator.clipboard?.writeText(text);
 
-alert('Сообщение скопировано ✅');
-
+  alert('Сообщение скопировано ✅');
 }
 
+
+/* =========================
+   НАВИГАЦИЯ
+========================= */
 
 function show(id,el){
 
-document
-.querySelectorAll('.screen')
-.forEach(x=>x.classList.remove('active'));
+  document
+    .querySelectorAll('.screen')
+    .forEach(x =>
+      x.classList.remove('active')
+    );
 
-document
-.getElementById(id)
-.classList.add('active');
+  document
+    .getElementById(id)
+    .classList.add('active');
 
+  if(el){
 
-if(el){
+    document
+      .querySelectorAll('.nav')
+      .forEach(x =>
+        x.classList.remove('active')
+      );
 
-document
-.querySelectorAll('.nav')
-.forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+  }
 
-el.classList.add('active');
+  if(id === 'search'){
+    renderSearch();
+  }
 
+  if(id === 'saved'){
+    renderSaved();
+  }
+
+  window.scrollTo(0,0);
 }
 
 
-if(id==='search')
-renderSearch();
+/* =========================
+   БЕЗОПАСНЫЙ HTML
+========================= */
 
-if(id==='saved')
-renderSaved();
+function escapeHtml(value){
 
-window.scrollTo(0,0);
-
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
 }
 
 
-renderHome();
-renderSearch();
-renderSaved();
+function escapeAttr(value){
 
-document.getElementById('savedCount').innerText=
-saved.length;
+  return String(value ?? '')
+    .replace(/\\/g,'\\\\')
+    .replace(/'/g,"\\'");
+}
+
+
+/* =========================
+   СТАРТ
+========================= */
+
+document
+  .getElementById('savedCount')
+  .innerText = saved.length;
+
+
+/* Загружаем реальные вакансии */
+
+loadJobs();
 
 </script>
-
-</body>
-</html>
