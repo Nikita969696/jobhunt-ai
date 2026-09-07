@@ -20,6 +20,11 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#273d83 0,#0a1430 38
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.stat{background:#0c1730;border:1px solid var(--line);border-radius:15px;padding:12px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
 .section{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}.section h2{font-size:17px;margin:0}
 .searchbox{width:100%;padding:14px 16px;margin-bottom:12px;border-radius:14px;border:1px solid #2b416c;background:#0c1730;color:white;font-size:15px;outline:none}.searchbox:focus{border-color:#5b8cff}
+.smart-search-row{display:flex;gap:8px;margin:-3px 0 12px}
+.smart-search-btn{flex:1;border:1px solid #5b6fdc;background:linear-gradient(90deg,#253b75,#54358a);color:#fff;border-radius:13px;padding:11px 12px;font-weight:800;cursor:pointer}
+.smart-search-btn:disabled{opacity:.65;cursor:wait}
+.quick-row{display:flex;gap:7px;overflow:auto;padding-bottom:4px;margin:-2px 0 10px}
+.quick-chip{white-space:nowrap;border:1px solid #2b416c;background:#0c1730;color:#b7c4df;border-radius:999px;padding:7px 10px;cursor:pointer;font-size:12px}
 .country-label{color:#9ca9c8;font-size:12px;margin:8px 0 6px}
 .country-picker{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #2b416c;background:linear-gradient(145deg,#102044,#0b1730);color:#fff;border-radius:15px;padding:13px 14px;cursor:pointer;text-align:left}
 .country-picker-main{display:flex;align-items:center;gap:9px;min-width:0}.country-picker-main strong{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.country-picker-sub{display:block;color:#8fa0c0;font-size:11px;margin-top:2px}.country-picker-arrow{font-size:18px;color:#91a5ca}
@@ -66,14 +71,21 @@ body{margin:0;background:radial-gradient(circle at 50% -10%,#273d83 0,#0a1430 38
 <div class="challenge-bottom"><span id="challengeText">0 из 3</span><button class="chip" onclick="doChallenge()">Выполнить</button></div>
 </div>
 
-<div class="section"><h2>🔥 Лучшие для тебя</h2><span style="color:#7f91b6">Adzuna</span></div>
+<div class="section"><h2>🔥 Лучшие для тебя</h2><span style="color:#7f91b6">AI + вакансии</span></div>
 <div id="cards"><div class="loading">Загружаем реальные вакансии…</div></div>
 <div class="source">Источники: Adzuna · Arbeitnow · Job Opportunities API · Careerjet</div>
 </section>
 
 <section id="search" class="screen">
 <div class="section"><h2>🔎 Поиск возможностей</h2></div>
-<input id="keywordSearch" class="searchbox" type="text" placeholder="Например: designer, developer, photographer…" oninput="filterJobs()">
+<input id="keywordSearch" class="searchbox" type="text" placeholder="Например: дизайнер удалённо в Дубае…" oninput="filterJobs()">
+<div class="smart-search-row"><button class="smart-search-btn" onclick="runSmartSearch()">✨ AI Smart Search</button></div>
+<div class="quick-row">
+<button class="quick-chip" onclick="quickSearch('remote designer')">🏠 Remote designer</button>
+<button class="quick-chip" onclick="quickSearch('junior developer')">🌱 Junior developer</button>
+<button class="quick-chip" onclick="quickSearch('photographer')">📸 Photographer</button>
+<button class="quick-chip" onclick="quickSearch('marketing')">📱 Marketing</button>
+</div>
 <div class="country-label">🌍 Страна / регион</div>
 <button id="countryPickerButton" class="country-picker" onclick="openCountryPicker()">
 <span class="country-picker-main"><span id="countryPickerFlag">🇬🇧</span><span><strong id="countryPickerName">Англия</strong><span class="country-picker-sub">Нажми, чтобы выбрать страну</span></span></span>
@@ -183,15 +195,6 @@ if(/marketing|social|media/.test(text))return '📱';
 if(/copy|writer|content/.test(text))return '✍️';
 if(/data|analyst|finance/.test(text))return '📊';
 return '💼';
-}
-
-function salaryText(job){
-const min=Number(job.salary_min||0);
-const max=Number(job.salary_max||0);
-if(min&&max)return '£'+Math.round(min).toLocaleString('en-GB')+'–£'+Math.round(max).toLocaleString('en-GB');
-if(min)return 'от £'+Math.round(min).toLocaleString('en-GB');
-if(max)return 'до £'+Math.round(max).toLocaleString('en-GB');
-return 'Зарплата не указана';
 }
 
 function isToday(dateString){
@@ -380,6 +383,7 @@ if(myRequest!==requestNumber)return;
 document.getElementById('searchCards').innerHTML='<div class="empty">Поиск отменён. Выбери страну или введи запрос ещё раз.</div>';
 return;
 }
+
 if(myRequest!==requestNumber)return;
 console.error(error);
 document.getElementById('cards').innerHTML='<div class="empty">Не удалось загрузить вакансии.<br><br>Попробуй ещё раз.</div>';
@@ -473,7 +477,7 @@ return false;
 }
 
 function openAI(type){
-if(!requirePro(type))return;
+if(type!=='search'&&!requirePro(type))return;
 const modal=document.getElementById('aiModal');
 const title=document.getElementById('aiTitle');
 const body=document.getElementById('aiBody');
@@ -488,7 +492,7 @@ body.innerHTML=`<label class="ai-label">Вакансия</label><div class="box"
 }else if(type==='match'){
 if(!job){body.innerHTML='<div class="empty">Открой любую вакансию и нажми «Стоит ли откликаться?» ещё раз.</div>';}else{body.innerHTML=`<div class="box" style="margin-top:0"><b>${escapeHtml(job.title)}</b><div class="meta">${escapeHtml(job.company)} · ${escapeHtml(job.location)}</div><div class="score">${job.match}%</div><small style="color:#9ca9c8">Предварительный Match</small></div><button class="btn" style="width:100%" onclick="analyzeJob()">✨ Разобрать вакансию</button><div id="aiResult"></div>`;}
 }else{
-body.innerHTML=`<label class="ai-label">Какая работа тебе нужна?</label><textarea id="aiText" class="ai-input" placeholder="Например: удалённая работа дизайнером, от £30k..."></textarea><button class="btn" style="width:100%;margin-top:10px" onclick="smartSearch()">🔎 Подобрать</button><div id="aiResult"></div>`;
+body.innerHTML=`<label class="ai-label">Какая работа тебе нужна?</label><textarea id="aiText" class="ai-input" placeholder="Например: удалённая работа дизайнером в Дубае, без опыта..."></textarea><button class="btn" style="width:100%;margin-top:10px" onclick="smartSearch()">🔎 Подобрать</button><div id="aiResult"></div>`;
 }
 modal.classList.add('open');
 }
@@ -556,7 +560,39 @@ const input=document.getElementById('keywordSearch');
 input.value=query;
 show('search');
 await loadJobs(query);
-toast('AI подобрал поисковый запрос 🔎');
+toast('✨ AI понял запрос и запустил поиск');
+}
+
+async function runSmartSearch(){
+const input=document.getElementById('keywordSearch');
+const text=(input?.value||'').trim();
+if(!text){
+toast('Напиши, какую работу ищешь — например: дизайнер удалённо в Дубае');
+return;
+}
+const button=document.querySelector('.smart-search-btn');
+if(button){button.disabled=true;button.innerText='🤖 AI понимает запрос…'}
+try{
+const response=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'search',text})});
+const data=await response.json().catch(()=>({}));
+if(!response.ok||!data.ok)throw new Error(data.details||data.error||('HTTP '+response.status));
+const query=String(data.answer||text).replace(/\s+/g,' ').trim().slice(0,180);
+input.value=query;
+await loadJobs(query);
+toast('✨ AI обработал запрос');
+}catch(error){
+console.error('Smart Search error:',error);
+toast('❌ AI-поиск временно недоступен');
+await loadJobs(text);
+}finally{
+if(button){button.disabled=false;button.innerText='✨ AI Smart Search'}
+}
+}
+
+function quickSearch(query){
+const input=document.getElementById('keywordSearch');
+if(input)input.value=query;
+loadJobs(query);
 }
 
 function formatProDate(unixSeconds){
