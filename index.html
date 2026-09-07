@@ -4,2527 +4,577 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>JobHunt AI</title>
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{
---bg:#071126;
---panel:#0c1730;
---panel2:#111f3d;
---text:#f7f8ff;
---muted:#9ca9c8;
---line:#22345c;
---green:#55e3bd
-}
-
+:root{--bg:#071126;--panel:#0c1730;--panel2:#111f3d;--text:#f7f8ff;--muted:#9ca9c8;--line:#22345c;--green:#55e3bd}
 *{box-sizing:border-box}
-
-body{
-margin:0;
-background:radial-gradient(circle at 50% -10%,#273d83 0,#0a1430 38%,#050b1b 100%);
-color:var(--text);
-font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
-
-.app{
-max-width:430px;
-margin:auto;
-min-height:100vh;
-padding:20px 16px 100px
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px
-}
-
-.brand{
-font-weight:800;
-font-size:20px
-}
-
-.brand span{
-background:linear-gradient(90deg,#58a6ff,#d34dff);
--webkit-background-clip:text;
-color:transparent
-}
-
-.avatar{
-width:36px;
-height:36px;
-border-radius:50%;
-background:linear-gradient(135deg,#54a5ff,#c64cff);
-display:grid;
-place-items:center;
-font-weight:800
-}
-
-.screen{
-display:none
-}
-
-.screen.active{
-display:block
-}
-
-.hero{
-padding:22px;
-border:1px solid #29447b;
-border-radius:24px;
-background:linear-gradient(145deg,#111f45,#0b1430);
-box-shadow:0 18px 50px #0006
-}
-
-.hero h1{
-font-size:27px;
-line-height:1.05;
-margin:0 0 8px
-}
-
-.hero p{
-color:var(--muted);
-margin:0 0 18px
-}
-
-.btn{
-border:0;
-color:white;
-font-weight:800;
-border-radius:14px;
-padding:13px 17px;
-background:linear-gradient(90deg,#3e9cff,#b94dff);
-cursor:pointer
-}
-
-.btn.secondary{
-background:#142446;
-border:1px solid #2c4270
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px;
-margin:16px 0
-}
-
-.stat{
-background:#0c1730;
-border:1px solid var(--line);
-border-radius:15px;
-padding:12px
-}
-
-.stat b{
-display:block;
-font-size:20px
-}
-
-.stat small{
-color:var(--muted)
-}
-
-.section{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin:22px 0 10px
-}
-
-.section h2{
-font-size:17px;
-margin:0
-}
-
-.searchbox{
-width:100%;
-padding:14px 16px;
-margin-bottom:12px;
-border-radius:14px;
-border:1px solid #2b416c;
-background:#0c1730;
-color:white;
-font-size:15px;
-outline:none
-}
-
-.searchbox:focus{
-border-color:#5b8cff
-}
-
-.filters{
-display:flex;
-gap:7px;
-overflow:auto;
-padding-bottom:4px
-}
-
-.chip{
-white-space:nowrap;
-border:1px solid #2b416c;
-background:#0c1730;
-color:#b7c4df;
-border-radius:999px;
-padding:8px 11px;
-cursor:pointer
-}
-
-.chip.active{
-background:#253b75;
-color:#fff
-}
-
-.card{
-background:linear-gradient(160deg,#101e3c,#0b152b);
-border:1px solid #24385f;
-border-radius:20px;
-padding:15px;
-margin:10px 0;
-cursor:pointer
-}
-
-.row{
-display:flex;
-gap:12px;
-align-items:flex-start
-}
-
-.thumb{
-width:58px;
-height:58px;
-border-radius:15px;
-display:grid;
-place-items:center;
-font-size:27px;
-background:linear-gradient(135deg,#213a72,#632c79)
-}
-
-.grow{
-flex:1
-}
-
-.tag{
-display:inline-block;
-font-size:12px;
-padding:4px 8px;
-border-radius:999px;
-background:#0e4b45;
-color:#56e3bf;
-margin-bottom:5px
-}
-
-.title{
-font-weight:800;
-font-size:16px
-}
-
-.meta{
-color:var(--muted);
-font-size:13px;
-margin-top:4px
-}
-
-.money{
-font-weight:900;
-font-size:18px;
-margin-top:10px
-}
-
-.match{
-float:right;
-color:#55e3bd;
-font-weight:800
-}
-
-.box{
-background:#0d1932;
-border:1px solid #2a3d68;
-border-radius:18px;
-padding:15px;
-margin:12px 0
-}
-
-.score{
-font-size:42px;
-font-weight:900;
-color:#56e3bd
-}
-
-.back{
-margin-bottom:15px;
-color:#a9b8d8;
-cursor:pointer
-}
-
-.detail h1{
-font-size:28px;
-line-height:1.1
-}
-
-.bottom{
-position:fixed;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:min(430px,100%);
-display:flex;
-justify-content:space-around;
-background:#071126ee;
-backdrop-filter:blur(14px);
-border-top:1px solid #1d2e50;
-padding:10px 8px calc(10px + env(safe-area-inset-bottom));
-z-index:5
-}
-
-.nav{
-background:none;
-border:0;
-color:#8292b5;
-font-size:13px;
-line-height:1.15;
-font-weight:800;
-cursor:pointer;
-min-width:76px;
-padding:3px 5px
-}
-
-.nav-icon{
-display:block;
-font-size:30px;
-line-height:30px;
-margin-bottom:5px;
-font-weight:500
-}
-
-.nav.active{
-color:#fff
-}
-
-.premium{
-border-color:#7547a9;
-background:linear-gradient(145deg,#25134d,#0e1832)
-}
-
-.empty{
-text-align:center;
-color:var(--muted);
-padding:30px 10px
-}
-
-.loading{
-text-align:center;
-color:var(--muted);
-padding:30px 10px
-}
-
-.source{
-color:#8292b5;
-font-size:11px;
-margin-top:12px;
-text-align:center
-}
-
-.source a{
-color:#9db7ff
-}
-
-.ai-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:9px
-}
-
-.ai-card{
-border:1px solid #283e69;
-background:linear-gradient(145deg,#101e3d,#0b152c);
-border-radius:18px;
-padding:14px;
-text-align:left;
-color:#fff;
-cursor:pointer;
-min-height:126px
-}
-
-.ai-card:active,
-.challenge:active,
-.pro-card:active{
-transform:scale(.99)
-}
-
-.ai-icon{
-display:block;
-font-size:25px;
-margin-bottom:8px
-}
-
-.ai-card b{
-display:block;
-font-size:14px
-}
-
-.ai-card small{
-display:block;
-color:#9ca9c8;
-margin-top:5px;
-line-height:1.3
-}
-
-.pro-card{
-padding:16px
-}
-
-.pro-title{
-display:flex;
-gap:9px;
-align-items:center;
-font-size:16px
-}
-
-.pro-title span{
-font-size:22px
-}
-
-.pro-list{
-display:grid;
-gap:6px;
-margin-top:12px;
-color:#d8cbed;
-font-size:13px
-}
-
-.pro-note{
-display:block;
-text-align:center;
-color:#9d8ab9;
-margin-top:8px
-}
-
-.challenge{
-background:linear-gradient(145deg,#122448,#0b1730);
-border:1px solid #2c4779;
-border-radius:20px;
-padding:16px
-}
-
-.challenge-top{
-display:flex;
-justify-content:space-between;
-gap:12px;
-align-items:center
-}
-
-.challenge-top b{
-display:block;
-font-size:15px
-}
-
-.challenge-top small{
-display:block;
-color:#9ca9c8;
-margin-top:4px
-}
-
-.challenge-badge{
-font-size:30px
-}
-
-.progress{
-height:9px;
-border-radius:999px;
-background:#1b2b4b;
-overflow:hidden;
-margin:14px 0 10px
-}
-
-.progress-fill{
-height:100%;
-width:0%;
-border-radius:999px;
-background:linear-gradient(90deg,#55e3bd,#5b8cff)
-}
-
-.challenge-bottom{
-display:flex;
-justify-content:space-between;
-align-items:center;
-color:#aebbd5;
-font-size:13px
-}
-
-.challenge-bottom .chip{
-padding:7px 11px;
-color:#fff;
-background:#1d3767
-}
-
-/* AI MODAL */
-
-.ai-modal{
-position:fixed;
-inset:0;
-background:#020714cc;
-backdrop-filter:blur(10px);
-display:none;
-align-items:flex-end;
-justify-content:center;
-z-index:20;
-padding:12px
-}
-
-.ai-modal.open{
-display:flex
-}
-
-.ai-sheet{
-width:min(430px,100%);
-max-height:88vh;
-overflow:auto;
-background:linear-gradient(160deg,#101f40,#081329);
-border:1px solid #304875;
-border-radius:26px;
-padding:18px;
-box-shadow:0 -20px 70px #0008
-}
-
-.ai-head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:12px
-}
-
-.ai-head h2{
-margin:0;
-font-size:20px
-}
-
-.close{
-border:1px solid #304875;
-background:#142446;
-color:#fff;
-border-radius:12px;
-width:38px;
-height:38px;
-font-size:20px
-}
-
-.ai-label{
-display:block;
-color:#aab8d3;
-font-size:12px;
-margin:12px 0 6px
-}
-
-.ai-input{
-width:100%;
-min-height:120px;
-resize:vertical;
-background:#081329;
-border:1px solid #2a416e;
-border-radius:14px;
-color:#fff;
-padding:13px;
-font:inherit;
-outline:none
-}
-
-.ai-input:focus{
-border-color:#5d8fff
-}
-
-.ai-result{
-background:#0a1730;
-border:1px solid #29416d;
-border-radius:16px;
-padding:14px;
-margin-top:12px;
-white-space:pre-wrap;
-color:#e8edfa
-}
-
-.ai-meter{
-height:8px;
-background:#1b2b4b;
-border-radius:99px;
-overflow:hidden;
-margin:10px 0
-}
-
-.ai-meter i{
-display:block;
-height:100%;
-width:0;
-background:linear-gradient(90deg,#55e3bd,#5b8cff)
-}
-
-.pro-badge{
-display:inline-block;
-background:#59358b;
-color:#e8d8ff;
-border-radius:999px;
-padding:4px 8px;
-font-size:11px
-}
-
-.pro-unlock{
-margin-top:10px;
-color:#c7b7df;
-font-size:13px
-}
-
-.toast{
-position:fixed;
-left:50%;
-bottom:92px;
-transform:translateX(-50%);
-background:#142446;
-border:1px solid #36527f;
-color:#fff;
-padding:11px 15px;
-border-radius:13px;
-z-index:30;
-display:none;
-max-width:90%;
-text-align:center
-}
-
-.toast.show{
-display:block
-}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#273d83 0,#0a1430 38%,#050b1b 100%);color:var(--text);font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 16px 90px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.brand{font-weight:800;font-size:20px}.brand span{background:linear-gradient(90deg,#58a6ff,#d34dff);-webkit-background-clip:text;color:transparent}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#54a5ff,#c64cff);display:grid;place-items:center;font-weight:800}
+.screen{display:none}.screen.active{display:block}
+.hero{padding:22px;border:1px solid #29447b;border-radius:24px;background:linear-gradient(145deg,#111f45,#0b1430);box-shadow:0 18px 50px #0006}
+.hero h1{font-size:27px;line-height:1.05;margin:0 0 8px}.hero p{color:var(--muted);margin:0 0 18px}
+.btn{border:0;color:white;font-weight:800;border-radius:14px;padding:13px 17px;background:linear-gradient(90deg,#3e9cff,#b94dff);cursor:pointer}.btn.secondary{background:#142446;border:1px solid #2c4270}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}.stat{background:#0c1730;border:1px solid var(--line);border-radius:15px;padding:12px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
+.section{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}.section h2{font-size:17px;margin:0}
+.searchbox{width:100%;padding:14px 16px;margin-bottom:12px;border-radius:14px;border:1px solid #2b416c;background:#0c1730;color:white;font-size:15px;outline:none}.searchbox:focus{border-color:#5b8cff}
+.filters{display:flex;gap:7px;overflow:auto;padding-bottom:4px}.chip{white-space:nowrap;border:1px solid #2b416c;background:#0c1730;color:#b7c4df;border-radius:999px;padding:8px 11px;cursor:pointer}.chip.active{background:#253b75;color:#fff}
+.card{background:linear-gradient(160deg,#101e3c,#0b152b);border:1px solid #24385f;border-radius:20px;padding:15px;margin:10px 0;cursor:pointer}.row{display:flex;gap:12px;align-items:flex-start}.thumb{width:58px;height:58px;border-radius:15px;display:grid;place-items:center;font-size:27px;background:linear-gradient(135deg,#213a72,#632c79)}.grow{flex:1}.tag{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#0e4b45;color:#56e3bf;margin-bottom:5px}.title{font-weight:800;font-size:16px}.meta{color:var(--muted);font-size:13px;margin-top:4px}.money{font-weight:900;font-size:18px;margin-top:10px}.match{float:right;color:#55e3bd;font-weight:800}
+.box{background:#0d1932;border:1px solid #2a3d68;border-radius:18px;padding:15px;margin:12px 0}.score{font-size:42px;font-weight:900;color:#56e3bd}.back{margin-bottom:15px;color:#a9b8d8;cursor:pointer}.detail h1{font-size:28px;line-height:1.1}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);display:flex;justify-content:space-around;background:#071126ee;backdrop-filter:blur(14px);border-top:1px solid #1d2e50;padding:10px 8px calc(10px + env(safe-area-inset-bottom));z-index:5}.nav{background:none;border:0;color:#8292b5;font-size:13px;line-height:1.15;font-weight:800;cursor:pointer;min-width:76px;padding:3px 5px}.nav-icon{display:block;font-size:30px;line-height:30px;margin-bottom:5px;font-weight:500}.nav.active{color:#fff}
+.premium{border-color:#7547a9;background:linear-gradient(145deg,#25134d,#0e1832)}.empty{text-align:center;color:var(--muted);padding:30px 10px}.loading{text-align:center;color:var(--muted);padding:30px 10px}.source{color:#8292b5;font-size:11px;margin-top:12px;text-align:center}.source a{color:#9db7ff}
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.ai-card{border:1px solid #283e69;background:linear-gradient(145deg,#101e3d,#0b152c);border-radius:18px;padding:14px;text-align:left;color:#fff;cursor:pointer;min-height:126px}.ai-card:active,.challenge:active,.pro-card:active{transform:scale(.99)}.ai-icon{display:block;font-size:25px;margin-bottom:8px}.ai-card b{display:block;font-size:14px}.ai-card small{display:block;color:#9ca9c8;margin-top:5px;line-height:1.3}.pro-card{padding:16px}.pro-title{display:flex;gap:9px;align-items:center;font-size:16px}.pro-title span{font-size:22px}.pro-list{display:grid;gap:6px;margin-top:12px;color:#d8cbed;font-size:13px}.pro-note{display:block;text-align:center;color:#9d8ab9;margin-top:8px}.challenge{background:linear-gradient(145deg,#122448,#0b1730);border:1px solid #2c4779;border-radius:20px;padding:16px}.challenge-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.challenge-top b{display:block;font-size:15px}.challenge-top small{display:block;color:#9ca9c8;margin-top:4px}.challenge-badge{font-size:30px}.progress{height:9px;border-radius:999px;background:#1b2b4b;overflow:hidden;margin:14px 0 10px}.progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#55e3bd,#5b8cff)}.challenge-bottom{display:flex;justify-content:space-between;align-items:center;color:#aebbd5;font-size:13px}.challenge-bottom .chip{padding:7px 11px;color:#fff;background:#1d3767}
+
+.ai-modal{position:fixed;inset:0;background:#020714cc;backdrop-filter:blur(10px);display:none;align-items:flex-end;justify-content:center;z-index:20;padding:12px}.ai-modal.open{display:flex}.ai-sheet{width:min(430px,100%);max-height:88vh;overflow:auto;background:linear-gradient(160deg,#101f40,#081329);border:1px solid #304875;border-radius:26px;padding:18px;box-shadow:0 -20px 70px #0008}.ai-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.ai-head h2{margin:0;font-size:20px}.close{border:1px solid #304875;background:#142446;color:#fff;border-radius:12px;width:38px;height:38px;font-size:20px}.ai-label{display:block;color:#aab8d3;font-size:12px;margin:12px 0 6px}.ai-input{width:100%;min-height:120px;resize:vertical;background:#081329;border:1px solid #2a416e;border-radius:14px;color:#fff;padding:13px;font:inherit;outline:none}.ai-input:focus{border-color:#5d8fff}.ai-result{background:#0a1730;border:1px solid #29416d;border-radius:16px;padding:14px;margin-top:12px;white-space:pre-wrap;color:#e8edfa}.ai-meter{height:8px;background:#1b2b4b;border-radius:99px;overflow:hidden;margin:10px 0}.ai-meter i{display:block;height:100%;width:0;background:linear-gradient(90deg,#55e3bd,#5b8cff)}.pro-badge{display:inline-block;background:#59358b;color:#e8d8ff;border-radius:999px;padding:4px 8px;font-size:11px}.pro-unlock{margin-top:10px;color:#c7b7df;font-size:13px}.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#142446;border:1px solid #36527f;color:#fff;padding:11px 15px;border-radius:13px;z-index:30;display:none;max-width:90%;text-align:center}.toast.show{display:block}
 </style>
 </head>
-
 <body>
-
 <div class="app">
-
-<div class="top">
-<div class="brand">JobHunt <span>AI</span></div>
-<div class="avatar">A</div>
-</div>
+<div class="top"><div class="brand">JobHunt <span>AI</span></div><div class="avatar">A</div></div>
 
 <section id="home" class="screen active">
+<div class="hero"><h1>Привет, Алекс 👋</h1><p>Мы нашли новые возможности заработать, которые подходят именно тебе.</p><button class="btn" onclick="show('search')">Найти возможности</button></div>
+<div class="stats"><div class="stat"><b id="jobsCount">—</b><small>вакансий</small></div><div class="stat"><b id="savedCount">0</b><small>сохранено</small></div><div class="stat"><b id="bestMatch">—</b><small>лучший match</small></div></div>
 
-<div class="hero">
-<h1>Привет, Алекс 👋</h1>
-<p>Мы нашли новые возможности заработать, которые подходят именно тебе.</p>
-
-<button class="btn" onclick="show('search')">
-Найти возможности
-</button>
-</div>
-
-<div class="stats">
-
-<div class="stat">
-<b id="jobsCount">—</b>
-<small>вакансий</small>
-</div>
-
-<div class="stat">
-<b id="savedCount">0</b>
-<small>сохранено</small>
-</div>
-
-<div class="stat">
-<b id="bestMatch">—</b>
-<small>лучший match</small>
-</div>
-
-</div>
-
-<div class="section">
-<h2>🤖 AI для тебя</h2>
-<span style="color:#7f91b6">JobHunt AI</span>
-</div>
-
+<div class="section"><h2>🤖 AI для тебя</h2><span style="color:#7f91b6">JobHunt AI</span></div>
 <div class="ai-grid">
-
-<button class="ai-card" onclick="openAI('resume')">
-<span class="ai-icon">📄</span>
-<b>Анализ резюме</b>
-<small>Проверь навыки и усили CV</small>
-</button>
-
-<button class="ai-card" onclick="openAI('reply')">
-<span class="ai-icon">✍️</span>
-<b>Написать отклик</b>
-<small>Получить персональный текст</small>
-</button>
-
-<button class="ai-card" onclick="openAI('match')">
-<span class="ai-icon">🎯</span>
-<b>Стоит ли откликаться?</b>
-<small>Разбор вакансии и твоих шансов</small>
-</button>
-
-<button class="ai-card" onclick="openAI('search')">
-<span class="ai-icon">🔎</span>
-<b>Умный поиск</b>
-<small>Подбор профессии по навыкам</small>
-</button>
-
+  <button class="ai-card" onclick="openAI('resume')"><span class="ai-icon">📄</span><b>Анализ резюме</b><small>Проверь навыки и усили CV</small></button>
+  <button class="ai-card" onclick="openAI('reply')"><span class="ai-icon">✍️</span><b>Написать отклик</b><small>Получить персональный текст</small></button>
+  <button class="ai-card" onclick="openAI('match')"><span class="ai-icon">🎯</span><b>Стоит ли откликаться?</b><small>Разбор вакансии и твоих шансов</small></button>
+  <button class="ai-card" onclick="openAI('search')"><span class="ai-icon">🔎</span><b>Умный поиск</b><small>Подбор профессии по навыкам</small></button>
 </div>
 
-<div class="section">
-<h2>⭐ JobHunt PRO</h2>
-<span style="color:#bda5e8">Премиум</span>
-</div>
-
+<div class="section"><h2>⭐ JobHunt PRO</h2><span style="color:#bda5e8">Премиум</span></div>
 <div class="card premium pro-card">
-
-<div class="pro-title">
-<span>⚡</span>
-<b>Больше шансов получить работу</b>
+  <div class="pro-title"><span>⚡</span><b>Работай с AI без ограничений</b></div>
+  <div class="pro-list"><span>✓ Расширенный AI Match</span><span>✓ Анализ резюме</span><span>✓ Персональные отклики</span><span>✓ Умные уведомления</span></div>
+  <button class="btn" style="width:100%;margin-top:12px" onclick="openPro()">Попробовать PRO</button>
+  <small class="pro-note">Telegram Stars подключим следующим этапом</small>
 </div>
 
-<div class="pro-list">
-<span>✓ Анализ CV под вакансию</span>
-<span>✓ Расширенный AI Match</span>
-<span>✓ Персональные отклики</span>
-<span>✓ Умные рекомендации</span>
-<span>✓ Приоритетные AI-функции</span>
-</div>
-
-<button
-class="btn"
-style="width:100%;margin-top:12px"
-onclick="openPro()"
->
-Попробовать PRO
-</button>
-
-<small class="pro-note">
-Telegram Stars подключим следующим этапом
-</small>
-
-</div>
-
-<div class="section">
-<h2>🏆 JobHunt Challenge</h2>
-<span style="color:#7f91b6">Сегодня</span>
-</div>
-
+<div class="section"><h2>🏆 JobHunt Challenge</h2><span style="color:#7f91b6">Сегодня</span></div>
 <div class="challenge">
-
-<div class="challenge-top">
-
-<div>
-<b>Найди 3 подходящие вакансии</b>
-<small>За выполнение получишь бонус PRO</small>
+  <div class="challenge-top"><div><b>Найди 3 подходящие вакансии</b><small>За выполнение получишь бонус PRO</small></div><div class="challenge-badge">🔥</div></div>
+  <div class="progress"><div id="challengeProgress" class="progress-fill"></div></div>
+  <div class="challenge-bottom"><span id="challengeText">0 из 3</span><button class="chip" onclick="doChallenge()">Выполнить</button></div>
 </div>
 
-<div class="challenge-badge">
-🔥
-</div>
-
-</div>
-
-<div class="progress">
-<div id="challengeProgress" class="progress-fill"></div>
-</div>
-
-<div class="challenge-bottom">
-
-<span id="challengeText">
-0 из 3
-</span>
-
-<button class="chip" onclick="doChallenge()">
-Выполнить
-</button>
-
-</div>
-
-</div>
-
-<div class="section">
-<h2>🔥 Лучшие для тебя</h2>
-<span style="color:#7f91b6">Adzuna</span>
-</div>
-
-<div id="cards">
-<div class="loading">
-Загружаем реальные вакансии…
-</div>
-</div>
-
-<div class="source">
-Jobs by Adzuna ·
-<a href="https://www.adzuna.com/" target="_blank" rel="noopener">
-Adzuna
-</a>
-</div>
-
+<div class="section"><h2>🔥 Лучшие для тебя</h2><span style="color:#7f91b6">Adzuna</span></div>
+<div id="cards"><div class="loading">Загружаем реальные вакансии…</div></div>
+<div class="source">Jobs by Adzuna · <a href="https://www.adzuna.com/" target="_blank" rel="noopener">Adzuna</a></div>
 </section>
-
 
 <section id="search" class="screen">
-
-<div class="section">
-<h2>🔎 Поиск возможностей</h2>
-</div>
-
-<input
-id="keywordSearch"
-class="searchbox"
-type="text"
-placeholder="Например: designer, developer, photographer…"
-oninput="filterJobs()"
->
-
+<div class="section"><h2>🔎 Поиск возможностей</h2></div>
+<input id="keywordSearch" class="searchbox" type="text" placeholder="Например: designer, developer, photographer…" oninput="filterJobs()">
 <div class="filters">
-
-<button class="chip active" onclick="setFilter('all',this)">
-Все
-</button>
-
-<button class="chip" onclick="setFilter('remote',this)">
-Удалённо
-</button>
-
-<button class="chip" onclick="setFilter('today',this)">
-Сегодня
-</button>
-
-<button class="chip" onclick="setFilter('high',this)">
-£500+
-</button>
-
+<button class="chip active" onclick="setFilter('all',this)">Все</button>
+<button class="chip" onclick="setFilter('remote',this)">Удалённо</button>
+<button class="chip" onclick="setFilter('today',this)">Сегодня</button>
+<button class="chip" onclick="setFilter('high',this)">£500+</button>
 </div>
-
-<div id="searchCards">
-<div class="loading">
-Введите профессию или запрос…
-</div>
-</div>
-
-<div class="source">
-Jobs by Adzuna ·
-<a href="https://www.adzuna.com/" target="_blank" rel="noopener">
-Adzuna
-</a>
-</div>
-
+<div id="searchCards"><div class="loading">Введите профессию или запрос…</div></div>
+<div class="source">Jobs by Adzuna · <a href="https://www.adzuna.com/" target="_blank" rel="noopener">Adzuna</a></div>
 </section>
 
+<section id="detail" class="screen"><div class="back" onclick="show('search')">← Назад</div><div id="detailContent"></div></section>
 
-<section id="detail" class="screen">
+<section id="apply" class="screen"><div class="back" onclick="show('detail')">← Назад</div><div class="box"><div class="tag">AI ОТКЛИК</div><h2>Готовое сообщение клиенту</h2><p id="msg">Hi! I’m a professional specialist and I’m interested in your project. I have relevant experience and would love to discuss the details. I can also share examples of my work.</p><button class="btn secondary" onclick="copyMessage()">Копировать</button></div><button class="btn" style="width:100%" onclick="openAI('reply')">Откликнуться</button></section>
 
-<div class="back" onclick="show('search')">
-← Назад
+<section id="saved" class="screen"><div class="section"><h2>♡ Сохранённое</h2></div><div id="savedCards"></div></section>
+
+<section id="profile" class="screen"><div class="hero"><h1>Алексей</h1><p>Фотограф · Дизайнер</p><div class="stats"><div class="stat"><b id="profileJobs">—</b><small>возможности</small></div><div class="stat"><b>4.8</b><small>рейтинг</small></div><div class="stat"><b>156</b><small>просмотров</small></div></div></div><div class="card premium"><b>⚡ JobHunt AI PRO</b><p style="color:#c2b7d8">Больше возможностей, больше заработка.</p><div class="money">€9.99 / месяц</div><button class="btn" style="margin-top:10px" onclick="openPro()">Попробовать PRO</button></div></section>
 </div>
 
-<div id="detailContent"></div>
-
-</section>
-
-
-<section id="apply" class="screen">
-
-<div class="back" onclick="show('detail')">
-← Назад
-</div>
-
-<div class="box">
-
-<div class="tag">
-AI ОТКЛИК
-</div>
-
-<h2>
-Готовое сообщение клиенту
-</h2>
-
-<p id="msg">
-Hi! I’m a professional specialist and I’m interested in your project.
-I have relevant experience and would love to discuss the details.
-I can also share examples of my work.
-</p>
-
-<button class="btn secondary" onclick="copyMessage()">
-Копировать
-</button>
-
-</div>
-
-<button
-class="btn"
-style="width:100%"
-onclick="openAI('reply')"
->
-✨ Создать AI-отклик
-</button>
-
-</section>
-
-
-<section id="saved" class="screen">
-
-<div class="section">
-<h2>♡ Сохранённое</h2>
-</div>
-
-<div id="savedCards"></div>
-
-</section>
-
-
-<section id="profile" class="screen">
-
-<div class="hero">
-
-<h1>
-Алексей
-</h1>
-
-<p>
-Фотограф · Дизайнер
-</p>
-
-<div class="stats">
-
-<div class="stat">
-<b id="profileJobs">—</b>
-<small>возможности</small>
-</div>
-
-<div class="stat">
-<b>4.8</b>
-<small>рейтинг</small>
-</div>
-
-<div class="stat">
-<b>156</b>
-<small>просмотров</small>
-</div>
-
-</div>
-
-</div>
-
-
-<div class="card premium">
-
-<b>
-⚡ JobHunt AI PRO
-</b>
-
-<p style="color:#c2b7d8">
-Больше возможностей, больше заработка.
-</p>
-
-<div class="money">
-€9.99 / месяц
-</div>
-
-<button
-class="btn"
-style="margin-top:10px"
-onclick="openPro()"
->
-Попробовать PRO
-</button>
-
-</div>
-
-</section>
-
-</div>
-
-
-<!-- AI MODAL -->
-
-<div
-id="aiModal"
-class="ai-modal"
-onclick="if(event.target===this)closeAI()"
->
-
+<div id="aiModal" class="ai-modal" onclick="if(event.target===this)closeAI()">
 <div class="ai-sheet">
-
-<div class="ai-head">
-
-<h2 id="aiTitle">
-🤖 JobHunt AI
-</h2>
-
-<button
-class="close"
-onclick="closeAI()"
->
-×
-</button>
-
-</div>
-
+<div class="ai-head"><h2 id="aiTitle">🤖 JobHunt AI</h2><button class="close" onclick="closeAI()">×</button></div>
 <div id="aiBody"></div>
-
 </div>
-
 </div>
-
 
 <div id="toast" class="toast"></div>
-
-
-<!-- BOTTOM NAV -->
-
 <div class="bottom">
-
-<button
-class="nav active"
-onclick="show('home',this)"
->
-<span class="nav-icon">⌂</span>
-Главная
-</button>
-
-<button
-class="nav"
-onclick="show('search',this)"
->
-<span class="nav-icon">⌕</span>
-Поиск
-</button>
-
-<button
-class="nav"
-onclick="show('saved',this)"
->
-<span class="nav-icon">♡</span>
-Сохранённое
-</button>
-
-<button
-class="nav"
-onclick="show('profile',this)"
->
-<span class="nav-icon">◉</span>
-Профиль
-</button>
-
+<button class="nav active" onclick="show('home',this)"><span class="nav-icon">⌂</span>Главная</button>
+<button class="nav" onclick="show('search',this)"><span class="nav-icon">⌕</span>Поиск</button>
+<button class="nav" onclick="show('saved',this)"><span class="nav-icon">♡</span>Сохранённое</button>
+<button class="nav" onclick="show('profile',this)"><span class="nav-icon">◉</span>Профиль</button>
 </div>
-
 
 <script>
-
-const API_URL='https://rapid-wood-80b6.fetis969696.workers.dev/jobs';
-
+const WORKER_URL='https://rapid-wood-80b6.fetis969696.workers.dev';
+const API_URL=WORKER_URL+'/jobs';
+const AI_URL=WORKER_URL+'/ai';
 const COUNTRY='gb';
-
 let jobs=[];
-
 let currentFilter='all';
-
 let currentJobIndex=null;
-
 let searchTimer=null;
-
 let requestNumber=0;
-
 let saved=[];
-
-
-try{
-
-saved=JSON.parse(
-localStorage.getItem('jobhunt_saved')||'[]'
-);
-
-if(!Array.isArray(saved))
-saved=[];
-
-}catch(e){
-
-saved=[];
-
-}
-
+try{saved=JSON.parse(localStorage.getItem('jobhunt_saved')||'[]');if(!Array.isArray(saved))saved=[]}catch(e){saved=[]}
 
 function escapeHtml(value){
-
-return String(value??'').replace(
-/[&<>'"]/g,
-c=>({
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-"'":'&#39;',
-'"':'&quot;'
-}[c])
-);
-
+  return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 }
-
 
 function iconFor(job){
-
-const text=(
-job.title+' '+job.category
-).toLowerCase();
-
-if(/design|ux|ui|graphic|creative/.test(text))
-return '🎨';
-
-if(/photo|photograph/.test(text))
-return '📸';
-
-if(/video|film|editor/.test(text))
-return '🎬';
-
-if(/developer|software|engineer|program/.test(text))
-return '💻';
-
-if(/marketing|social|media/.test(text))
-return '📱';
-
-if(/copy|writer|content/.test(text))
-return '✍️';
-
-if(/data|analyst|finance/.test(text))
-return '📊';
-
-return '💼';
-
+  const text=(job.title+' '+job.category).toLowerCase();
+  if(/design|ux|ui|graphic|creative/.test(text))return '🎨';
+  if(/photo|photograph/.test(text))return '📸';
+  if(/video|film|editor/.test(text))return '🎬';
+  if(/developer|software|engineer|program/.test(text))return '💻';
+  if(/marketing|social|media/.test(text))return '📱';
+  if(/copy|writer|content/.test(text))return '✍️';
+  if(/data|analyst|finance/.test(text))return '📊';
+  return '💼';
 }
-
 
 function salaryText(job){
-
-const min=Number(job.salary_min||0);
-
-const max=Number(job.salary_max||0);
-
-if(min&&max)
-
-return '£'+
-Math.round(min).toLocaleString('en-GB')+
-'–£'+
-Math.round(max).toLocaleString('en-GB');
-
-if(min)
-
-return 'от £'+
-Math.round(min).toLocaleString('en-GB');
-
-if(max)
-
-return 'до £'+
-Math.round(max).toLocaleString('en-GB');
-
-return 'Зарплата не указана';
-
+  const min=Number(job.salary_min||0);
+  const max=Number(job.salary_max||0);
+  if(min&&max)return '£'+Math.round(min).toLocaleString('en-GB')+'–£'+Math.round(max).toLocaleString('en-GB');
+  if(min)return 'от £'+Math.round(min).toLocaleString('en-GB');
+  if(max)return 'до £'+Math.round(max).toLocaleString('en-GB');
+  return 'Зарплата не указана';
 }
-
 
 function isToday(dateString){
-
-if(!dateString)
-return false;
-
-const d=new Date(dateString);
-
-if(Number.isNaN(d.getTime()))
-return false;
-
-const now=new Date();
-
-return d.toDateString()===now.toDateString();
-
+  if(!dateString)return false;
+  const d=new Date(dateString);
+  if(Number.isNaN(d.getTime()))return false;
+  const now=new Date();
+  return d.toDateString()===now.toDateString();
 }
-
 
 function normalizeJob(j){
-
-const title=j.title||'Вакансия';
-
-const location=
-j.location?.display_name||
-'United Kingdom';
-
-const description=
-j.description||'';
-
-const category=
-j.category?.label||
-j.category?.tag||
-'';
-
-const remote=
-/remote|work from home|home based|anywhere/i.test(
-title+' '+location+' '+description
-);
-
-const hash=
-Array.from(
-String(j.id||title)
-).reduce(
-(a,c)=>a+c.charCodeAt(0),
-0
-);
-
-const match=84+(hash%13);
-
-return{
-
-id:String(
-j.id||
-j.redirect_url||
-title+location
-),
-
-icon:iconFor({
-title,
-category
-}),
-
-title,
-
-money:salaryText(j),
-
-location,
-
-match,
-
-type:(category||title).toLowerCase(),
-
-remote,
-
-today:isToday(j.created),
-
-description,
-
-company:
-j.company?.display_name||
-'Компания не указана',
-
-created:
-j.created||'',
-
-url:
-j.redirect_url||''
-
-};
-
+  const title=j.title||'Вакансия';
+  const location=j.location?.display_name||'United Kingdom';
+  const description=j.description||'';
+  const category=j.category?.label||j.category?.tag||'';
+  const remote=/remote|work from home|home based|anywhere/i.test(title+' '+location+' '+description);
+  const hash=Array.from(String(j.id||title)).reduce((a,c)=>a+c.charCodeAt(0),0);
+  const match=84+(hash%13);
+  return {
+    id:String(j.id||j.redirect_url||title+location),
+    icon:iconFor({title,category}),
+    title,
+    money:salaryText(j),
+    location,
+    match,
+    type:(category||title).toLowerCase(),
+    remote,
+    today:isToday(j.created),
+    description,
+    company:j.company?.display_name||'Компания не указана',
+    created:j.created||'',
+    url:j.redirect_url||''
+  };
 }
-
 
 function card(job,index){
-
-const isSaved=
-saved.includes(job.id);
-
-return`
-
-<div
-class="card"
-onclick="openJob(${index})"
->
-
-<div class="row">
-
-<div class="thumb">
-${job.icon}
-</div>
-
-<div class="grow">
-
-<span class="tag">
-${job.match}% match
-</span>
-
-<div class="title">
-${escapeHtml(job.title)}
-</div>
-
-<div class="meta">
-${escapeHtml(job.location)}
-</div>
-
-</div>
-
-</div>
-
-<div class="money">
-
-${escapeHtml(job.money)}
-
-<span class="match">
-${isSaved?'♥':'♡'} ${job.match}%
-</span>
-
-</div>
-
-</div>
-
-`;
-
+  const isSaved=saved.includes(job.id);
+  return `<div class="card" onclick="openJob(${index})">
+    <div class="row">
+      <div class="thumb">${job.icon}</div>
+      <div class="grow">
+        <span class="tag">${job.match}% match</span>
+        <div class="title">${escapeHtml(job.title)}</div>
+        <div class="meta">${escapeHtml(job.location)}</div>
+      </div>
+    </div>
+    <div class="money">${escapeHtml(job.money)} <span class="match">${isSaved?'♥':'♡'} ${job.match}%</span></div>
+  </div>`;
 }
-
 
 function renderHome(){
-
-const box=
-document.getElementById('cards');
-
-document.getElementById('jobsCount')
-.innerText=jobs.length||'0';
-
-document.getElementById('profileJobs')
-.innerText=jobs.length||'0';
-
-document.getElementById('bestMatch')
-.innerText=
-jobs.length
-?Math.max(...jobs.map(j=>j.match))+'%'
-:'—';
-
-if(!jobs.length){
-
-box.innerHTML=
-'<div class="empty">Вакансии пока не загружены.</div>';
-
-return;
-
+  const box=document.getElementById('cards');
+  document.getElementById('jobsCount').innerText=jobs.length||'0';
+  document.getElementById('profileJobs').innerText=jobs.length||'0';
+  document.getElementById('bestMatch').innerText=jobs.length?Math.max(...jobs.map(j=>j.match))+'%':'—';
+  if(!jobs.length){box.innerHTML='<div class="empty">Вакансии пока не загружены.</div>';return}
+  box.innerHTML=jobs.slice().sort((a,b)=>b.match-a.match).slice(0,3).map(j=>card(j,jobs.indexOf(j))).join('');
 }
-
-box.innerHTML=
-jobs
-.slice()
-.sort((a,b)=>b.match-a.match)
-.slice(0,3)
-.map(j=>card(j,jobs.indexOf(j)))
-.join('');
-
-}
-
 
 function getFilteredIndexes(){
-
-const input=
-document.getElementById('keywordSearch');
-
-const q=
-(input?.value||'')
-.toLowerCase()
-.trim();
-
-return jobs
-.map((job,index)=>({
-job,
-index
-}))
-.filter(x=>{
-
-const j=x.job;
-
-const text=(
-j.title+' '+
-j.location+' '+
-j.type+' '+
-j.company+' '+
-j.description
-).toLowerCase();
-
-if(q&&!text.includes(q))
-return false;
-
-if(
-currentFilter==='remote'&&
-!j.remote
-)
-return false;
-
-if(
-currentFilter==='today'&&
-!j.today
-)
-return false;
-
-if(currentFilter==='high'){
-
-const n=Number(
-(
-j.money.match(/\d[\d,]*/)||['0']
-)[0].replace(/,/g,'')
-);
-
-if(n<500)
-return false;
-
+  const input=document.getElementById('keywordSearch');
+  const q=(input?.value||'').toLowerCase().trim();
+  return jobs.map((job,index)=>({job,index})).filter(x=>{
+    const j=x.job;
+    const text=(j.title+' '+j.location+' '+j.type+' '+j.company+' '+j.description).toLowerCase();
+    if(q&&!text.includes(q))return false;
+    if(currentFilter==='remote'&&!j.remote)return false;
+    if(currentFilter==='today'&&!j.today)return false;
+    if(currentFilter==='high'){
+      const n=Number((j.money.match(/\d[\d,]*/)||['0'])[0].replace(/,/g,''));
+      if(n<500)return false;
+    }
+    return true;
+  }).map(x=>x.index);
 }
-
-return true;
-
-})
-.map(x=>x.index);
-
-}
-
 
 function renderSearch(){
-
-const box=
-document.getElementById('searchCards');
-
-const indexes=
-getFilteredIndexes();
-
-if(!jobs.length){
-
-box.innerHTML=
-'<div class="loading">Загружаем вакансии…</div>';
-
-return;
-
+  const box=document.getElementById('searchCards');
+  const indexes=getFilteredIndexes();
+  if(!jobs.length){box.innerHTML='<div class="loading">Загружаем вакансии…</div>';return}
+  box.innerHTML=indexes.length?indexes.map(i=>card(jobs[i],i)).join(''):'<div class="empty">😕 Ничего не найдено.<br><br>Попробуй другое ключевое слово.</div>';
 }
-
-box.innerHTML=
-indexes.length
-?indexes.map(
-i=>card(jobs[i],i)
-).join('')
-:'<div class="empty">😕 Ничего не найдено.<br><br>Попробуй другое ключевое слово.</div>';
-
-}
-
 
 async function loadJobs(query='designer'){
-
-const myRequest=
-++requestNumber;
-
-const cards=
-document.getElementById('cards');
-
-if(!jobs.length){
-
-cards.innerHTML=
-'<div class="loading">Загружаем реальные вакансии…</div>';
-
+  const myRequest=++requestNumber;
+  const cards=document.getElementById('cards');
+  if(!query.trim())query='designer';
+  if(!jobs.length)cards.innerHTML='<div class="loading">Загружаем реальные вакансии…</div>';
+  try{
+    const url=API_URL+'?country='+encodeURIComponent(COUNTRY)+'&what='+encodeURIComponent(query.trim());
+    const response=await fetch(url,{method:'GET',cache:'no-store'});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    if(myRequest!==requestNumber)return;
+    if(!data.ok)throw new Error(data.error||'API error');
+    jobs=(data.jobs||[]).map(normalizeJob).filter((j,i,a)=>a.findIndex(x=>x.id===j.id)===i);
+    renderHome();
+    renderSearch();
+    renderSaved();
+  }catch(error){
+    if(myRequest!==requestNumber)return;
+    console.error(error);
+    if(!jobs.length){
+      cards.innerHTML='<div class="empty">Не удалось загрузить вакансии.<br><br>Проверь Worker и попробуй ещё раз.</div>';
+      document.getElementById('searchCards').innerHTML='<div class="empty">Не удалось загрузить вакансии.</div>';
+    }
+  }
 }
-
-try{
-
-const url=
-API_URL+
-'?country='+
-encodeURIComponent(COUNTRY)+
-'&what='+
-encodeURIComponent(query.trim());
-
-const response=
-await fetch(
-url,
-{
-method:'GET',
-cache:'no-store'
-}
-);
-
-if(!response.ok)
-
-throw new Error(
-'HTTP '+response.status
-);
-
-const data=
-await response.json();
-
-if(myRequest!==requestNumber)
-return;
-
-if(!data.ok)
-
-throw new Error(
-data.error||'API error'
-);
-
-jobs=
-(data.jobs||[])
-.map(normalizeJob)
-.filter(
-(j,i,a)=>
-a.findIndex(
-x=>x.id===j.id
-)===i
-);
-
-renderHome();
-
-renderSearch();
-
-renderSaved();
-
-}catch(error){
-
-if(myRequest!==requestNumber)
-return;
-
-console.error(error);
-
-if(!jobs.length){
-
-cards.innerHTML=
-'<div class="empty">Не удалось загрузить вакансии.<br><br>Проверь Worker и попробуй ещё раз.</div>';
-
-document.getElementById(
-'searchCards'
-).innerHTML=
-'<div class="empty">Не удалось загрузить вакансии.</div>';
-
-}
-
-}
-
-}
-
 
 function filterJobs(){
-
-clearTimeout(searchTimer);
-
-renderSearch();
-
-const q=
-document.getElementById(
-'keywordSearch'
-).value.trim();
-
-searchTimer=setTimeout(()=>{
-
-if(q)
-loadJobs(q);
-
-},700);
-
+  clearTimeout(searchTimer);
+  renderSearch();
+  const q=document.getElementById('keywordSearch').value.trim();
+  searchTimer=setTimeout(()=>{if(q)loadJobs(q);},700);
 }
-
 
 function setFilter(filter,el){
-
-currentFilter=filter;
-
-document
-.querySelectorAll('.chip')
-.forEach(
-x=>x.classList.remove('active')
-);
-
-el.classList.add('active');
-
-renderSearch();
-
+  currentFilter=filter;
+  document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+  el.classList.add('active');
+  renderSearch();
 }
-
 
 function openJob(index){
-
-const j=jobs[index];
-
-if(!j)
-return;
-
-currentJobIndex=index;
-
-const isSaved=
-saved.includes(j.id);
-
-const desc=j.description
-?j.description
-.replace(/<[^>]*>/g,' ')
-.replace(/\s+/g,' ')
-.trim()
-:'Описание вакансии недоступно.';
-
-const shortDesc=
-desc.length>900
-?desc.slice(0,900)+'…'
-:desc;
-
-document.getElementById(
-'detailContent'
-).innerHTML=`
-
-<div class="tag">
-${j.match}% MATCH
-</div>
-
-<h1>
-${escapeHtml(j.title)}
-</h1>
-
-<div class="meta">
-📍 ${escapeHtml(j.location)}
-·
-🏢 ${escapeHtml(j.company)}
-</div>
-
-<div class="money">
-${escapeHtml(j.money)}
-</div>
-
-<div class="box">
-
-<b>
-Почему подходит тебе
-</b>
-
-<p>
-AI предварительно оценил соответствие этой возможности в ${j.match}%.
-</p>
-
-<div class="score">
-${j.match}%
-</div>
-
-<small style="color:#9ca9c8">
-AI Match Score
-</small>
-
-</div>
-
-<div class="box">
-
-<b>
-Описание вакансии
-</b>
-
-<p>
-${escapeHtml(shortDesc)}
-</p>
-
-</div>
-
-<button
-class="btn"
-style="width:100%;margin-bottom:10px"
-onclick="openAI('reply')"
->
-✨ AI подготовит отклик
-</button>
-
-<button
-class="btn secondary"
-style="width:100%;margin-bottom:10px"
-onclick="openAI('match')"
->
-🎯 Стоит ли откликаться?
-</button>
-
-${
-j.url
-?`
-<a
-class="btn"
-style="display:block;text-align:center;text-decoration:none;margin-bottom:10px"
-href="${escapeHtml(j.url)}"
-target="_blank"
-rel="noopener"
->
-Открыть вакансию
-</a>
-`
-:''
+  const j=jobs[index];
+  if(!j)return;
+  currentJobIndex=index;
+  const isSaved=saved.includes(j.id);
+  const desc=j.description?j.description.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim():'Описание вакансии недоступно.';
+  const shortDesc=desc.length>900?desc.slice(0,900)+'…':desc;
+  document.getElementById('detailContent').innerHTML=`
+    <div class="tag">${j.match}% MATCH</div>
+    <h1>${escapeHtml(j.title)}</h1>
+    <div class="meta">📍 ${escapeHtml(j.location)} · 🏢 ${escapeHtml(j.company)}</div>
+    <div class="money">${escapeHtml(j.money)}</div>
+    <div class="box"><b>Почему подходит тебе</b><p>AI предварительно оценил соответствие этой возможности в ${j.match}%.</p><div class="score">${j.match}%</div><small style="color:#9ca9c8">AI Match Score</small></div>
+    <div class="box"><b>Описание вакансии</b><p>${escapeHtml(shortDesc)}</p></div>
+    <button class="btn" style="width:100%;margin-bottom:10px" onclick="show('apply')">✨ AI подготовит отклик</button>
+    ${j.url?`<a class="btn" style="display:block;text-align:center;text-decoration:none;margin-bottom:10px" href="${escapeHtml(j.url)}" target="_blank" rel="noopener">Открыть вакансию</a>`:''}
+    <button class="btn secondary" style="width:100%" onclick="toggleSave(${index})">${isSaved?'♥ Убрать из сохранённых':'♡ Сохранить'}</button>
+    <div class="source">Jobs by Adzuna · <a href="https://www.adzuna.com/" target="_blank" rel="noopener">Adzuna</a></div>`;
+  show('detail');
 }
-
-<button
-class="btn secondary"
-style="width:100%"
-onclick="toggleSave(${index})"
->
-${isSaved?'♥ Убрать из сохранённых':'♡ Сохранить'}
-</button>
-
-<div class="source">
-Jobs by Adzuna ·
-<a
-href="https://www.adzuna.com/"
-target="_blank"
-rel="noopener"
->
-Adzuna
-</a>
-</div>
-
-`;
-
-show('detail');
-
-}
-
 
 function toggleSave(index){
-
-const j=jobs[index];
-
-if(!j)
-return;
-
-if(saved.includes(j.id))
-
-saved=
-saved.filter(id=>id!==j.id);
-
-else
-
-saved.push(j.id);
-
-localStorage.setItem(
-'jobhunt_saved',
-JSON.stringify(saved)
-);
-
-updateSavedCount();
-
-openJob(index);
-
-renderSaved();
-
+  const j=jobs[index];
+  if(!j)return;
+  if(saved.includes(j.id))saved=saved.filter(id=>id!==j.id);else saved.push(j.id);
+  localStorage.setItem('jobhunt_saved',JSON.stringify(saved));
+  updateSavedCount();
+  openJob(index);
+  renderSaved();
 }
-
 
 function renderSaved(){
-
-const container=
-document.getElementById(
-'savedCards'
-);
-
-const savedJobs=
-saved
-.map(id=>jobs.find(j=>j.id===id))
-.filter(Boolean);
-
-if(!savedJobs.length){
-
-container.innerHTML=
-'<div class="empty">Пока ничего не сохранено.<br><br>Нажми ♡ на интересной вакансии.</div>';
-
-return;
-
+  const container=document.getElementById('savedCards');
+  const savedJobs=saved.map(id=>jobs.find(j=>j.id===id)).filter(Boolean);
+  if(!savedJobs.length){container.innerHTML='<div class="empty">Пока ничего не сохранено.<br><br>Нажми ♡ на интересной вакансии.</div>';return}
+  container.innerHTML=savedJobs.map(j=>card(j,jobs.indexOf(j))).join('');
 }
 
-container.innerHTML=
-savedJobs
-.map(j=>card(j,jobs.indexOf(j)))
-.join('');
-
-}
-
-
-function updateSavedCount(){
-
-document.getElementById(
-'savedCount'
-).innerText=saved.length;
-
-}
-
-
-/* AI */
-
-function toast(text){
-
-const t=
-document.getElementById('toast');
-
-t.innerText=text;
-
-t.classList.add('show');
-
-clearTimeout(window.toastTimer);
-
-window.toastTimer=
-setTimeout(
-()=>t.classList.remove('show'),
-2400
-);
-
-}
-
-
-function isPro(){
-
-return localStorage.getItem(
-'jobhunt_pro'
-)==='1';
-
-}
-
-
-function openAI(type){
-
-const modal=
-document.getElementById('aiModal');
-
-const title=
-document.getElementById('aiTitle');
-
-const body=
-document.getElementById('aiBody');
-
-const titles={
-
-resume:'📄 Анализ резюме',
-
-reply:'✍️ AI-отклик',
-
-match:'🎯 Стоит ли откликаться?',
-
-search:'🔎 Умный поиск'
-
-};
-
-title.innerText=
-titles[type]||
-'🤖 JobHunt AI';
-
-const job=
-currentJobIndex!==null
-?jobs[currentJobIndex]
-:null;
-
-
-if(type==='resume'){
-
-body.innerHTML=`
-
-<label class="ai-label">
-Вставь текст своего резюме
-</label>
-
-<textarea
-id="aiText"
-class="ai-input"
-placeholder="Например: UX/UI дизайнер с 4 годами опыта..."
-></textarea>
-
-<button
-class="btn"
-style="width:100%;margin-top:10px"
-onclick="analyzeResume()"
->
-✨ Анализировать
-</button>
-
-<div id="aiResult"></div>
-
-`;
-
-}
-
-
-else if(type==='reply'){
-
-body.innerHTML=`
-
-<label class="ai-label">
-Вакансия
-</label>
-
-<div
-class="box"
-style="margin:0"
->
-
-${
-job
-?`
-<b>${escapeHtml(job.title)}</b>
-<div class="meta">
-${escapeHtml(job.company)}
-·
-${escapeHtml(job.location)}
-</div>
-`
-:
-'Сначала открой интересную вакансию'
-}
-
-</div>
-
-<label class="ai-label">
-О себе / дополнительные навыки
-</label>
-
-<textarea
-id="aiText"
-class="ai-input"
-placeholder="Например: 5 лет опыта, Figma, Photoshop, английский B2..."
-></textarea>
-
-<button
-class="btn"
-style="width:100%;margin-top:10px"
-onclick="generateReply()"
->
-✨ Создать отклик
-</button>
-
-<div id="aiResult"></div>
-
-`;
-
-}
-
-
-else if(type==='match'){
-
-if(!job){
-
-body.innerHTML=
-'<div class="empty">Открой любую вакансию и нажми «Стоит ли откликаться?» ещё раз.</div>';
-
-}else{
-
-body.innerHTML=`
-
-<div
-class="box"
-style="margin-top:0"
->
-
-<b>
-${escapeHtml(job.title)}
-</b>
-
-<div class="meta">
-${escapeHtml(job.company)}
-·
-${escapeHtml(job.location)}
-</div>
-
-<div class="score">
-${job.match}%
-</div>
-
-<small style="color:#9ca9c8">
-Предварительный Match
-</small>
-
-</div>
-
-<button
-class="btn"
-style="width:100%"
-onclick="analyzeJob()"
->
-✨ Разобрать вакансию
-</button>
-
-<div id="aiResult"></div>
-
-`;
-
-}
-
-}
-
-
-else{
-
-body.innerHTML=`
-
-<label class="ai-label">
-Какая работа тебе нужна?
-</label>
-
-<textarea
-id="aiText"
-class="ai-input"
-placeholder="Например: удалённая работа дизайнером, от £30k..."
-></textarea>
-
-<button
-class="btn"
-style="width:100%;margin-top:10px"
-onclick="smartSearch()"
->
-🔎 Подобрать
-</button>
-
-<div id="aiResult"></div>
-
-`;
-
-}
-
-modal.classList.add('open');
-
-}
-
-
-function closeAI(){
-
-document
-.getElementById('aiModal')
-.classList.remove('open');
-
-}
-
-
-function analyzeResume(){
-
-const text=
-(
-document.getElementById('aiText')?.value||''
-).trim();
-
-const r=
-document.getElementById('aiResult');
-
-if(text.length<20){
-
-r.innerHTML=
-'<div class="ai-result">Добавь хотя бы несколько предложений о своём опыте, навыках и профессии.</div>';
-
-return;
-
-}
-
-const skills=[
-
-'figma',
-'photoshop',
-'illustrator',
-'javascript',
-'react',
-'python',
-'english',
-'marketing',
-'seo',
-'sales',
-'excel',
-'management'
-
-];
-
-const found=
-skills.filter(
-x=>text.toLowerCase().includes(x)
-);
-
-const score=
-Math.min(
-94,
-55+
-Math.min(30,found.length*5)+
-Math.min(9,Math.floor(text.length/120))
-);
-
-r.innerHTML=`
-
-<div class="ai-result">
-
-<b>
-Предварительная оценка CV: ${score}%
-</b>
-
-<div class="ai-meter">
-<i style="width:${score}%"></i>
-</div>
-
-<b>
-Что уже хорошо:
-</b>
-
-<br>
-
-${
-found.length
-?
-found.map(
-x=>'✓ '+x
-).join('\n')
-:
-'✓ Опыт описан — добавь конкретные результаты'
-}
-
-<br><br>
-
-<b>
-Что улучшить:
-</b>
-
-<br>
-
-• Добавь 2–3 измеримых результата.
-<br>
-• Укажи ключевые инструменты и уровень английского.
-<br>
-• Для каждой роли добавь 3–5 релевантных навыков.
-
-<br><br>
-
-<span class="pro-badge">
-PRO
-</span>
-
-В полной версии AI перепишет CV под конкретную вакансию.
-
-</div>
-
-`;
-
-}
-
-
-function generateReply(){
-
-const job=
-currentJobIndex!==null
-?jobs[currentJobIndex]
-:null;
-
-const extra=
-(
-document.getElementById('aiText')?.value||''
-).trim();
-
-const r=
-document.getElementById('aiResult');
-
-if(!job){
-
-r.innerHTML=
-'<div class="ai-result">Сначала открой вакансию.</div>';
-
-return;
-
-}
-
-const title=job.title;
-
-const company=job.company;
-
-const text=
-
-`Hi ${company} team,
-
-I’m interested in the ${title} position. My experience and skills match the requirements of this role, and I’d be happy to contribute to your team.
-
-${extra||'I can share relevant examples of my work and discuss my experience in more detail.'}
-
-I’d be glad to discuss the role and next steps.
-
-Best regards,
-Alex`;
-
-r.innerHTML=`
-
-<div
-class="ai-result"
-id="generatedReply"
->
-${escapeHtml(text)}
-</div>
-
-<button
-class="btn secondary"
-style="width:100%;margin-top:8px"
-onclick="copyGeneratedReply()"
->
-Копировать отклик
-</button>
-
-`;
-
-}
-
-
-function copyGeneratedReply(){
-
-const el=
-document.getElementById(
-'generatedReply'
-);
-
-if(el)
-
-navigator.clipboard
-?.writeText(el.innerText)
-.then(
-()=>toast('Отклик скопирован ✅')
-);
-
-}
-
-
-function analyzeJob(){
-
-const job=
-currentJobIndex!==null
-?jobs[currentJobIndex]
-:null;
-
-const r=
-document.getElementById('aiResult');
-
-if(!job)
-return;
-
-const strong=
-job.match>=90
-?'Очень сильное соответствие.'
-:
-job.match>=80
-?'Хорошее соответствие.'
-:
-'Есть смысл откликнуться, если требования подходят.';
-
-r.innerHTML=`
-
-<div class="ai-result">
-
-<b>
-${strong}
-</b>
-
-<br><br>
-
-🎯 Match: ${job.match}%
-<br>
-💼 Компания: ${escapeHtml(job.company)}
-<br>
-📍 ${escapeHtml(job.location)}
-<br>
-💰 ${escapeHtml(job.money)}
-
-<br><br>
-
-<b>
-Рекомендация
-</b>
-
-<br>
-
-Откликайся, если твои основные навыки совпадают с описанием. В отклике выдели 2–3 релевантных проекта.
-
-${
-isPro()
-?
-''
-:
-`
-
-<br><br>
-
-<span class="pro-badge">
-PRO
-</span>
-
-PRO добавит подробное сравнение навыков и требований.
-`
-}
-
-</div>
-
-`;
-
-}
-
-
-function smartSearch(){
-
-const text=
-(
-document.getElementById('aiText')?.value||''
-).trim();
-
-if(!text){
-
-toast('Напиши, какую работу ищешь');
-
-return;
-
-}
-
-closeAI();
-
-const input=
-document.getElementById(
-'keywordSearch'
-);
-
-input.value=text;
-
-show('search');
-
-filterJobs();
-
-toast('Ищем подходящие вакансии 🔎');
-
-}
-
-
-function openPro(){
-
-const modal=
-document.getElementById('aiModal');
-
-document.getElementById(
-'aiTitle'
-).innerHTML=
-'⭐ JobHunt PRO';
-
-document.getElementById(
-'aiBody'
-).innerHTML=`
-
-<div
-class="hero"
-style="padding:18px"
->
-
-<h1 style="font-size:24px">
-Больше шансов получить работу
-</h1>
-
-<p>
-PRO открывает расширенные AI-инструменты и будущие умные уведомления.
-</p>
-
-<div class="pro-list">
-
-<span>
-✓ Анализ CV под вакансию
-</span>
-
-<span>
-✓ Расширенный Match
-</span>
-
-<span>
-✓ Персональные отклики
-</span>
-
-<span>
-✓ Умные рекомендации
-</span>
-
-<span>
-✓ Приоритетные AI-функции
-</span>
-
-</div>
-
-<button
-class="btn"
-style="width:100%;margin-top:14px"
-onclick="activateDemoPro()"
->
-Активировать PRO DEMO
-</button>
-
-<small class="pro-note">
-Оплату через Telegram Stars подключим следующим этапом.
-</small>
-
-</div>
-
-`;
-
-modal.classList.add('open');
-
-}
-
-
-function activateDemoPro(){
-
-localStorage.setItem(
-'jobhunt_pro',
-'1'
-);
-
-closeAI();
-
-toast('PRO DEMO активирован ⭐');
-
-}
-
+function updateSavedCount(){document.getElementById('savedCount').innerText=saved.length}
 
 function copyMessage(){
-
-const text=
-document.getElementById('msg').innerText;
-
-if(navigator.clipboard)
-
-navigator.clipboard
-.writeText(text)
-.then(
-()=>alert('Сообщение скопировано ✅')
-)
-.catch(
-()=>alert('Выдели сообщение и скопируй его вручную.')
-);
-
-else
-
-alert(
-'Выдели сообщение и скопируй его вручную.'
-);
-
+  const text=document.getElementById('msg').innerText;
+  if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>alert('Сообщение скопировано ✅')).catch(()=>alert('Выдели сообщение и скопируй его вручную.'));
+  else alert('Выдели сообщение и скопируй его вручную.');
 }
-
 
 function show(id,el){
-
-document
-.querySelectorAll('.screen')
-.forEach(
-x=>x.classList.remove('active')
-);
-
-const target=
-document.getElementById(id);
-
-if(target)
-target.classList.add('active');
-
-if(el){
-
-document
-.querySelectorAll('.nav')
-.forEach(
-x=>x.classList.remove('active')
-);
-
-el.classList.add('active');
-
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  const target=document.getElementById(id);if(target)target.classList.add('active');
+  if(el){document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
+  if(id==='search')renderSearch();
+  if(id==='saved')renderSaved();
+  window.scrollTo(0,0);
 }
 
-if(id==='search')
-renderSearch();
-
-if(id==='saved')
-renderSaved();
-
-window.scrollTo(0,0);
-
+function toast(text){
+  const t=document.getElementById('toast');
+  t.innerText=text;t.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer=setTimeout(()=>t.classList.remove('show'),2400);
 }
 
+function isPro(){return localStorage.getItem('jobhunt_pro')==='1'}
+
+function openAI(type){
+  const modal=document.getElementById('aiModal');
+  const title=document.getElementById('aiTitle');
+  const body=document.getElementById('aiBody');
+  const titles={resume:'📄 Анализ резюме',reply:'✍️ AI-отклик',match:'🎯 Стоит ли откликаться?',search:'🔎 Умный поиск'};
+  title.innerText=titles[type]||'🤖 JobHunt AI';
+  const job=currentJobIndex!==null?jobs[currentJobIndex]:null;
+
+  if(type==='resume'){
+    body.innerHTML=`<label class="ai-label">Вставь текст своего резюме</label>
+    <textarea id="aiText" class="ai-input" placeholder="Например: UX/UI дизайнер с 4 годами опыта..."></textarea>
+    <button class="btn" style="width:100%;margin-top:10px" onclick="analyzeResume()">✨ Анализировать</button>
+    <div id="aiResult"></div>`;
+  }else if(type==='reply'){
+    body.innerHTML=`<label class="ai-label">Вакансия</label>
+    <div class="box" style="margin:0">${job?`<b>${escapeHtml(job.title)}</b><div class="meta">${escapeHtml(job.company)} · ${escapeHtml(job.location)}</div>`:'Сначала открой интересную вакансию'}</div>
+    <label class="ai-label">О себе / дополнительные навыки</label>
+    <textarea id="aiText" class="ai-input" placeholder="Например: 5 лет опыта, Figma, Photoshop, английский B2..."></textarea>
+    <button class="btn" style="width:100%;margin-top:10px" onclick="generateReply()">✨ Создать отклик</button>
+    <div id="aiResult"></div>`;
+  }else if(type==='match'){
+    if(!job){
+      body.innerHTML='<div class="empty">Открой любую вакансию и нажми «Стоит ли откликаться?» ещё раз.</div>';
+    }else{
+      body.innerHTML=`<div class="box" style="margin-top:0">
+      <b>${escapeHtml(job.title)}</b>
+      <div class="meta">${escapeHtml(job.company)} · ${escapeHtml(job.location)}</div>
+      <div class="score">${job.match}%</div>
+      <small style="color:#9ca9c8">Предварительный Match</small>
+      </div>
+      <button class="btn" style="width:100%" onclick="analyzeJob()">✨ Разобрать вакансию</button>
+      <div id="aiResult"></div>`;
+    }
+  }else{
+    body.innerHTML=`<label class="ai-label">Какая работа тебе нужна?</label>
+    <textarea id="aiText" class="ai-input" placeholder="Например: удалённая работа дизайнером, от £30k..."></textarea>
+    <button class="btn" style="width:100%;margin-top:10px" onclick="smartSearch()">🔎 Подобрать</button>
+    <div id="aiResult"></div>`;
+  }
+
+  modal.classList.add('open');
+}
+
+function closeAI(){
+  document.getElementById('aiModal').classList.remove('open');
+}
+
+async function callAI(type,text='',job=null,extra=''){
+  const r=document.getElementById('aiResult');
+  if(!r)return null;
+
+  r.innerHTML='<div class="ai-result">🤖 AI анализирует запрос…<br><br>Это может занять несколько секунд.</div>';
+
+  try{
+    const response=await fetch(AI_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type,text,job,extra})
+    });
+
+    const data=await response.json().catch(()=>({}));
+
+    if(!response.ok||!data.ok){
+      throw new Error(data.details||data.error||('HTTP '+response.status));
+    }
+
+    return data.answer||'';
+  }catch(error){
+    console.error('AI error:',error);
+
+    r.innerHTML=`<div class="ai-result">
+    ❌ Не удалось получить ответ AI.<br><br>
+    <small>${escapeHtml(error.message||'Ошибка соединения')}</small><br><br>
+    Проверь, что Worker развёрнут и API-ключ OpenAI активен.
+    </div>`;
+
+    return null;
+  }
+}
+
+async function analyzeResume(){
+  const text=(document.getElementById('aiText')?.value||'').trim();
+  const r=document.getElementById('aiResult');
+
+  if(text.length<30){
+    r.innerHTML='<div class="ai-result">Добавь хотя бы несколько предложений о своём опыте, навыках и профессии.</div>';
+    return;
+  }
+
+  const answer=await callAI('resume',text);
+
+  if(answer){
+    r.innerHTML=`<div class="ai-result">${escapeHtml(answer)}</div>`;
+  }
+}
+
+async function generateReply(){
+  const job=currentJobIndex!==null?jobs[currentJobIndex]:null;
+  const extra=(document.getElementById('aiText')?.value||'').trim();
+  const r=document.getElementById('aiResult');
+
+  if(!job){
+    r.innerHTML='<div class="ai-result">Сначала открой вакансию.</div>';
+    return;
+  }
+
+  const answer=await callAI('reply','',job,extra);
+
+  if(answer){
+    r.innerHTML=`<div class="ai-result" id="generatedReply">${escapeHtml(answer)}</div>
+    <button class="btn secondary" style="width:100%;margin-top:8px" onclick="copyGeneratedReply()">Копировать отклик</button>`;
+  }
+}
+
+function copyGeneratedReply(){
+  const el=document.getElementById('generatedReply');
+  if(!el)return;
+
+  const text=el.innerText;
+
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text)
+      .then(()=>toast('Отклик скопирован ✅'))
+      .catch(()=>toast('Не удалось скопировать — выдели текст вручную.'));
+  }else{
+    toast('Выдели текст и скопируй вручную.');
+  }
+}
+
+async function analyzeJob(){
+  const job=currentJobIndex!==null?jobs[currentJobIndex]:null;
+  const r=document.getElementById('aiResult');
+
+  if(!job)return;
+
+  const answer=await callAI('match','',job);
+
+  if(answer){
+    r.innerHTML=`<div class="ai-result">
+    <b>Предварительный Match: ${job.match}%</b>
+    <div class="ai-meter"><i style="width:${job.match}%"></i></div>
+    <br>${escapeHtml(answer)}
+    </div>`;
+  }
+}
+
+async function smartSearch(){
+  const text=(document.getElementById('aiText')?.value||'').trim();
+  const r=document.getElementById('aiResult');
+
+  if(!text){
+    r.innerHTML='<div class="ai-result">Напиши, какую работу ищешь.</div>';
+    return;
+  }
+
+  const answer=await callAI('search',text);
+
+  if(!answer)return;
+
+  closeAI();
+
+  const query=answer.replace(/\s+/g,' ').trim().slice(0,180);
+
+  const input=document.getElementById('keywordSearch');
+  input.value=query;
+
+  show('search');
+
+  await loadJobs(query);
+
+  toast('AI подобрал поисковый запрос 🔎');
+}
+
+function openPro(){
+  const modal=document.getElementById('aiModal');
+
+  document.getElementById('aiTitle').innerHTML='⭐ JobHunt PRO';
+
+  document.getElementById('aiBody').innerHTML=`
+  <div class="hero" style="padding:18px">
+    <h1 style="font-size:24px">Больше шансов получить работу</h1>
+    <p>PRO открывает расширенные AI-инструменты и будущие умные уведомления.</p>
+
+    <div class="pro-list">
+      <span>✓ Анализ CV под вакансию</span>
+      <span>✓ Расширенный Match</span>
+      <span>✓ Персональные отклики</span>
+      <span>✓ Умные рекомендации</span>
+      <span>✓ Приоритетные AI-функции</span>
+    </div>
+
+    <button class="btn" style="width:100%;margin-top:14px" onclick="activateDemoPro()">Активировать PRO DEMO</button>
+
+    <small class="pro-note">Оплату через Telegram Stars подключим следующим этапом.</small>
+  </div>`;
+
+  modal.classList.add('open');
+}
+
+function activateDemoPro(){
+  localStorage.setItem('jobhunt_pro','1');
+  closeAI();
+  toast('PRO DEMO активирован ⭐');
+}
 
 function updateChallenge(){
+  let progress=Number(localStorage.getItem('jobhunt_challenge')||0);
 
-let progress=
-Number(
-localStorage.getItem(
-'jobhunt_challenge'
-)||0
-);
+  progress=Math.max(0,Math.min(3,progress));
 
-progress=Math.max(
-0,
-Math.min(3,progress)
-);
+  const fill=document.getElementById('challengeProgress');
+  const text=document.getElementById('challengeText');
 
-const fill=
-document.getElementById(
-'challengeProgress'
-);
-
-const text=
-document.getElementById(
-'challengeText'
-);
-
-if(fill)
-
-fill.style.width=
-(progress/3*100)+'%';
-
-if(text)
-
-text.innerText=
-progress+' из 3';
-
+  if(fill)fill.style.width=(progress/3*100)+'%';
+  if(text)text.innerText=progress+' из 3';
 }
-
 
 function doChallenge(){
+  let progress=Number(localStorage.getItem('jobhunt_challenge')||0);
 
-let progress=
-Number(
-localStorage.getItem(
-'jobhunt_challenge'
-)||0
-);
+  if(progress<3){
+    progress++;
+    localStorage.setItem('jobhunt_challenge',String(progress));
+    updateChallenge();
+  }
 
-if(progress<3){
-
-progress++;
-
-localStorage.setItem(
-'jobhunt_challenge',
-String(progress)
-);
-
-updateChallenge();
-
+  if(progress===3){
+    alert(`🏆 Challenge выполнен!\n\nВ следующей версии наградой будет PRO-бонус.`);
+  }else{
+    alert(`🔥 Прогресс: ${progress} из 3\n\nОткрой ещё одну подходящую вакансию, чтобы продолжить.`);
+  }
 }
-
-if(progress===3)
-
-alert(
-
-`🏆 Challenge выполнен!
-
-В следующей версии наградой будет PRO-бонус.`
-
-);
-
-else
-
-alert(
-
-`🔥 Прогресс: ${progress} из 3
-
-Открой ещё одну подходящую вакансию, чтобы продолжить.`
-
-);
-
-}
-
 
 function initTelegram(){
-
-try{
-
-if(
-window.Telegram&&
-window.Telegram.WebApp
-){
-
-window.Telegram.WebApp.ready();
-
-window.Telegram.WebApp.expand();
-
+  try{
+    if(window.Telegram&&window.Telegram.WebApp){
+      window.Telegram.WebApp.ready();
+      window.Telegram.WebApp.expand();
+    }
+  }catch(e){}
 }
-
-}catch(e){}
-
-}
-
 
 initTelegram();
-
 updateSavedCount();
-
 renderHome();
-
 renderSearch();
-
 renderSaved();
-
 updateChallenge();
-
 loadJobs('designer');
-
 </script>
-
 </body>
 </html>
