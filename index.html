@@ -163,6 +163,7 @@ let smartCriteria={country:null,remote:false,salaryMin:0,salaryCurrency:null,sum
 let currentJobIndex=null;
 let searchTimer=null;
 let requestNumber=0;
+let loadedServerQuery='';
 let saved=[];
 let proState={active:false,expiresAt:null,subscriptionCanceled:false};
 let tgWebApp=null;
@@ -248,10 +249,17 @@ box.innerHTML=jobs.slice().sort((a,b)=>b.match-a.match).slice(0,3).map(j=>card(j
 function getFilteredIndexes(){
 const input=document.getElementById('keywordSearch');
 const q=(input?.value||'').toLowerCase().trim();
+const serverQuery=String(loadedServerQuery||'').toLowerCase().trim();
 return jobs.map((job,index)=>({job,index})).filter(x=>{
 const j=x.job;
 const text=(j.title+' '+j.location+' '+j.type+' '+j.company+' '+j.description).toLowerCase();
-if(q&&!text.includes(q))return false;
+// Вакансии уже отфильтрованы API по последнему запросу. Не фильтруем
+// второй раз той же строкой — иначе фраза вроде "designer remote"
+// могла скрыть реальные вакансии, где слова находятся отдельно.
+if(q&&q!==serverQuery){
+const tokens=q.split(/\s+/).filter(Boolean).slice(0,8);
+if(tokens.length&&!tokens.every(token=>text.includes(token)))return false;
+}
 if(currentFilter==='remote'&&!j.remote)return false;
 if(currentFilter==='today'&&!j.today)return false;
 if(currentFilter==='high'){
@@ -421,11 +429,23 @@ raw=await fetchCountryJobs(query,selectedCountry,signal);
 }finally{
 clearTimeout(timeout);
 }
+
+// Если основной Worker временно не вернул вакансии, делаем бесплатный
+// резервный запрос напрямую в Job Opportunities API. Это не меняет
+// основной источник, а только не даёт экрану остаться пустым.
+if(!raw.length&&!signal.aborted){
+try{
+raw=await fetchJOA(query,selectedCountry,signal);
+}catch(fallbackError){
+console.warn('JOA fallback error:',fallbackError);
+}
+}
 }
 
 if(myRequest!==requestNumber)return;
 
 jobs=raw.map(normalizeJob).filter((j,i,a)=>a.findIndex(x=>x.id===j.id)===i);
+loadedServerQuery=query;
 renderHome();
 renderSearch();
 renderSaved();
