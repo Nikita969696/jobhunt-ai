@@ -4,264 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>JobHunt AI</title>
-
 <style>
-:root{
---bg:#071126;
---panel:#0c1730;
---panel2:#111f3d;
---text:#f7f8ff;
---muted:#9ca9c8;
---line:#22345c;
---green:#55e3bd;
-}
-
+:root{--bg:#071126;--panel:#0c1730;--panel2:#111f3d;--text:#f7f8ff;--muted:#9ca9c8;--line:#22345c;--green:#55e3bd}
 *{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% -10%,#273d83 0,#0a1430 38%,#050b1b 100%);color:var(--text);font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:20px 16px 100px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.brand{font-weight:800;font-size:20px}
+.brand span{background:linear-gradient(90deg,#58a6ff,#d34dff);-webkit-background-clip:text;color:transparent}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#54a5ff,#c64cff);display:grid;place-items:center;font-weight:800}
+.screen{display:none}
+.screen.active{display:block}
+.hero{padding:22px;border:1px solid #29447b;border-radius:24px;background:linear-gradient(145deg,#111f45,#0b1430);box-shadow:0 18px 50px #0006}
+.hero h1{font-size:27px;line-height:1.05;margin:0 0 8px}
+.hero p{color:var(--muted);margin:0 0 18px}
+.btn{border:0;color:white;font-weight:800;border-radius:14px;padding:13px 17px;background:linear-gradient(90deg,#3e9cff,#b94dff);cursor:pointer}
+.btn.secondary{background:#142446;border:1px solid #2c4270}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.stat{background:#0c1730;border:1px solid var(--line);border-radius:15px;padding:12px}
+.stat b{display:block;font-size:20px}
+.stat small{color:var(--muted)}
+.section{display:flex;justify-content:space-between;align-items:center;margin:22px 0 10px}
+.section h2{font-size:17px;margin:0}
+.searchbox{width:100%;padding:14px 16px;margin-bottom:12px;border-radius:14px;border:1px solid #2b416c;background:#0c1730;color:white;font-size:15px;outline:none}
+.searchbox:focus{border-color:#5b8cff}
+.filters{display:flex;gap:7px;overflow:auto;padding-bottom:4px}
+.chip{white-space:nowrap;border:1px solid #2b416c;background:#0c1730;color:#b7c4df;border-radius:999px;padding:8px 11px;cursor:pointer}
+.chip.active{background:#253b75;color:#fff}
+.card{background:linear-gradient(160deg,#101e3c,#0b152b);border:1px solid #24385f;border-radius:20px;padding:15px;margin:10px 0;cursor:pointer}
+.row{display:flex;gap:12px;align-items:flex-start}
+.thumb{width:58px;height:58px;border-radius:15px;display:grid;place-items:center;font-size:27px;background:linear-gradient(135deg,#213a72,#632c79)}
+.grow{flex:1}
+.tag{display:inline-block;font-size:12px;padding:4px 8px;border-radius:999px;background:#0e4b45;color:#56e3bf;margin-bottom:5px}
+.title{font-weight:800;font-size:16px}
+.meta{color:var(--muted);font-size:13px;margin-top:4px}
+.money{font-weight:900;font-size:18px;margin-top:10px}
+.match{float:right;color:#55e3bd;font-weight:800}
+.box{background:#0d1932;border:1px solid #2a3d68;border-radius:18px;padding:15px;margin:12px 0}
+.score{font-size:42px;font-weight:900;color:#56e3bd}
+.back{margin-bottom:15px;color:#a9b8d8;cursor:pointer}
+.detail h1{font-size:28px;line-height:1.1}
 
-body{
-margin:0;
-background:radial-gradient(circle at 50% -10%,#273d83 0,#0a1430 38%,#050b1b 100%);
-color:var(--text);
-font:15px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
-
-.app{
-max-width:430px;
-margin:auto;
-min-height:100vh;
-padding:20px 16px 90px
-}
-
-.top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px
-}
-
-.brand{
-font-weight:800;
-font-size:20px
-}
-
-.brand span{
-background:linear-gradient(90deg,#58a6ff,#d34dff);
--webkit-background-clip:text;
-color:transparent
-}
-
-.avatar{
-width:36px;
-height:36px;
-border-radius:50%;
-background:linear-gradient(135deg,#54a5ff,#c64cff);
-display:grid;
-place-items:center;
-font-weight:800
-}
-
-.screen{
-display:none
-}
-
-.screen.active{
-display:block
-}
-
-.hero{
-padding:22px;
-border:1px solid #29447b;
-border-radius:24px;
-background:linear-gradient(145deg,#111f45,#0b1430);
-box-shadow:0 18px 50px #0006
-}
-
-.hero h1{
-font-size:27px;
-line-height:1.05;
-margin:0 0 8px
-}
-
-.hero p{
-color:var(--muted);
-margin:0 0 18px
-}
-
-.btn{
-border:0;
-color:white;
-font-weight:800;
-border-radius:14px;
-padding:13px 17px;
-background:linear-gradient(90deg,#3e9cff,#b94dff);
-cursor:pointer
-}
-
-.btn.secondary{
-background:#142446;
-border:1px solid #2c4270
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px;
-margin:16px 0
-}
-
-.stat{
-background:#0c1730;
-border:1px solid var(--line);
-border-radius:15px;
-padding:12px
-}
-
-.stat b{
-display:block;
-font-size:20px
-}
-
-.stat small{
-color:var(--muted)
-}
-
-.section{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin:22px 0 10px
-}
-
-.section h2{
-font-size:17px;
-margin:0
-}
-
-.searchbox{
-width:100%;
-padding:14px 16px;
-margin-bottom:12px;
-border-radius:14px;
-border:1px solid #2b416c;
-background:#0c1730;
-color:white;
-font-size:15px;
-outline:none
-}
-
-.searchbox:focus{
-border-color:#5b8cff
-}
-
-.filters{
-display:flex;
-gap:7px;
-overflow:auto;
-padding-bottom:4px
-}
-
-.chip{
-white-space:nowrap;
-border:1px solid #2b416c;
-background:#0c1730;
-color:#b7c4df;
-border-radius:999px;
-padding:8px 11px;
-cursor:pointer
-}
-
-.chip.active{
-background:#253b75;
-color:#fff
-}
-
-.card{
-background:linear-gradient(160deg,#101e3c,#0b152b);
-border:1px solid #24385f;
-border-radius:20px;
-padding:15px;
-margin:10px 0;
-cursor:pointer
-}
-
-.row{
-display:flex;
-gap:12px;
-align-items:flex-start
-}
-
-.thumb{
-width:58px;
-height:58px;
-border-radius:15px;
-display:grid;
-place-items:center;
-font-size:27px;
-background:linear-gradient(135deg,#213a72,#632c79)
-}
-
-.grow{
-flex:1
-}
-
-.tag{
-display:inline-block;
-font-size:12px;
-padding:4px 8px;
-border-radius:999px;
-background:#0e4b45;
-color:#56e3bf;
-margin-bottom:5px
-}
-
-.title{
-font-weight:800;
-font-size:16px
-}
-
-.meta{
-color:var(--muted);
-font-size:13px;
-margin-top:4px
-}
-
-.money{
-font-weight:900;
-font-size:18px;
-margin-top:10px
-}
-
-.match{
-float:right;
-color:#55e3bd;
-font-weight:800
-}
-
-.box{
-background:#0d1932;
-border:1px solid #2a3d68;
-border-radius:18px;
-padding:15px;
-margin:12px 0
-}
-
-.score{
-font-size:42px;
-font-weight:900;
-color:#56e3bd
-}
-
-.back{
-margin-bottom:15px;
-color:#a9b8d8;
-cursor:pointer
-}
-
-.detail h1{
-font-size:28px;
-line-height:1.1
-}
-
+/* УВЕЛИЧЕННАЯ НИЖНЯЯ НАВИГАЦИЯ */
 .bottom{
 position:fixed;
 bottom:0;
@@ -276,46 +60,60 @@ border-top:1px solid #1d2e50;
 padding:10px 8px calc(10px + env(safe-area-inset-bottom));
 z-index:5
 }
-
 .nav{
 background:none;
 border:0;
 color:#8292b5;
-font-size:11px;
-cursor:pointer
+font-size:13px;
+line-height:1.15;
+font-weight:800;
+cursor:pointer;
+min-width:76px;
+padding:3px 5px
 }
+.nav-icon{
+display:block;
+font-size:30px;
+line-height:30px;
+margin-bottom:5px;
+font-weight:500
+}
+.nav.active{color:#fff}
 
-.nav.active{
-color:#fff
+.premium{border-color:#7547a9;background:linear-gradient(145deg,#25134d,#0e1832)}
+.empty{text-align:center;color:var(--muted);padding:30px 10px}
+.loading{text-align:center;color:var(--muted);padding:30px 10px}
+.source{color:#8292b5;font-size:11px;margin-top:12px;text-align:center}
+.source a{color:#9db7ff}
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.ai-card{
+border:1px solid #283e69;
+background:linear-gradient(145deg,#101e3d,#0b152c);
+border-radius:18px;
+padding:14px;
+text-align:left;
+color:#fff;
+cursor:pointer;
+min-height:126px
 }
-
-.premium{
-border-color:#7547a9;
-background:linear-gradient(145deg,#25134d,#0e1832)
-}
-
-.empty{
-text-align:center;
-color:var(--muted);
-padding:30px 10px
-}
-
-.loading{
-text-align:center;
-color:var(--muted);
-padding:30px 10px
-}
-
-.source{
-color:#8292b5;
-font-size:11px;
-margin-top:12px;
-text-align:center
-}
-
-.source a{
-color:#9db7ff
-}
+.ai-card:active,.challenge:active,.pro-card:active{transform:scale(.99)}
+.ai-icon{display:block;font-size:25px;margin-bottom:8px}
+.ai-card b{display:block;font-size:14px}
+.ai-card small{display:block;color:#9ca9c8;margin-top:5px;line-height:1.3}
+.pro-card{padding:16px}
+.pro-title{display:flex;gap:9px;align-items:center;font-size:16px}
+.pro-title span{font-size:22px}
+.pro-list{display:grid;gap:6px;margin-top:12px;color:#d8cbed;font-size:13px}
+.pro-note{display:block;text-align:center;color:#9d8ab9;margin-top:8px}
+.challenge{background:linear-gradient(145deg,#122448,#0b1730);border:1px solid #2c4779;border-radius:20px;padding:16px}
+.challenge-top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.challenge-top b{display:block;font-size:15px}
+.challenge-top small{display:block;color:#9ca9c8;margin-top:4px}
+.challenge-badge{font-size:30px}
+.progress{height:9px;border-radius:999px;background:#1b2b4b;overflow:hidden;margin:14px 0 10px}
+.progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#55e3bd,#5b8cff)}
+.challenge-bottom{display:flex;justify-content:space-between;align-items:center;color:#aebbd5;font-size:13px}
+.challenge-bottom .chip{padding:7px 11px;color:#fff;background:#1d3767}
 </style>
 </head>
 
@@ -328,341 +126,257 @@ color:#9db7ff
 <div class="avatar">A</div>
 </div>
 
-
 <section id="home" class="screen active">
 
 <div class="hero">
-
 <h1>Привет, Алекс 👋</h1>
+<p>Мы нашли новые возможности заработать, которые подходят именно тебе.</p>
+<button class="btn" onclick="show('search')">Найти возможности</button>
+</div>
 
-<p>
-Мы нашли новые возможности заработать,
-которые подходят именно тебе.
-</p>
+<div class="stats">
+<div class="stat"><b id="jobsCount">—</b><small>вакансий</small></div>
+<div class="stat"><b id="savedCount">0</b><small>сохранено</small></div>
+<div class="stat"><b id="bestMatch">—</b><small>лучший match</small></div>
+</div>
 
-<button
-class="btn"
-onclick="show('search')">
+<div class="section">
+<h2>🤖 AI для тебя</h2>
+<span style="color:#7f91b6">JobHunt AI</span>
+</div>
 
-Найти возможности
+<div class="ai-grid">
 
+<button class="ai-card" onclick="aiAction('resume')">
+<span class="ai-icon">📄</span>
+<b>Анализ резюме</b>
+<small>Найди слабые места и улучши CV</small>
+</button>
+
+<button class="ai-card" onclick="aiAction('reply')">
+<span class="ai-icon">✍️</span>
+<b>Написать отклик</b>
+<small>Персональный текст под вакансию</small>
+</button>
+
+<button class="ai-card" onclick="aiAction('match')">
+<span class="ai-icon">🎯</span>
+<b>Стоит ли откликаться?</b>
+<small>AI разберёт вакансию и твои шансы</small>
+</button>
+
+<button class="ai-card" onclick="aiAction('search')">
+<span class="ai-icon">🔎</span>
+<b>Умный поиск</b>
+<small>Подбери работу по своим навыкам</small>
 </button>
 
 </div>
 
-
-<div class="stats">
-
-<div class="stat">
-<b id="jobsCount">—</b>
-<small>вакансий</small>
+<div class="section">
+<h2>⭐ JobHunt PRO</h2>
+<span style="color:#bda5e8">Премиум</span>
 </div>
 
-<div class="stat">
-<b id="savedCount">0</b>
-<small>сохранено</small>
+<div class="card premium pro-card">
+
+<div class="pro-title">
+<span>⚡</span>
+<b>Работай с AI без ограничений</b>
 </div>
 
-<div class="stat">
-<b id="bestMatch">—</b>
-<small>лучший match</small>
+<div class="pro-list">
+<span>✓ Расширенный AI Match</span>
+<span>✓ Анализ резюме</span>
+<span>✓ Персональные отклики</span>
+<span>✓ Умные уведомления</span>
 </div>
 
-</div>
+<button class="btn" style="width:100%;margin-top:12px" onclick="openPro()">
+Попробовать PRO
+</button>
 
+<small class="pro-note">Скоро оплата через Telegram Stars</small>
+
+</div>
 
 <div class="section">
+<h2>🏆 JobHunt Challenge</h2>
+<span style="color:#7f91b6">Сегодня</span>
+</div>
 
-<h2>🔥 Лучшие для тебя</h2>
+<div class="challenge">
 
-<span style="color:#7f91b6">
-Adzuna
-</span>
+<div class="challenge-top">
+<div>
+<b>Найди 3 подходящие вакансии</b>
+<small>За выполнение получишь бонус PRO</small>
+</div>
+<div class="challenge-badge">🔥</div>
+</div>
+
+<div class="progress">
+<div id="challengeProgress" class="progress-fill"></div>
+</div>
+
+<div class="challenge-bottom">
+<span id="challengeText">0 из 3</span>
+<button class="chip" onclick="doChallenge()">Выполнить</button>
+</div>
 
 </div>
 
+<div class="section">
+<h2>🔥 Лучшие для тебя</h2>
+<span style="color:#7f91b6">Adzuna</span>
+</div>
 
 <div id="cards">
-
-<div class="loading">
-Загружаем реальные вакансии…
+<div class="loading">Загружаем реальные вакансии…</div>
 </div>
-
-</div>
-
 
 <div class="source">
-
 Jobs by Adzuna ·
-
-<a
-href="https://www.adzuna.com/"
-target="_blank"
-rel="noopener">
-
-Adzuna
-
-</a>
-
+<a href="https://www.adzuna.com/" target="_blank" rel="noopener">Adzuna</a>
 </div>
 
 </section>
 
-
-
 <section id="search" class="screen">
 
 <div class="section">
-
-<h2>
-🔎 Поиск возможностей
-</h2>
-
+<h2>🔎 Поиск возможностей</h2>
 </div>
-
 
 <input
 id="keywordSearch"
 class="searchbox"
 type="text"
-placeholder="Например: дизайнер, разработчик, фотограф…"
+placeholder="Например: designer, developer, photographer…"
 oninput="filterJobs()"
 >
 
-
 <div class="filters">
 
-<button
-class="chip active"
-onclick="setFilter('all',this)">
+<button class="chip active" onclick="setFilter('all',this)">Все</button>
 
-Все
-
-</button>
-
-<button
-class="chip"
-onclick="setFilter('remote',this)">
-
+<button class="chip" onclick="setFilter('remote',this)">
 Удалённо
-
 </button>
 
-<button
-class="chip"
-onclick="setFilter('today',this)">
-
+<button class="chip" onclick="setFilter('today',this)">
 Сегодня
-
 </button>
 
-<button
-class="chip"
-onclick="setFilter('high',this)">
-
+<button class="chip" onclick="setFilter('high',this)">
 £500+
-
 </button>
 
 </div>
-
 
 <div id="searchCards">
-
-<div class="loading">
-Введите профессию или запрос…
+<div class="loading">Введите профессию или запрос…</div>
 </div>
-
-</div>
-
 
 <div class="source">
-
 Jobs by Adzuna ·
-
-<a
-href="https://www.adzuna.com/"
-target="_blank"
-rel="noopener">
-
-Adzuna
-
-</a>
-
+<a href="https://www.adzuna.com/" target="_blank" rel="noopener">Adzuna</a>
 </div>
 
 </section>
-
-
 
 <section id="detail" class="screen">
-
-<div
-class="back"
-onclick="show('search')">
-
-← Назад
-
-</div>
-
+<div class="back" onclick="show('search')">← Назад</div>
 <div id="detailContent"></div>
-
 </section>
-
-
 
 <section id="apply" class="screen">
 
-<div
-class="back"
-onclick="show('detail')">
-
-← Назад
-
-</div>
-
+<div class="back" onclick="show('detail')">← Назад</div>
 
 <div class="box">
 
-<div class="tag">
-AI ОТКЛИК
-</div>
+<div class="tag">AI ОТКЛИК</div>
 
-<h2>
-Готовое сообщение клиенту
-</h2>
+<h2>Готовое сообщение клиенту</h2>
 
 <p id="msg">
-
-Hi! I’m a professional specialist and I’m interested
-in your project. I have relevant experience and would
-love to discuss the details. I can also share examples
-of my work.
-
+Hi! I’m a professional specialist and I’m interested in your project.
+I have relevant experience and would love to discuss the details.
+I can also share examples of my work.
 </p>
 
-<button
-class="btn secondary"
-onclick="copyMessage()">
-
+<button class="btn secondary" onclick="copyMessage()">
 Копировать
-
 </button>
 
 </div>
-
 
 <button
 class="btn"
 style="width:100%"
-onclick="alert('Отклик готов! В следующей версии подключим реальные площадки.')">
-
+onclick="alert('Отклик готов! В следующей версии подключим реальные площадки.')"
+>
 Откликнуться
-
 </button>
 
 </section>
 
-
-
 <section id="saved" class="screen">
 
 <div class="section">
-
-<h2>
-♡ Сохранённое
-</h2>
-
+<h2>♡ Сохранённое</h2>
 </div>
 
 <div id="savedCards"></div>
 
 </section>
 
-
-
 <section id="profile" class="screen">
 
 <div class="hero">
 
-<h1>
-Алексей
-</h1>
+<h1>Алексей</h1>
 
-<p>
-Фотограф · Дизайнер
-</p>
-
+<p>Фотограф · Дизайнер</p>
 
 <div class="stats">
 
 <div class="stat">
-
-<b id="profileJobs">
-—
-</b>
-
-<small>
-возможности
-</small>
-
+<b id="profileJobs">—</b>
+<small>возможности</small>
 </div>
 
 <div class="stat">
-
-<b>
-4.8
-</b>
-
-<small>
-рейтинг
-</small>
-
+<b>4.8</b>
+<small>рейтинг</small>
 </div>
 
 <div class="stat">
-
-<b>
-156
-</b>
-
-<small>
-просмотров
-</small>
-
+<b>156</b>
+<small>просмотров</small>
 </div>
 
 </div>
 
 </div>
-
 
 <div class="card premium">
 
-<b>
-⚡ JobHunt AI PRO
-</b>
+<b>⚡ JobHunt AI PRO</b>
 
 <p style="color:#c2b7d8">
-
-Больше возможностей,
-больше заработка.
-
+Больше возможностей, больше заработка.
 </p>
 
-<div class="money">
-
-€9.99 / месяц
-
-</div>
+<div class="money">€9.99 / месяц</div>
 
 <button
 class="btn"
 style="margin-top:10px"
-onclick="alert('PRO подключим после проверки первых пользователей.')">
-
+onclick="alert('PRO подключим после проверки первых пользователей.')"
+>
 Попробовать PRO
-
 </button>
 
 </div>
@@ -671,806 +385,319 @@ onclick="alert('PRO подключим после проверки первых 
 
 </div>
 
-
-
 <div class="bottom">
 
-<button
-class="nav active"
-onclick="show('home',this)">
-
-⌂<br>
+<button class="nav active" onclick="show('home',this)">
+<span class="nav-icon">⌂</span>
 Главная
-
 </button>
 
-
-<button
-class="nav"
-onclick="show('search',this)">
-
-⌕<br>
+<button class="nav" onclick="show('search',this)">
+<span class="nav-icon">⌕</span>
 Поиск
-
 </button>
 
-
-<button
-class="nav"
-onclick="show('saved',this)">
-
-♡<br>
+<button class="nav" onclick="show('saved',this)">
+<span class="nav-icon">♡</span>
 Сохранённое
-
 </button>
 
-
-<button
-class="nav"
-onclick="show('profile',this)">
-
-◉<br>
+<button class="nav" onclick="show('profile',this)">
+<span class="nav-icon">◉</span>
 Профиль
-
 </button>
 
 </div>
 
-
-
 <script>
 
-const API_URL =
-'https://rapid-wood-80b6.fetis969696.workers.dev/jobs';
+const API_URL='https://rapid-wood-80b6.fetis969696.workers.dev/jobs';
+const COUNTRY='gb';
 
-const COUNTRY = 'gb';
+let jobs=[];
+let currentFilter='all';
+let currentJobIndex=null;
+let searchTimer=null;
+let requestNumber=0;
+let saved=[];
 
-let jobs = [];
-
-let currentFilter = 'all';
-
-let currentJobIndex = null;
-
-let searchTimer = null;
-
-let requestNumber = 0;
-
-let saved = [];
-
-
-try {
-
-saved = JSON.parse(
-localStorage.getItem('jobhunt_saved') || '[]'
-);
-
-if(!Array.isArray(saved)){
-saved = [];
+try{
+saved=JSON.parse(localStorage.getItem('jobhunt_saved')||'[]');
+if(!Array.isArray(saved))saved=[];
+}catch(e){
+saved=[];
 }
-
-} catch(e) {
-
-saved = [];
-
-}
-
-
-
-function expandSearch(query){
-
-const q =
-String(query || '')
-.toLowerCase()
-.trim();
-
-
-const map = {
-
-'дизайнер':'designer',
-'дизайн':'designer',
-'дизайнер ui':'ui designer',
-'дизайнер ux':'ux designer',
-'ux дизайнер':'ux designer',
-'ui дизайнер':'ui designer',
-'графический дизайнер':'graphic designer',
-'графдизайнер':'graphic designer',
-
-'разработчик':'developer',
-'разработчики':'developer',
-'программист':'developer',
-'программистка':'developer',
-'кодер':'developer',
-'кодинг':'developer',
-
-'фотограф':'photographer',
-'фотография':'photographer',
-
-'копирайтер':'copywriter',
-'копирайтинг':'copywriter',
-'автор':'writer',
-'писатель':'writer',
-'контент':'content writer',
-
-'видеомонтаж':'video editor',
-'видеомонтажер':'video editor',
-'видеомонтажёр':'video editor',
-'видеограф':'video editor',
-'монтажер':'video editor',
-'монтажёр':'video editor',
-
-'маркетолог':'marketing',
-'маркетинг':'marketing',
-'смм':'social media',
-'smm':'social media',
-'соцсети':'social media',
-'социальные сети':'social media',
-
-'аналитик':'data analyst',
-'аналитика':'data analyst',
-'дата аналитик':'data analyst',
-'дата-аналитик':'data analyst',
-
-'менеджер':'manager',
-'менеджер проектов':'project manager',
-'продажи':'sales',
-'продавец':'sales',
-'бухгалтер':'accountant',
-'финансы':'finance',
-'финансист':'finance',
-
-'переводчик':'translator',
-'перевод':'translator',
-
-'дизайнер интерьера':'interior designer',
-'архитектор':'architect',
-
-'юрист':'lawyer',
-'адвокат':'lawyer',
-
-'hr':'hr',
-'рекрутер':'recruiter',
-'рекрутинг':'recruiter',
-
-'поддержка':'customer support',
-'оператор':'customer service',
-
-'учитель':'teacher',
-'преподаватель':'teacher',
-
-'инженер':'engineer',
-
-'тестировщик':'tester',
-'qa':'qa tester',
-
-'таргетолог':'digital marketing',
-'seo':'seo',
-'seo специалист':'seo',
-
-'копирайтинг':'copywriter',
-'контент менеджер':'content manager',
-'контент-менеджер':'content manager'
-
-};
-
-
-return map[q] || q;
-
-}
-
-
 
 function escapeHtml(value){
-
-return String(value ?? '').replace(
-/[&<>'"]/g,
-
-function(c){
-
-return {
-
+return String(value??'').replace(/[&<>'"]/g,c=>({
 '&':'&amp;',
 '<':'&lt;',
 '>':'&gt;',
 "'":'&#39;',
 '"':'&quot;'
-
-}[c];
-
+}[c]));
 }
-
-);
-
-}
-
-
 
 function iconFor(job){
 
-const text =
-(job.title + ' ' + job.category)
-.toLowerCase();
+const text=(job.title+' '+job.category).toLowerCase();
 
-
-if(
-/design|ux|ui|graphic|creative/.test(text)
-)
-return '🎨';
-
-
-if(
-/photo|photograph/.test(text)
-)
-return '📸';
-
-
-if(
-/video|film|editor/.test(text)
-)
-return '🎬';
-
-
-if(
-/developer|software|engineer|program/.test(text)
-)
-return '💻';
-
-
-if(
-/marketing|social|media/.test(text)
-)
-return '📱';
-
-
-if(
-/copy|writer|content/.test(text)
-)
-return '✍️';
-
-
-if(
-/data|analyst|finance/.test(text)
-)
-return '📊';
-
+if(/design|ux|ui|graphic|creative/.test(text))return '🎨';
+if(/photo|photograph/.test(text))return '📸';
+if(/video|film|editor/.test(text))return '🎬';
+if(/developer|software|engineer|program/.test(text))return '💻';
+if(/marketing|social|media/.test(text))return '📱';
+if(/copy|writer|content/.test(text))return '✍️';
+if(/data|analyst|finance/.test(text))return '📊';
 
 return '💼';
-
 }
-
-
 
 function salaryText(job){
 
-const min =
-Number(job.salary_min || 0);
+const min=Number(job.salary_min||0);
+const max=Number(job.salary_max||0);
 
-const max =
-Number(job.salary_max || 0);
+if(min&&max)
+return '£'+Math.round(min).toLocaleString('en-GB')+'–£'+Math.round(max).toLocaleString('en-GB');
 
+if(min)
+return 'от £'+Math.round(min).toLocaleString('en-GB');
 
-if(min && max){
-
-return '£' +
-Math.round(min).toLocaleString('en-GB') +
-'–£' +
-Math.round(max).toLocaleString('en-GB');
-
-}
-
-
-if(min){
-
-return 'от £' +
-Math.round(min).toLocaleString('en-GB');
-
-}
-
-
-if(max){
-
-return 'до £' +
-Math.round(max).toLocaleString('en-GB');
-
-}
-
+if(max)
+return 'до £'+Math.round(max).toLocaleString('en-GB');
 
 return 'Зарплата не указана';
-
 }
-
-
 
 function isToday(dateString){
 
-if(!dateString){
-return false;
+if(!dateString)return false;
+
+const d=new Date(dateString);
+
+if(Number.isNaN(d.getTime()))return false;
+
+const now=new Date();
+
+return d.toDateString()===now.toDateString();
 }
-
-
-const d =
-new Date(dateString);
-
-
-if(Number.isNaN(d.getTime())){
-return false;
-}
-
-
-const now =
-new Date();
-
-
-return (
-d.toDateString() ===
-now.toDateString()
-);
-
-}
-
-
 
 function normalizeJob(j){
 
-const title =
-j.title || 'Вакансия';
+const title=j.title||'Вакансия';
+const location=j.location?.display_name||'United Kingdom';
+const description=j.description||'';
+const category=j.category?.label||j.category?.tag||'';
 
-
-const location =
-j.location?.display_name ||
-'United Kingdom';
-
-
-const description =
-j.description || '';
-
-
-const category =
-j.category?.label ||
-j.category?.tag ||
-'';
-
-
-const remote =
-/remote|work from home|home based|anywhere/i.test(
-title + ' ' +
-location + ' ' +
-description
+const remote=/remote|work from home|home based|anywhere/i.test(
+title+' '+location+' '+description
 );
 
+const hash=Array.from(
+String(j.id||title)
+).reduce((a,c)=>a+c.charCodeAt(0),0);
 
-const hash =
-Array.from(
-String(j.id || title)
-).reduce(
-(a,c) => a + c.charCodeAt(0),
-0
-);
-
-
-const match =
-84 + (hash % 13);
-
+const match=84+(hash%13);
 
 return {
 
-id:
-String(
-j.id ||
-j.redirect_url ||
-title + location
-),
+id:String(j.id||j.redirect_url||title+location),
 
-icon:
-iconFor({
+icon:iconFor({
 title,
 category
 }),
 
 title,
 
-money:
-salaryText(j),
+money:salaryText(j),
 
 location,
 
 match,
 
-type:
-(category || title).toLowerCase(),
+type:(category||title).toLowerCase(),
 
 remote,
 
-today:
-isToday(j.created),
+today:isToday(j.created),
 
 description,
 
-company:
-j.company?.display_name ||
-'Компания не указана',
+company:j.company?.display_name||'Компания не указана',
 
-created:
-j.created || '',
+created:j.created||'',
 
-url:
-j.redirect_url || ''
+url:j.redirect_url||''
 
 };
 
 }
 
-
-
 function card(job,index){
 
-const isSaved =
-saved.includes(job.id);
-
+const isSaved=saved.includes(job.id);
 
 return `
-
-<div
-class="card"
-onclick="openJob(${index})">
-
+<div class="card" onclick="openJob(${index})">
 
 <div class="row">
 
-
-<div class="thumb">
-
-${job.icon}
-
-</div>
-
+<div class="thumb">${job.icon}</div>
 
 <div class="grow">
 
-
 <span class="tag">
-
 ${job.match}% match
-
 </span>
-
 
 <div class="title">
-
 ${escapeHtml(job.title)}
-
 </div>
-
 
 <div class="meta">
-
 ${escapeHtml(job.location)}
-
-</div>
-
-
 </div>
 
 </div>
 
+</div>
 
 <div class="money">
-
 ${escapeHtml(job.money)}
 
-
 <span class="match">
-
-${isSaved ? '♥' : '♡'}
-${job.match}%
-
+${isSaved?'♥':'♡'} ${job.match}%
 </span>
 
 </div>
 
-
 </div>
-
 `;
 
 }
-
-
 
 function renderHome(){
 
-const box =
-document.getElementById('cards');
+const box=document.getElementById('cards');
 
+document.getElementById('jobsCount').innerText=jobs.length||'0';
 
-document.getElementById(
-'jobsCount'
-).innerText =
-jobs.length || '0';
+document.getElementById('profileJobs').innerText=jobs.length||'0';
 
-
-document.getElementById(
-'profileJobs'
-).innerText =
-jobs.length || '0';
-
-
-document.getElementById(
-'bestMatch'
-).innerText =
+document.getElementById('bestMatch').innerText=
 jobs.length
-?
-Math.max(
-...jobs.map(j => j.match)
-) + '%'
-:
-'—';
-
+?Math.max(...jobs.map(j=>j.match))+'%'
+:'—';
 
 if(!jobs.length){
 
-box.innerHTML = `
-
-<div class="empty">
-
-Вакансии пока не загружены.
-
-</div>
-
-`;
+box.innerHTML=
+'<div class="empty">Вакансии пока не загружены.</div>';
 
 return;
-
 }
 
-
-box.innerHTML =
-
+box.innerHTML=
 jobs
 .slice()
-.sort(
-(a,b) => b.match - a.match
-)
+.sort((a,b)=>b.match-a.match)
 .slice(0,3)
-.map(
-j => card(
-j,
-jobs.indexOf(j)
-)
-)
+.map(j=>card(j,jobs.indexOf(j)))
 .join('');
 
 }
 
-
-
 function getFilteredIndexes(){
 
-const input =
-document.getElementById(
-'keywordSearch'
-);
+const input=document.getElementById('keywordSearch');
 
-
-const originalQuery =
-(input?.value || '')
-.toLowerCase()
-.trim();
-
-
-const q =
-expandSearch(originalQuery);
-
+const q=(input?.value||'').toLowerCase().trim();
 
 return jobs
+.map((job,index)=>({job,index}))
+.filter(x=>{
 
-.map(
-(job,index) => ({
-job,
-index
-})
-)
+const j=x.job;
 
-.filter(x => {
-
-const j =
-x.job;
-
-
-const text =
-(
-j.title + ' ' +
-j.location + ' ' +
-j.type + ' ' +
-j.company + ' ' +
+const text=(
+j.title+' '+
+j.location+' '+
+j.type+' '+
+j.company+' '+
 j.description
-)
-.toLowerCase();
+).toLowerCase();
 
+if(q&&!text.includes(q))return false;
 
-if(
-q &&
-!text.includes(q)
-){
+if(currentFilter==='remote'&&!j.remote)return false;
 
-return false;
+if(currentFilter==='today'&&!j.today)return false;
 
-}
+if(currentFilter==='high'){
 
-
-if(
-currentFilter === 'remote' &&
-!j.remote
-){
-
-return false;
-
-}
-
-
-if(
-currentFilter === 'today' &&
-!j.today
-){
-
-return false;
-
-}
-
-
-if(
-currentFilter === 'high'
-){
-
-const n =
-Number(
-(
-j.money.match(
-/\d[\d,]*/
-) || ['0']
-)[0]
+const n=Number(
+(j.money.match(/\d[\d,]*/)||['0'])[0]
 .replace(/,/g,'')
 );
 
-
-if(n < 500){
-
-return false;
+if(n<500)return false;
 
 }
-
-}
-
 
 return true;
 
 })
-
-.map(
-x => x.index
-);
+.map(x=>x.index);
 
 }
-
-
 
 function renderSearch(){
 
-const box =
-document.getElementById(
-'searchCards'
-);
+const box=document.getElementById('searchCards');
 
-
-const indexes =
-getFilteredIndexes();
-
+const indexes=getFilteredIndexes();
 
 if(!jobs.length){
 
-box.innerHTML = `
-
-<div class="loading">
-
-Загружаем вакансии…
-
-</div>
-
-`;
+box.innerHTML=
+'<div class="loading">Загружаем вакансии…</div>';
 
 return;
+}
+
+box.innerHTML=indexes.length
+?indexes.map(i=>card(jobs[i],i)).join('')
+:'<div class="empty">😕 Ничего не найдено.<br><br>Попробуй другое ключевое слово.</div>';
 
 }
 
+async function loadJobs(query='designer'){
 
-box.innerHTML =
+const myRequest=++requestNumber;
 
-indexes.length
+const cards=document.getElementById('cards');
 
-?
-
-indexes
-.map(
-i => card(jobs[i],i)
-)
-.join('')
-
-:
-
-`
-
-<div class="empty">
-
-😕 Ничего не найдено.
-
-<br><br>
-
-Попробуй другое ключевое слово.
-
-</div>
-
-`;
-
-}
-
-
-
-async function loadJobs(
-query = 'designer'
-){
-
-const myRequest =
-++requestNumber;
-
-
-const cards =
-document.getElementById(
-'cards'
-);
-
-
-if(!query.trim()){
-
-query = 'designer';
-
-}
-
-
-const englishQuery =
-expandSearch(query);
-
+if(!query.trim())query='designer';
 
 if(!jobs.length){
 
-cards.innerHTML = `
-
-<div class="loading">
-
-Загружаем реальные вакансии…
-
-</div>
-
-`;
+cards.innerHTML=
+'<div class="loading">Загружаем реальные вакансии…</div>';
 
 }
 
+try{
 
-try {
+const url=
+API_URL+
+'?country='+
+encodeURIComponent(COUNTRY)+
+'&what='+
+encodeURIComponent(query.trim());
 
-
-const url =
-
-API_URL +
-'?country=' +
-encodeURIComponent(COUNTRY) +
-'&what=' +
-encodeURIComponent(
-englishQuery
-);
-
-
-const response =
-
-await fetch(
+const response=await fetch(
 url,
 {
 method:'GET',
@@ -1478,430 +705,215 @@ cache:'no-store'
 }
 );
 
+if(!response.ok)
+throw new Error('HTTP '+response.status);
 
-if(!response.ok){
+const data=await response.json();
 
-throw new Error(
-'HTTP ' +
-response.status
-);
+if(myRequest!==requestNumber)return;
 
-}
+if(!data.ok)
+throw new Error(data.error||'API error');
 
-
-const data =
-await response.json();
-
-
-if(
-myRequest !== requestNumber
-){
-
-return;
-
-}
-
-
-if(!data.ok){
-
-throw new Error(
-data.error ||
-'API error'
-);
-
-}
-
-
-jobs =
-
-(data.jobs || [])
+jobs=(data.jobs||[])
 .map(normalizeJob)
 .filter(
-(j,i,a) =>
-a.findIndex(
-x => x.id === j.id
-) === i
+(j,i,a)=>
+a.findIndex(x=>x.id===j.id)===i
 );
 
-
 renderHome();
-
 renderSearch();
-
 renderSaved();
 
+}catch(error){
 
-} catch(error) {
-
-
-if(
-myRequest !== requestNumber
-){
-
-return;
-
-}
-
+if(myRequest!==requestNumber)return;
 
 console.error(error);
 
-
 if(!jobs.length){
 
-cards.innerHTML = `
+cards.innerHTML=
+'<div class="empty">Не удалось загрузить вакансии.<br><br>Проверь Worker и попробуй ещё раз.</div>';
 
-<div class="empty">
-
-Не удалось загрузить вакансии.
-
-<br><br>
-
-Проверь Worker и попробуй ещё раз.
-
-</div>
-
-`;
-
-
-document.getElementById(
-'searchCards'
-).innerHTML = `
-
-<div class="empty">
-
-Не удалось загрузить вакансии.
-
-</div>
-
-`;
+document.getElementById('searchCards').innerHTML=
+'<div class="empty">Не удалось загрузить вакансии.</div>';
 
 }
 
 }
 
 }
-
-
 
 function filterJobs(){
 
 clearTimeout(searchTimer);
 
-
 renderSearch();
 
+const q=document
+.getElementById('keywordSearch')
+.value
+.trim();
 
-const q =
-document.getElementById(
-'keywordSearch'
-).value.trim();
+searchTimer=setTimeout(()=>{
 
-
-searchTimer =
-
-setTimeout(
-() => {
-
-if(q){
-
+if(q)
 loadJobs(q);
 
-}
-
-},
-700
-);
+},700);
 
 }
 
+function setFilter(filter,el){
 
-
-function setFilter(
-filter,
-el
-){
-
-currentFilter =
-filter;
-
+currentFilter=filter;
 
 document
 .querySelectorAll('.chip')
-.forEach(
-x =>
-x.classList.remove(
-'active'
-)
-);
-
+.forEach(x=>x.classList.remove('active'));
 
 el.classList.add('active');
-
 
 renderSearch();
 
 }
 
-
-
 function openJob(index){
 
-const j =
-jobs[index];
+const j=jobs[index];
 
+if(!j)return;
 
-if(!j){
+currentJobIndex=index;
 
-return;
+const isSaved=saved.includes(j.id);
 
-}
-
-
-currentJobIndex =
-index;
-
-
-const isSaved =
-saved.includes(j.id);
-
-
-const desc =
-
-j.description
-
-?
-
-j.description
-.replace(
-/<[^>]*>/g,
-' '
-)
-.replace(
-/\s+/g,
-' '
-)
+const desc=j.description
+?j.description
+.replace(/<[^>]*>/g,' ')
+.replace(/\s+/g,' ')
 .trim()
+:'Описание вакансии недоступно.';
 
-:
+const shortDesc=
+desc.length>900
+?desc.slice(0,900)+'…'
+:desc;
 
-'Описание вакансии недоступно.';
-
-
-const shortDesc =
-
-desc.length > 900
-
-?
-
-desc.slice(0,900) + '…'
-
-:
-
-desc;
-
-
-document.getElementById(
-'detailContent'
-).innerHTML = `
+document.getElementById('detailContent').innerHTML=`
 
 <div class="tag">
-
 ${j.match}% MATCH
-
 </div>
-
 
 <h1>
-
 ${escapeHtml(j.title)}
-
 </h1>
 
-
 <div class="meta">
-
-📍
-${escapeHtml(j.location)}
-
+📍 ${escapeHtml(j.location)}
 ·
-
-🏢
-${escapeHtml(j.company)}
-
+🏢 ${escapeHtml(j.company)}
 </div>
-
 
 <div class="money">
-
 ${escapeHtml(j.money)}
-
 </div>
-
 
 <div class="box">
 
-<b>
-
-Почему подходит тебе
-
-</b>
-
+<b>Почему подходит тебе</b>
 
 <p>
-
-AI предварительно оценил
-соответствие этой возможности
-в ${j.match}%.
-
+AI предварительно оценил соответствие этой возможности в ${j.match}%.
 </p>
 
-
 <div class="score">
-
 ${j.match}%
-
 </div>
 
-
-<small
-style="color:#9ca9c8">
-
+<small style="color:#9ca9c8">
 AI Match Score
-
 </small>
 
 </div>
 
-
 <div class="box">
 
-<b>
-
-Описание вакансии
-
-</b>
-
+<b>Описание вакансии</b>
 
 <p>
-
 ${escapeHtml(shortDesc)}
-
 </p>
 
 </div>
 
-
 <button
 class="btn"
 style="width:100%;margin-bottom:10px"
-onclick="show('apply')">
-
+onclick="show('apply')"
+>
 ✨ AI подготовит отклик
-
 </button>
-
 
 ${
 j.url
-
-?
-
-`
-
+?`
 <a
 class="btn"
 style="display:block;text-align:center;text-decoration:none;margin-bottom:10px"
 href="${escapeHtml(j.url)}"
 target="_blank"
-rel="noopener">
-
+rel="noopener"
+>
 Открыть вакансию
-
 </a>
-
 `
-
-:
-
-''
-
+:''
 }
-
 
 <button
 class="btn secondary"
 style="width:100%"
-onclick="toggleSave(${index})">
-
-${
-isSaved
-?
-'♥ Убрать из сохранённых'
-:
-'♡ Сохранить'
-}
-
+onclick="toggleSave(${index})"
+>
+${isSaved?'♥ Убрать из сохранённых':'♡ Сохранить'}
 </button>
 
-
 <div class="source">
-
 Jobs by Adzuna ·
-
 <a
 href="https://www.adzuna.com/"
 target="_blank"
-rel="noopener">
-
+rel="noopener"
+>
 Adzuna
-
 </a>
-
 </div>
 
 `;
-
 
 show('detail');
 
 }
 
-
-
 function toggleSave(index){
 
-const j =
-jobs[index];
+const j=jobs[index];
 
+if(!j)return;
 
-if(!j){
-
-return;
-
-}
-
-
-if(
-saved.includes(j.id)
-){
-
-saved =
-saved.filter(
-id => id !== j.id
-);
-
-}else{
-
+if(saved.includes(j.id))
+saved=saved.filter(id=>id!==j.id);
+else
 saved.push(j.id);
-
-}
-
 
 localStorage.setItem(
 'jobhunt_saved',
 JSON.stringify(saved)
 );
-
 
 updateSavedCount();
 
@@ -1911,194 +923,211 @@ renderSaved();
 
 }
 
-
-
 function renderSaved(){
 
-const container =
-document.getElementById(
-'savedCards'
-);
+const container=document.getElementById('savedCards');
 
-
-const savedJobs =
-
+const savedJobs=
 saved
-.map(
-id =>
-jobs.find(
-j => j.id === id
-)
-)
+.map(id=>jobs.find(j=>j.id===id))
 .filter(Boolean);
 
+if(!savedJobs.length){
 
-if(
-!savedJobs.length
-){
-
-container.innerHTML = `
-
-<div class="empty">
-
-Пока ничего не сохранено.
-
-<br><br>
-
-Нажми ♡ на интересной вакансии.
-
-</div>
-
-`;
+container.innerHTML=
+'<div class="empty">Пока ничего не сохранено.<br><br>Нажми ♡ на интересной вакансии.</div>';
 
 return;
-
 }
 
-
-container.innerHTML =
-
+container.innerHTML=
 savedJobs
-.map(
-j =>
-card(
-j,
-jobs.indexOf(j)
-)
-)
+.map(j=>card(j,jobs.indexOf(j)))
 .join('');
 
 }
 
-
-
 function updateSavedCount(){
 
-document.getElementById(
-'savedCount'
-).innerText =
+document.getElementById('savedCount').innerText=
 saved.length;
 
 }
 
-
-
 function copyMessage(){
 
-const text =
-document.getElementById(
-'msg'
-).innerText;
+const text=
+document.getElementById('msg').innerText;
 
-
-if(navigator.clipboard){
+if(navigator.clipboard)
 
 navigator.clipboard
 .writeText(text)
-
 .then(
-() =>
-alert(
-'Сообщение скопировано ✅'
+()=>alert('Сообщение скопировано ✅')
 )
-)
-
 .catch(
-() =>
-alert(
-'Выдели сообщение и скопируй его вручную.'
-)
+()=>alert('Выдели сообщение и скопируй его вручную.')
 );
 
-}else{
+else
 
 alert(
 'Выдели сообщение и скопируй его вручную.'
 );
 
 }
-
-}
-
-
 
 function show(id,el){
 
 document
 .querySelectorAll('.screen')
-.forEach(
-x =>
-x.classList.remove(
-'active'
-)
-);
+.forEach(x=>x.classList.remove('active'));
 
+const target=document.getElementById(id);
 
-const target =
-document.getElementById(id);
-
-
-if(target){
-
-target.classList.add(
-'active'
-);
-
-}
-
+if(target)
+target.classList.add('active');
 
 if(el){
 
 document
 .querySelectorAll('.nav')
-.forEach(
-x =>
-x.classList.remove(
-'active'
-)
-);
+.forEach(x=>x.classList.remove('active'));
 
-
-el.classList.add(
-'active'
-);
+el.classList.add('active');
 
 }
 
-
-if(
-id === 'search'
-){
-
+if(id==='search')
 renderSearch();
 
-}
-
-
-if(
-id === 'saved'
-){
-
+if(id==='saved')
 renderSaved();
 
+window.scrollTo(0,0);
+
 }
 
+function aiAction(type){
 
-window.scrollTo(
-0,
-0
+const messages={
+
+resume:
+`📄 Анализ резюме
+
+Скоро здесь можно будет загрузить CV и получить AI-рекомендации по улучшению.`,
+
+reply:
+`✍️ AI-отклик
+
+Открой вакансию и нажми «AI подготовит отклик» — следующим этапом сделаем персональную генерацию.`,
+
+match:
+`🎯 Стоит ли откликаться?
+
+Скоро AI будет показывать сильные стороны, риски и причины, почему вакансия подходит.`,
+
+search:
+`🔎 Умный поиск
+
+Попробуй поискать профессию — например: дизайнер, developer, photographer.`
+
+};
+
+alert(
+messages[type]||
+'Скоро здесь появится новая AI-функция.'
 );
 
 }
 
+function openPro(){
 
+alert(
+`⭐ JobHunt PRO
+
+Сначала подключаем функции PRO, затем оплату через Telegram Stars.`
+);
+
+}
+
+function updateChallenge(){
+
+let progress=
+Number(
+localStorage.getItem('jobhunt_challenge')||0
+);
+
+progress=Math.max(
+0,
+Math.min(3,progress)
+);
+
+const fill=
+document.getElementById(
+'challengeProgress'
+);
+
+const text=
+document.getElementById(
+'challengeText'
+);
+
+if(fill)
+fill.style.width=
+(progress/3*100)+'%';
+
+if(text)
+text.innerText=
+progress+' из 3';
+
+}
+
+function doChallenge(){
+
+let progress=
+Number(
+localStorage.getItem('jobhunt_challenge')||0
+);
+
+if(progress<3){
+
+progress++;
+
+localStorage.setItem(
+'jobhunt_challenge',
+String(progress)
+);
+
+updateChallenge();
+
+}
+
+if(progress===3)
+
+alert(
+`🏆 Challenge выполнен!
+
+В следующей версии наградой будет PRO-бонус.`
+);
+
+else
+
+alert(
+`🔥 Прогресс: ${progress} из 3
+
+Открой ещё одну подходящую вакансию, чтобы продолжить.`
+);
+
+}
 
 function initTelegram(){
 
 try{
 
 if(
-window.Telegram &&
+window.Telegram&&
 window.Telegram.WebApp
 ){
 
@@ -2112,18 +1141,12 @@ window.Telegram.WebApp.expand();
 
 }
 
-
-
 initTelegram();
-
 updateSavedCount();
-
 renderHome();
-
 renderSearch();
-
 renderSaved();
-
+updateChallenge();
 loadJobs('designer');
 
 </script>
