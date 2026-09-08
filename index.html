@@ -56,6 +56,19 @@ body{background:radial-gradient(720px 360px at 8% -5%,#3b2c86 0,transparent 62%)
 .country-sheet,.ai-sheet{background:linear-gradient(160deg,#101f40,#071126);border-color:#3b507c}
 .toast{box-shadow:0 10px 35px #0006!important;border-color:#334a79!important;background:#0b1730f2!important}
 @media(max-width:360px){.hero h1{font-size:27px}.ai-card{min-height:126px}}
+
+/* FINAL NAV SAFETY: native anchors remain clickable even if JS is delayed */
+.bottom{position:fixed!important;left:0!important;right:0!important;bottom:0!important;display:flex!important;z-index:2147483000!important;pointer-events:auto!important;transform:none!important}
+.bottom .nav{display:flex;flex:1;min-width:0;align-items:center;justify-content:center;flex-direction:column;text-decoration:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;position:relative;z-index:2147483001}
+.bottom .nav:active{opacity:.7}
+@supports selector(body:has(#search:target)){
+body:has(#search:target) #home,body:has(#search:target) #saved,body:has(#search:target) #profile{display:none}
+body:has(#search:target) #search{display:block}
+body:has(#saved:target) #home,body:has(#saved:target) #search,body:has(#saved:target) #profile{display:none}
+body:has(#saved:target) #saved{display:block}
+body:has(#profile:target) #home,body:has(#profile:target) #search,body:has(#profile:target) #saved{display:none}
+body:has(#profile:target) #profile{display:block}
+}
 </style>
 </head>
 <body>
@@ -168,12 +181,12 @@ body{background:radial-gradient(720px 360px at 8% -5%,#3b2c86 0,transparent 62%)
 </div>
 
 <div id="toast" class="toast"></div>
-<div class="bottom">
-<button type="button" class="nav active" data-screen="home"><span class="nav-icon">⌂</span>Главная</button>
-<button type="button" class="nav" data-screen="search"><span class="nav-icon">⌕</span>Поиск</button>
-<button type="button" class="nav" data-screen="saved"><span class="nav-icon">♡</span>Сохранённое</button>
-<button type="button" class="nav" data-screen="profile"><span class="nav-icon">◉</span>Профиль</button>
-</div>
+<nav class="bottom" aria-label="Основная навигация">
+<a class="nav active" href="#home" data-screen="home"><span class="nav-icon">⌂</span>Главная</a>
+<a class="nav" href="#search" data-screen="search"><span class="nav-icon">⌕</span>Поиск</a>
+<a class="nav" href="#saved" data-screen="saved"><span class="nav-icon">♡</span>Сохранённое</a>
+<a class="nav" href="#profile" data-screen="profile"><span class="nav-icon">◉</span>Профиль</a>
+</nav>
 
 <script>
 const WORKER_URL='https://rapid-wood-80b6.fetis969696.workers.dev';
@@ -413,7 +426,17 @@ if(searchCards)searchCards.innerHTML=html;
 
 async function fetchCountryJobs(query,country,signal){
 const url=API_URL+'?country='+encodeURIComponent(country)+'&what='+encodeURIComponent(query.trim());
-const response=await fetch(url,{method:'GET',cache:'no-store',signal});
+const timeoutController=new AbortController();
+const timer=setTimeout(()=>timeoutController.abort(),5000);
+const onAbort=()=>timeoutController.abort();
+if(signal)signal.addEventListener('abort',onAbort,{once:true});
+let response;
+try{
+response=await fetch(url,{method:'GET',cache:'no-store',signal:timeoutController.signal});
+}finally{
+clearTimeout(timer);
+if(signal)signal.removeEventListener('abort',onAbort);
+}
 if(!response.ok)throw new Error('HTTP '+response.status);
 const data=await response.json();
 if(!data.ok)throw new Error(data.error||'API error');
@@ -425,7 +448,17 @@ const url=new URL('https://api.jobopportunitiesapi.org/public/jobs');
 url.searchParams.set('country',country.toUpperCase());
 url.searchParams.set('limit','50');
 if(query.trim())url.searchParams.set('q',query.trim());
-const response=await fetch(url.toString(),{method:'GET',cache:'no-store',signal});
+const timeoutController=new AbortController();
+const timer=setTimeout(()=>timeoutController.abort(),5000);
+const onAbort=()=>timeoutController.abort();
+if(signal)signal.addEventListener('abort',onAbort,{once:true});
+let response;
+try{
+response=await fetch(url.toString(),{method:'GET',cache:'no-store',signal:timeoutController.signal});
+}finally{
+clearTimeout(timer);
+if(signal)signal.removeEventListener('abort',onAbort);
+}
 if(!response.ok)throw new Error('JOA HTTP '+response.status);
 const data=await response.json();
 return Array.isArray(data.data)?data.data:[];
@@ -500,12 +533,7 @@ raw=await fetchManyJOA(variants,EUROPE_COUNTRIES.join(','),signal);
 }else if(selectedCountry==='ru'||selectedCountry==='by'){
 raw=[];
 }else{
-const timeout=setTimeout(()=>activeSearchController?.abort(),12000);
-try{
 raw=await fetchManyWorker(variants.slice(0,4),selectedCountry,signal);
-}finally{
-clearTimeout(timeout);
-}
 
 if(!raw.length&&!signal.aborted){
 try{
@@ -647,24 +675,30 @@ if(id==='saved')renderSaved();
 window.scrollTo(0,0);
 }
 
-// Надёжная нижняя навигация для Telegram Web / Mini App.
+// Надёжная навигация: HTML-якоря + JS как улучшение.
 (function(){
 const navRoot=document.querySelector('.bottom');
 if(!navRoot)return;
-let lastNavAt=0;
-function handleNav(event){
-const nav=event.target.closest('.bottom .nav');
-if(!nav)return;
-if(event.cancelable)event.preventDefault();
-event.stopPropagation();
-const now=Date.now();
-if(now-lastNavAt<120)return;
-lastNavAt=now;
-const id=nav.getAttribute('data-screen');
-if(id)show(id,nav);
+const buttons=Array.from(navRoot.querySelectorAll('.nav'));
+const labels=['home','search','saved','profile'];
+function activate(id){
+  const target=document.getElementById(id);
+  if(!target)return;
+  document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));
+  target.classList.add('active');
+  buttons.forEach(x=>x.classList.toggle('active',x.dataset.screen===id));
+  if(id==='search')renderSearch();
+  if(id==='saved')renderSaved();
+  window.scrollTo(0,0);
 }
-navRoot.addEventListener('pointerup',handleNav,{passive:false});
-navRoot.addEventListener('click',handleNav,{passive:false});
+buttons.forEach((nav,index)=>{
+  nav.addEventListener('pointerup',()=>activate(labels[index]),{passive:true});
+  nav.addEventListener('click',()=>activate(labels[index]),{passive:true});
+});
+window.addEventListener('hashchange',()=>{
+  const id=location.hash.slice(1);
+  if(labels.includes(id))activate(id);
+});
 })();
 
 function toast(text){
