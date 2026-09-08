@@ -715,16 +715,32 @@ function applySmartRanking(list,query){
  const base=Array.isArray(list)?list:[];
  const smartActive=!!(activeSearchLocation||smartCriteria.remote||smartCriteria.salaryMin);
  return base.map(job=>{
+  const sourceMatch=Math.max(0,Math.min(99,Number(job.match||0)));
   if(!smartActive){
-   job.smartRank=Number(job.match||0);
+   job.smartRank=sourceMatch;
+   job.match=Math.round(sourceMatch);
    return job;
   }
+
   const relevance=searchRelevance(job,query);
-  // Keep the visible match score stable and understandable, but make it reflect
-  // Smart Search relevance when location/remote/other criteria are active.
-  const raw=70+relevance;
-  job.smartRank=raw;
-  job.match=Math.max(55,Math.min(99,Math.round(raw)));
+  const locationText=String(job.location||'').toLowerCase();
+  const requestedLocation=String(activeSearchLocation||'').trim().toLowerCase();
+  let locationTier=1;
+
+  // Smart Search priority: the requested city is the strongest signal.
+  // Exact city matches always stay above jobs from other cities.
+  if(requestedLocation){
+   if(locationText.includes(requestedLocation)) locationTier=3;
+   else if((String(job.title||'')+' '+String(job.company||'')+' '+String(job.description||'')).toLowerCase().includes(requestedLocation)) locationTier=2;
+   else locationTier=0;
+  }
+
+  const remoteBonus=smartCriteria.remote?(job.remote?2:0):0;
+  // Sort priority: city -> remote -> original match -> fine relevance.
+  // This prevents an 88% Dubai job from appearing above a 95% Dubai job,
+  // while still keeping non-Dubai results below Dubai results.
+  job.smartRank=(locationTier*100000)+(remoteBonus*10000)+(sourceMatch*100)+relevance;
+  job.match=Math.round(sourceMatch);
   return job;
  });
 }
