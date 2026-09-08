@@ -840,9 +840,10 @@ renderSearch();
 renderSaved();
 }
 
-async function loadJobs(query='designer'){
+async function loadJobs(query='designer',trackSearch=false){
 const myRequest=++requestNumber;
 query=(query||'').trim()||'designer';
+if(trackSearch)trackAnalytics('searches',{query,country:selectedCountry,location:activeSearchLocation||''});
 if(activeSearchController)activeSearchController.abort();
 activeSearchController=new AbortController();
 const signal=activeSearchController.signal;
@@ -1135,7 +1136,7 @@ closeAI();
 const input=document.getElementById('keywordSearch');
 input.value=query;
 show('search');
-await loadJobs(query);
+await loadJobs(query,true);
 toast('✨ AI понял профессию, страну и условия');
 }
 
@@ -1191,14 +1192,14 @@ async function runSmartSearch(){
       if(input)input.value=merged.query||text;
     }
 
-    await loadJobs(input?.value||text);
+    await loadJobs(input?.value||text,true);
     toast(local.country||local.remote||local.salaryMin||local.location
       ? '✨ Запрос распознан: локация, страна и условия применены'
       : '✨ AI обработал запрос');
   }catch(error){
     console.warn('Smart Search AI fallback:',error);
     // Даже при ошибке AI локальный разбор уже применён.
-    await loadJobs(input?.value||text);
+    await loadJobs(input?.value||text,true);
     toast('✨ Умный поиск применил параметры запроса');
   }finally{
     if(button){
@@ -1211,7 +1212,7 @@ async function runSmartSearch(){
 function quickSearch(query){
 const input=document.getElementById('keywordSearch');
 if(input)input.value=query;
-loadJobs(query);
+loadJobs(query,true);
 }
 
 function formatProDate(unixSeconds){
@@ -1287,6 +1288,7 @@ else toast('❌ '+data.error);
 return;
 }
 smartAlerts.push(data.alert);
+trackAnalytics('alert_creates');
 renderAlerts();
 toast('🔔 Уведомления включены');
 }
@@ -1426,6 +1428,7 @@ body.innerHTML=`<div class="hero" style="padding:18px"><div class="pro-badge">14
 }
 
 function openPro(){
+trackAnalytics('pro_views');
 renderProModal();
 document.getElementById('aiModal').classList.add('open');
 }
@@ -1446,6 +1449,19 @@ if(progress===3)alert(`🏆 Challenge выполнен!\n\nВ следующей
 else alert(`🔥 Прогресс: ${progress} из 3\n\nОткрой ещё одну подходящую вакансию, чтобы продолжить.`);
 }
 
+
+let analyticsOpened=false;
+async function trackAnalytics(event, extra={}){
+ try{
+  if(!window.Telegram||!window.Telegram.WebApp||!window.Telegram.WebApp.initData)return;
+  await fetch(WORKER_URL+'/analytics',{
+   method:'POST',
+   headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({initData:window.Telegram.WebApp.initData,event,...extra}),
+   keepalive:true
+  });
+ }catch(e){console.warn('Analytics error:',e)}
+}
 
 function getTelegramFirstName(){
  try{
@@ -1474,6 +1490,7 @@ tgWebApp.expand();
 }
 
 initTelegram();
+trackAnalytics('app_opens');
 updatePersonalization();
 updateSavedCount();
 updateProUI();
