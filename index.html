@@ -131,6 +131,10 @@ body{background:radial-gradient(circle at 50% -10%,#182d61 0,#070d1d 38%,#040914
 .pro-list{gap:4px;margin-top:8px;font-size:12px;}
 @media(max-width:360px){.hero-global{min-height:320px;padding:15px}.hero-earth{right:-48px;top:-8px;width:190px;height:190px;opacity:.9}.hero-global h1{font-size:28px}.hero-global p{max-width:250px}.hero-mini span:nth-child(n+4){display:none}}
 
+
+/* JOBHUNT AI 2.0 — PERSONAL PROFILE */
+.profile-settings{padding:15px;margin-top:10px}.profile-title{font-weight:900;font-size:17px;margin-bottom:12px}.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.profile-grid label{font-size:11px;color:#8fa2c7;font-weight:800}.profile-field{width:100%;margin-top:5px!important;padding:11px 10px!important;font-size:12px!important}.profile-toggle{display:flex;align-items:center;gap:9px;margin-top:12px;padding:11px 12px;border:1px solid #29416f;border-radius:14px;background:#0a1630;color:#dce7ff;font-size:12px;font-weight:750}.profile-toggle input{width:18px;height:18px;accent-color:#7d5cff}.profile-note{font-size:11px;color:#7184a9;margin-top:9px;line-height:1.45}.profile-grid select{appearance:auto}.profile-settings .btn{min-height:44px}
+@media(max-width:360px){.profile-grid{grid-template-columns:1fr}.profile-settings{padding:13px}}
 </style>
 </head>
 <body>
@@ -212,7 +216,24 @@ body{background:radial-gradient(circle at 50% -10%,#182d61 0,#070d1d 38%,#040914
 <section id="detail" class="screen"><div class="back" onclick="show('search')">← Назад</div><div id="detailContent"></div></section>
 <section id="apply" class="screen"><div class="back" onclick="show('detail')">← Назад</div><div class="box"><div class="tag">AI ОТКЛИК</div><h2>Готовое сообщение клиенту</h2><p id="msg">Hi! I’m a professional specialist and I’m interested in your project. I have relevant experience and would love to discuss the details. I can also share examples of my work.</p><button class="btn secondary" onclick="copyMessage()">Копировать</button></div><button class="btn" style="width:100%" onclick="openAI('reply')">Откликнуться</button></section>
 <section id="saved" class="screen"><div class="section"><h2>♡ Сохранённое</h2></div><div id="savedCards"></div></section>
-<section id="profile" class="screen"><div class="hero"><h1 id="profileName">Профиль</h1><p>Фотограф · Дизайнер</p><div class="stats"><div class="stat"><b id="profileJobs">—</b><small>возможности</small></div><div class="stat"><b>4.8</b><small>рейтинг</small></div><div class="stat"><b>156</b><small>просмотров</small></div></div></div><div class="card premium"><b>⚡ JobHunt AI PRO</b><p style="color:#c2b7d8">Больше возможностей, больше заработка.</p><div class="money">149 ⭐ / месяц</div><div id="profileProStatus" style="color:#9d8ab9;font-size:13px;margin-top:5px">Проверяем статус PRO…</div><button id="profileProButton" class="btn" style="margin-top:10px" onclick="openPro()">Подключить PRO</button></div></section>
+<section id="profile" class="screen">
+<div class="hero"><h1 id="profileName">Профиль</h1><p id="profileSubtitle">Настрой JobHunt AI под себя — и AI будет лучше подбирать вакансии.</p><div class="stats"><div class="stat"><b id="profileJobs">—</b><small>возможности</small></div><div class="stat"><b id="profileSaved">0</b><small>сохранено</small></div><div class="stat"><b id="profileMatch">AI</b><small>персональный поиск</small></div></div></div>
+<div class="card profile-settings">
+<div class="profile-title">🎯 Твои предпочтения</div>
+<div class="profile-grid">
+<label>Профессия<input id="profileRole" class="ai-input profile-field" placeholder="Например: UI/UX Designer"></label>
+<label>Навыки<input id="profileSkills" class="ai-input profile-field" placeholder="Figma, Photoshop, English..."></label>
+<label>Страны<input id="profileCountries" class="ai-input profile-field" placeholder="ОАЭ, Германия, Турция..."></label>
+<label>Языки<input id="profileLanguages" class="ai-input profile-field" placeholder="Русский, English B2..."></label>
+<label>Мин. зарплата<input id="profileSalary" class="ai-input profile-field" inputmode="numeric" placeholder="3000"></label>
+<label>Валюта<select id="profileCurrency" class="ai-input profile-field"><option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option><option value="AED">AED</option><option value="TRY">TRY</option></select></label>
+</div>
+<label class="profile-toggle"><input id="profileRemote" type="checkbox"><span>🏠 Только удалённая работа</span></label>
+<button class="btn" style="width:100%;margin-top:12px" onclick="saveProfilePreferences()">💾 Сохранить предпочтения</button>
+<div id="profileSavedNote" class="profile-note">AI будет учитывать эти данные при Smart Search и оценке вакансий.</div>
+</div>
+<div class="card premium"><b>⚡ JobHunt AI PRO</b><p style="color:#c2b7d8">Больше возможностей, больше заработка.</p><div class="money">149 ⭐ / месяц</div><div id="profileProStatus" style="color:#9d8ab9;font-size:13px;margin-top:5px">Проверяем статус PRO…</div><button id="profileProButton" class="btn" style="margin-top:10px" onclick="openPro()">Подключить PRO</button></div>
+</section>
 </div>
 
 <div id="countryModal" class="country-modal" onclick="if(event.target===this)closeCountryPicker()">
@@ -796,6 +817,7 @@ const target=document.getElementById(id);if(target)target.classList.add('active'
 if(el){document.querySelectorAll('.nav').forEach(x=>x.classList.remove('active'));el.classList.add('active')}
 if(id==='search')renderSearch();
 if(id==='saved')renderSaved();
+if(id==='profile')renderProfile();
 window.scrollTo(0,0);
 }
 
@@ -879,7 +901,7 @@ const job=currentJobIndex!==null?jobs[currentJobIndex]:null;
 const extra=(document.getElementById('aiText')?.value||'').trim();
 const r=document.getElementById('aiResult');
 if(!job){r.innerHTML='<div class="ai-result">Сначала открой вакансию.</div>';return}
-const answer=await callAI('reply','',job,extra);
+const answer=await callAI('reply','',job,[extra,getProfileContext()].filter(Boolean).join('\n\n'));
 if(answer)r.innerHTML=`<div class="ai-result" id="generatedReply">${escapeHtml(answer)}</div><button class="btn secondary" style="width:100%;margin-top:8px" onclick="copyGeneratedReply()">Копировать отклик</button>`;
 }
 
@@ -895,7 +917,7 @@ async function analyzeJob(){
 const job=currentJobIndex!==null?jobs[currentJobIndex]:null;
 const r=document.getElementById('aiResult');
 if(!job)return;
-const answer=await callAI('match','',job);
+const answer=await callAI('match','',job,getProfileContext());
 if(answer)r.innerHTML=`<div class="ai-result"><b>Предварительный Match: ${job.match}%</b><div class="ai-meter"><i style="width:${job.match}%"></i></div><br>${escapeHtml(answer)}</div>`;
 }
 
@@ -903,7 +925,7 @@ async function smartSearch(){
 const text=(document.getElementById('aiText')?.value||'').trim();
 const r=document.getElementById('aiResult');
 if(!text){r.innerHTML='<div class="ai-result">Напиши, какую работу ищешь.</div>';return}
-const answer=await callAI('search',text);
+const answer=await callAI('search',text,null,getProfileContext());
 if(!answer)return;
 const criteria=parseSmartSearchAnswer(answer);
 const query=criteria.query||text;
@@ -927,7 +949,7 @@ return;
 const button=document.querySelector('.smart-search-btn');
 if(button){button.disabled=true;button.innerText='🤖 AI понимает запрос…'}
 try{
-const response=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'search',text})});
+const response=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'search',text,extra:getProfileContext()})});
 const data=await response.json().catch(()=>({}));
 if(!response.ok||!data.ok)throw new Error(data.details||data.error||('HTTP '+response.status));
 const criteria=parseSmartSearchAnswer(data.answer||'');
@@ -1112,6 +1134,45 @@ if(progress===3)alert(`🏆 Challenge выполнен!\n\nВ следующей
 else alert(`🔥 Прогресс: ${progress} из 3\n\nОткрой ещё одну подходящую вакансию, чтобы продолжить.`);
 }
 
+function getProfilePreferences(){
+try{return JSON.parse(localStorage.getItem('jobhunt_profile')||'{}')||{}}catch(e){return {}}
+}
+function saveProfilePreferences(showToast=true){
+const profile={
+ role:(document.getElementById('profileRole')?.value||'').trim(),
+ skills:(document.getElementById('profileSkills')?.value||'').trim(),
+ countries:(document.getElementById('profileCountries')?.value||'').trim(),
+ languages:(document.getElementById('profileLanguages')?.value||'').trim(),
+ salary:(document.getElementById('profileSalary')?.value||'').trim(),
+ currency:document.getElementById('profileCurrency')?.value||'USD',
+ remote:!!document.getElementById('profileRemote')?.checked
+};
+localStorage.setItem('jobhunt_profile',JSON.stringify(profile));
+if(showToast)toast('Профиль сохранён ✓');
+return profile;
+}
+function renderProfile(){
+const p=getProfilePreferences();
+const map={profileRole:p.role||'',profileSkills:p.skills||'',profileCountries:p.countries||'',profileLanguages:p.languages||'',profileSalary:p.salary||'',profileCurrency:p.currency||'USD'};
+Object.entries(map).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val});
+const remote=document.getElementById('profileRemote');if(remote)remote.checked=!!p.remote;
+const savedEl=document.getElementById('profileSaved');if(savedEl)savedEl.textContent=String(saved.length);
+const jobsEl=document.getElementById('profileJobs');if(jobsEl)jobsEl.textContent=String(jobs.length||0);
+const sub=document.getElementById('profileSubtitle');
+if(sub){const parts=[p.role,p.remote?'Remote':null,p.countries].filter(Boolean);sub.textContent=parts.length?'AI подбирает вакансии: '+parts.join(' · '):'Настрой JobHunt AI под себя — и AI будет лучше подбирать вакансии.'}
+}
+function getProfileContext(){
+const p=getProfilePreferences();
+const parts=[];
+if(p.role)parts.push('Профессия: '+p.role);
+if(p.skills)parts.push('Навыки: '+p.skills);
+if(p.countries)parts.push('Предпочтительные страны: '+p.countries);
+if(p.languages)parts.push('Языки: '+p.languages);
+if(p.salary)parts.push('Минимальная зарплата: '+p.salary+' '+(p.currency||'USD'));
+if(p.remote)parts.push('Только удалённая работа: да');
+return parts.join('\n');
+}
+
 function getTelegramFirstName(){
 try{
 const user=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initDataUnsafe&&window.Telegram.WebApp.initDataUnsafe.user;
@@ -1146,6 +1207,7 @@ renderHome();
 renderSearch();
 updateCountryPicker();
 renderSaved();
+renderProfile();
 updateChallenge();
 refreshProStatus();
 loadJobs('designer');
