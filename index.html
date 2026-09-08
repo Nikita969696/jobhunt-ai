@@ -336,6 +336,21 @@ if(q&&q!==serverQuery){
 const tokens=q.split(/\s+/).filter(Boolean).slice(0,8);
 if(tokens.length&&!tokens.every(token=>text.includes(token)))return false;
 }
+
+// Если Smart Search указал конкретный город, не показываем вакансии
+// из других городов только потому, что они Remote.
+// Оставляем вакансии, где город явно указан в location/title/company/description.
+if(activeSearchLocation){
+const requestedLocation=String(activeSearchLocation).toLowerCase().trim();
+const locationMatch=(
+ String(j.location||'')+' '+
+ String(j.title||'')+' '+
+ String(j.company||'')+' '+
+ String(j.description||'')
+).toLowerCase().includes(requestedLocation);
+if(!locationMatch)return false;
+}
+
 if(currentFilter==='remote'&&!j.remote)return false;
 if(currentFilter==='today'&&!j.today)return false;
 if(currentFilter==='high'){
