@@ -73,6 +73,31 @@ body{background:radial-gradient(circle at 50% -10%,#1d2860 0,#0a1028 35%,#050914
 .hero-global:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 22%,#2e70ff28,transparent 25%),radial-gradient(circle at 18% 90%,#9e3dff22,transparent 35%);pointer-events:none}
 .hero-glow{position:absolute;width:190px;height:190px;right:-15px;top:15px;border-radius:50%;background:#2578ff18;filter:blur(8px);pointer-events:none}.hero-earth{position:absolute;right:-36px;top:-17px;width:205px;height:205px;color:#45a8ff;opacity:.9;filter:drop-shadow(0 0 22px #2b86ff66);pointer-events:none}.hero-earth svg{width:100%;height:100%}.hero-earth circle:first-of-type{fill:#0b4a9f66}.hero-brandline{position:relative;z-index:2;font-size:13px;margin-bottom:13px;color:#f4f7ff}.hero-brandline span{color:#a75cff}.hero-brandline i{font-style:normal;font-size:7px;letter-spacing:.08em;color:#61e6bf;margin-left:8px;background:#153c46;border:1px solid #2b766d;border-radius:999px;padding:3px 6px}.hero-global .hero-kicker{position:relative;z-index:2;width:max-content;margin-bottom:7px}.hero-global h1{position:relative;z-index:2;font-size:31px;line-height:1.02;letter-spacing:-1.2px;max-width:290px;margin:0 0 10px}.hero-global h1::first-line{color:#fff}.hero-global p{position:relative;z-index:2;max-width:295px;font-size:13px;line-height:1.5;margin-bottom:15px;color:#b9c7e8}.hero-search{position:relative;z-index:3;display:flex;align-items:center;gap:9px;height:56px;padding:6px 7px 6px 15px;border-radius:18px;border:1px solid #2877e7;background:linear-gradient(90deg,#0b2e68dd,#1e1765dd);box-shadow:0 0 0 1px #6a4bff22,0 14px 35px #0004;cursor:pointer}.hero-search>span{font-size:23px;color:#8ec8ff}.hero-search b{flex:1;color:#dbe7ff;font-size:15px;font-weight:750}.hero-search button{width:42px;height:42px;border:0;border-radius:14px;color:#fff;font-size:24px;background:linear-gradient(135deg,#3e9cff,#a84dff);box-shadow:0 8px 22px #7247ff55;cursor:pointer}.hero-mini{position:relative;z-index:2;display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.hero-mini span{font-size:9px;color:#c7d6f4;background:#ffffff0a;border:1px solid #ffffff12;border-radius:999px;padding:5px 8px}.stats{margin-top:13px;gap:8px}.stat{min-height:56px}.stat b{font-size:19px}.section{margin-top:18px}.section h2{font-size:17px}.section>span{font-size:9px!important;letter-spacing:.08em}.ai-grid{gap:9px}.ai-card{min-height:128px;border-radius:19px;background:linear-gradient(145deg,#0e1c3b,#08132a);border-color:#28518e;box-shadow:0 12px 28px #0003}.ai-card:hover{border-color:#5d7fe0}.ai-icon{background:linear-gradient(135deg,#214d9e,#6733a4);box-shadow:0 0 20px #5a54ff33}.pro-card{background:linear-gradient(100deg,#17144d,#24104a);border-color:#7a3cff;box-shadow:0 0 30px #6c3cff1c}.challenge{border-color:#31548e}.bottom{left:0;right:0;transform:none;width:100%;margin:0;border-top-color:#273e70;background:#050c1df2;box-shadow:0 -16px 38px #0007}.nav.active{background:linear-gradient(180deg,#162c59,#102044);box-shadow:0 0 20px #2f69ff22}.nav.active .nav-icon{color:#78adff;text-shadow:0 0 15px #4e8dff}.app{padding-bottom:90px}
 @media(max-width:360px){.hero-global{min-height:325px;padding-left:15px;padding-right:15px}.hero-earth{right:-58px;opacity:.65}.hero-global h1{font-size:28px}}
+
+/* PREMIUM POLISH v2 */
+body{background:radial-gradient(circle at 50% -10%,#182d61 0,#070d1d 38%,#040914 100%);}
+.app{max-width:430px;margin:0 auto;position:relative;}
+.top{padding:13px 4px 11px;}
+.brand{font-size:19px;text-shadow:0 0 18px #5d8cff22}.brand span{filter:drop-shadow(0 0 8px #9b5cff44)}
+.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:14px;color:#fff}
+.hero-global{min-height:345px;padding:18px 17px 15px;border-radius:30px;background:linear-gradient(145deg,#111f50 0%,#081532 48%,#190d3d 100%);border:1px solid #3b62b0;box-shadow:0 28px 80px #0009,inset 0 1px 0 #ffffff1c}
+.hero-global:after{content:'';position:absolute;inset:auto -20% -35% -20%;height:170px;background:radial-gradient(ellipse,#7a36ff28,transparent 68%);pointer-events:none}
+.hero-earth{animation:earthFloat 5s ease-in-out infinite;filter:drop-shadow(0 0 25px #2589ff88);}
+.hero-earth svg{animation:earthSpin 22s linear infinite;transform-origin:50% 50%}
+@keyframes earthFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@keyframes earthSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.hero-kicker{background:#122d4dcc;border-color:#3a6aa8;color:#dbe8ff;box-shadow:0 0 18px #2d8cff18}
+.hero-global h1{font-size:32px;text-shadow:0 4px 24px #0006}
+.hero-global h1::after{content:'';display:block;width:72px;height:3px;margin-top:10px;border-radius:99px;background:linear-gradient(90deg,#42a5ff,#a64dff);box-shadow:0 0 16px #7b5cff77}
+.hero-search{height:58px;border-radius:19px;background:linear-gradient(100deg,#0b438ddd,#27146ddd);border-color:#268bff;box-shadow:0 0 0 1px #704dff33,0 14px 35px #0005,0 0 28px #3f67ff1c;transition:.2s}
+.hero-search:hover{transform:translateY(-1px);border-color:#6d9dff;box-shadow:0 0 0 1px #9b5cff44,0 17px 40px #0006,0 0 32px #3f67ff2a}
+.hero-search button{box-shadow:0 0 22px #784dff77}
+.hero-mini span{background:#ffffff0c;border-color:#ffffff18;backdrop-filter:blur(8px)}
+.stats{gap:9px;margin:14px 0 0}.stat{position:relative;overflow:hidden;min-height:62px;padding:12px;border-radius:17px;background:linear-gradient(145deg,#0e1d3d,#09142b);box-shadow:0 10px 28px #0003}.stat:after{content:'';position:absolute;right:-18px;top:-18px;width:58px;height:58px;border-radius:50%;background:#3f75ff18}.stat b{font-size:21px}.stat small{text-transform:uppercase;letter-spacing:.04em;font-size:9px}
+.section{margin-top:20px}.section h2{font-size:18px;letter-spacing:-.2px}.ai-card{min-height:134px;padding:15px;border-radius:20px;background:linear-gradient(145deg,#10234a,#081329);box-shadow:0 14px 34px #0004}.ai-card:before{content:'';position:absolute;inset:0;background:linear-gradient(120deg,#ffffff05,transparent 45%);pointer-events:none}.ai-icon{width:44px;height:44px;border-radius:14px}
+.pro-card{border-radius:21px;padding:17px;background:linear-gradient(110deg,#15144b,#2a104c 72%,#42146a);box-shadow:0 0 35px #753cff22,inset 0 1px 0 #ffffff12}.pro-card .btn{box-shadow:0 10px 30px #7b45ff44}
+.challenge{border-radius:21px;box-shadow:0 14px 32px #0003}
+.bottom{padding-top:9px;padding-bottom:calc(9px + env(safe-area-inset-bottom));backdrop-filter:blur(20px);background:#040a18f5}.nav{min-width:78px}.nav.active{box-shadow:0 0 25px #316dff2a}
 </style>
 </head>
 <body>
@@ -97,9 +122,9 @@ body{background:radial-gradient(circle at 50% -10%,#1d2860 0,#0a1028 35%,#050914
 <div class="hero-kicker"><span class="live-dot"></span> GLOBAL AI JOB SEARCH</div>
 <div class="hero-brandline"><b>JobHunt</b> <span>AI</span><i>● LIVE</i></div>
 <h1 id="welcomeTitle">Привет 👋</h1>
-<p>Твоя карьера начинается здесь. Найди идеальную работу по всему миру с помощью AI.</p>
+<p>Твоя карьера начинается здесь. Найди реальные возможности по всему миру — быстро и с помощью AI.</p>
 <div class="hero-search" onclick="show('search')"><span>⌕</span><b>Найти работу...</b><button type="button" onclick="event.stopPropagation();show('search')">→</button></div>
-<div class="hero-mini"><span>🌍 Worldwide</span><span>⚡ AI-powered</span><span>✓ Реальные вакансии</span></div>
+<div class="hero-mini"><span>🌍 Worldwide</span><span>⚡ AI-powered</span><span>✓ Реальные вакансии</span><span>🛡 Безопасный поиск</span></div>
 </div>
 <div class="stats"><div class="stat"><b id="jobsCount">—</b><small>вакансий</small></div><div class="stat"><b id="savedCount">0</b><small>сохранено</small></div><div class="stat"><b id="bestMatch">—</b><small>лучший match</small></div></div>
 <div class="section"><h2>🤖 AI для тебя</h2><span style="color:#7f91b6">SMART TOOLS</span></div>
