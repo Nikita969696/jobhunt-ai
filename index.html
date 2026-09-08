@@ -289,8 +289,7 @@ const category=isAdzuna?(j.category?.label||j.category?.tag||''):(j.category||''
 const remote=['remote','hybrid','fully_remote','work_from_home'].includes(String(j.remote||'').toLowerCase())||/remote|work from home|home based|anywhere|удалён/i.test(title+' '+location+' '+description);
 const created=j.created||j.posted_at||j.first_seen_at||'';
 const rawUrl=j.redirect_url||j.apply_url||j.url||'';
-const hash=Array.from(String(j.id||title+company+location)).reduce((a,c)=>a+c.charCodeAt(0),0);
-const match=84+(hash%13);
+const match=50;
 const min=Number(j.salary_min||0);
 const max=Number(j.salary_max||0);
 let money='Зарплата не указана';
@@ -700,50 +699,110 @@ function searchRelevance(job,query){
  const tokens=q.split(/\s+/).filter(x=>x.length>1);
  const title=String(job.title||'').toLowerCase();
  const location=String(job.location||'').toLowerCase();
- const text=(job.title+' '+job.company+' '+job.location+' '+job.description).toLowerCase();
+ const company=String(job.company||'').toLowerCase();
+ const description=String(job.description||'').toLowerCase();
+ const text=(title+' '+company+' '+location+' '+description).toLowerCase();
  let score=0;
 
- // Smart Search: location is a strong signal. A job in the requested city
- // must outrank a merely related job from another city.
  if(activeSearchLocation){
   const loc=activeSearchLocation.toLowerCase();
-  if(location.includes(loc))score+=100;
-  else if(text.includes(loc))score+=35;
-  else score-=18;
+  if(location.includes(loc))score+=120;
+  else if(title.includes(loc)||company.includes(loc)||description.includes(loc))score+=35;
+  else score-=35;
  }
 
- // Profession/title relevance. Exact title matches beat generic description matches.
  for(const token of tokens){
-  if(title.includes(token))score+=24;
-  else if(text.includes(token))score+=6;
+  if(title.includes(token))score+=30;
+  else if(text.includes(token))score+=7;
  }
 
  if(smartCriteria.remote){
-  if(job.remote)score+=28;
-  else score-=12;
+  if(job.remote)score+=35;
+  else score-=25;
  }
- if(job.today)score+=8;
+ if(job.today)score+=6;
  return score;
+}
+
+function calculateSmartMatch(job,query){
+ const title=String(job.title||'').toLowerCase();
+ const location=String(job.location||'').toLowerCase();
+ const company=String(job.company||'').toLowerCase();
+ const description=String(job.description||'').toLowerCase();
+ const text=(title+' '+company+' '+location+' '+description).toLowerCase();
+ const wanted=String(smartCriteria.query||query||'').toLowerCase().trim();
+ let score=35;
+
+ // Profession relevance: title is much more important than a keyword buried in description.
+ if(/designer|дизайн|дизайнер/.test(wanted)){
+  if(/\bproduct designer\b|\bui designer\b|\bux designer\b|\bui\/ux\b|\bgraphic designer\b|\bweb designer\b|\bvisual designer\b|\bbrand designer\b|\bcreative designer\b|\binteraction designer\b|\bdigital designer\b|\binterior designer\b|\bfashion designer\b|\bmotion designer\b/.test(title))score+=48;
+  else if(/\bdesigner\b|\bdesign(er)?\b|дизайнер|дизайн/.test(title))score+=40;
+  else if(/designer|design|дизайн|дизайнер/.test(text))score+=15;
+  else score-=10;
+  if(/\birrigation designer\b|\bcivil designer\b|\bstructural designer\b|\bmechanical designer\b|\belectrical designer\b/.test(title))score-=8;
+ }else if(/developer|software|programmer|engineer|разработчик|программист/.test(wanted)){
+  if(/developer|engineer|programmer|software/.test(title))score+=50;
+  else if(/developer|engineer|programmer|software/.test(text))score+=15;
+  else score-=12;
+ }else if(/marketing|маркет/.test(wanted)){
+  if(/marketing|marketer|growth|seo|smm|brand/.test(title))score+=50;
+  else if(/marketing|marketer|growth|seo|smm|brand/.test(text))score+=15;
+  else score-=12;
+ }else if(/photographer|фотограф/.test(wanted)){
+  if(/photographer|photography/.test(title))score+=50;
+  else if(/photographer|photography|photo/.test(text))score+=15;
+  else score-=12;
+ }else if(/sales|продаж/.test(wanted)){
+  if(/sales|account executive|business development/.test(title))score+=50;
+  else if(/sales|account|business development/.test(text))score+=15;
+  else score-=12;
+ }else if(/analyst|аналит/.test(wanted)){
+  if(/analyst|analytics/.test(title))score+=50;
+  else if(/analyst|analytics|data/.test(text))score+=15;
+  else score-=12;
+ }else{
+  const tokens=wanted.split(/\s+/).filter(x=>x.length>2);
+  let hits=0;
+  for(const token of tokens){
+   if(title.includes(token))hits++;
+   else if(text.includes(token))hits+=0.35;
+  }
+  if(tokens.length)score+=Math.min(45,(hits/tokens.length)*45);
+ }
+
+ if(activeSearchLocation){
+  const loc=activeSearchLocation.toLowerCase();
+  if(location.includes(loc))score+=18;
+  else if(title.includes(loc)||company.includes(loc))score+=8;
+  else score-=18;
+ }
+
+ if(smartCriteria.remote){
+  if(job.remote)score+=10;
+  else score-=8;
+ }
+
+ if(smartCriteria.salaryMin){
+  const min=Number(job.salary_min||0);
+  const max=Number(job.salary_max||0);
+  if(min>=smartCriteria.salaryMin || max>=smartCriteria.salaryMin)score+=7;
+  else if(min||max)score-=4;
+ }
+
+ if(job.today)score+=3;
+ return Math.max(15,Math.min(99,Math.round(score)));
 }
 
 function applySmartRanking(list,query){
  const base=Array.isArray(list)?list:[];
- const smartActive=!!(activeSearchLocation||smartCriteria.remote||smartCriteria.salaryMin);
+ const smartActive=!!(activeSearchLocation||smartCriteria.remote||smartCriteria.salaryMin||smartCriteria.query);
  return base.map(job=>{
-  const sourceMatch=Math.max(0,Math.min(99,Number(job.match||0)));
-  if(!smartActive){
-   job.smartRank=sourceMatch;
-   job.match=Math.round(sourceMatch);
-   return job;
-  }
-
+  const match=calculateSmartMatch(job,query);
   const relevance=searchRelevance(job,query);
   const locationText=String(job.location||'').toLowerCase();
   const requestedLocation=String(activeSearchLocation||'').trim().toLowerCase();
   let locationTier=1;
 
-  // Smart Search priority: the requested city is the strongest signal.
-  // Exact city matches always stay above jobs from other cities.
   if(requestedLocation){
    if(locationText.includes(requestedLocation)) locationTier=3;
    else if((String(job.title||'')+' '+String(job.company||'')+' '+String(job.description||'')).toLowerCase().includes(requestedLocation)) locationTier=2;
@@ -751,11 +810,10 @@ function applySmartRanking(list,query){
   }
 
   const remoteBonus=smartCriteria.remote?(job.remote?2:0):0;
-  // Sort priority: city -> remote -> original match -> fine relevance.
-  // This prevents an 88% Dubai job from appearing above a 95% Dubai job,
-  // while still keeping non-Dubai results below Dubai results.
-  job.smartRank=(locationTier*100000)+(remoteBonus*10000)+(sourceMatch*100)+relevance;
-  job.match=Math.round(sourceMatch);
+  job.smartRank=smartActive
+    ? (locationTier*100000)+(remoteBonus*10000)+(match*100)+relevance
+    : match*100+relevance;
+  job.match=match;
   return job;
  });
 }
