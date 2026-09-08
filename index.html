@@ -98,6 +98,39 @@ body{background:radial-gradient(circle at 50% -10%,#182d61 0,#070d1d 38%,#040914
 .pro-card{border-radius:21px;padding:17px;background:linear-gradient(110deg,#15144b,#2a104c 72%,#42146a);box-shadow:0 0 35px #753cff22,inset 0 1px 0 #ffffff12}.pro-card .btn{box-shadow:0 10px 30px #7b45ff44}
 .challenge{border-radius:21px;box-shadow:0 14px 32px #0003}
 .bottom{padding-top:9px;padding-bottom:calc(9px + env(safe-area-inset-bottom));backdrop-filter:blur(20px);background:#040a18f5}.nav{min-width:78px}.nav.active{box-shadow:0 0 25px #316dff2a}
+
+/* FINAL MOBILE HERO POLISH */
+.hero-global{position:relative;min-height:332px;padding:17px 16px 14px;isolation:isolate;}
+.hero-glow{width:230px;height:230px;right:-25px;top:-18px;background:radial-gradient(circle,#2088ff35 0%,#663dff1f 42%,transparent 70%);filter:blur(2px);z-index:0}
+.hero-earth{right:-18px;top:-7px;width:218px;height:218px;opacity:1;color:#61c7ff;z-index:1;filter:drop-shadow(0 0 18px #168cffaa) drop-shadow(0 0 42px #6a43ff55);}
+.hero-earth svg{display:block;width:100%;height:100%;}
+.hero-earth svg circle:first-of-type{fill:#0b4fba!important;fill-opacity:.92;stroke:#62cfff!important;stroke-opacity:.95;}
+.hero-earth svg ellipse,.hero-earth svg path{stroke:#7edcff!important;}
+.hero-earth svg ellipse{opacity:.58!important;}
+.hero-earth svg path{opacity:.9!important;}
+.hero-earth svg circle:not(:first-of-type){fill:#b6f1ff!important;}
+.hero-global .hero-kicker,.hero-global .hero-brandline,.hero-global h1,.hero-global p,.hero-global .hero-search,.hero-global .hero-mini{position:relative;z-index:3;}
+.hero-global .hero-kicker{max-width:220px;}
+.hero-brandline{margin-bottom:9px;}
+.hero-global h1{max-width:285px;font-size:30px;margin-bottom:7px;}
+.hero-global h1::after{margin-top:7px;}
+.hero-global p{max-width:275px;margin-bottom:11px;font-size:12.5px;}
+.hero-search{height:53px;border-radius:17px;}
+.hero-mini{gap:5px!important;margin-top:8px!important;}
+.hero-mini span{padding:5px 7px!important;font-size:10px!important;}
+.stats{margin:10px 0 12px;}
+.stat{padding:9px 10px;}
+.stat b{font-size:18px;}
+.section{margin:8px 2px 9px;}
+.ai-grid{gap:8px;}
+.ai-card{min-height:112px;padding:11px;border-radius:17px;}
+.ai-icon{width:38px;height:38px;font-size:20px;margin-bottom:6px;}
+.ai-card b{font-size:13px;}
+.ai-card small{font-size:11px;margin-top:3px;}
+.pro-card{padding:13px;}
+.pro-list{gap:4px;margin-top:8px;font-size:12px;}
+@media(max-width:360px){.hero-global{min-height:320px;padding:15px}.hero-earth{right:-48px;top:-8px;width:190px;height:190px;opacity:.9}.hero-global h1{font-size:28px}.hero-global p{max-width:250px}.hero-mini span:nth-child(n+4){display:none}}
+
 </style>
 </head>
 <body>
@@ -109,7 +142,7 @@ body{background:radial-gradient(circle at 50% -10%,#182d61 0,#070d1d 38%,#040914
 <div class="hero-glow"></div>
 <div class="hero-earth" aria-hidden="true">
 <svg viewBox="0 0 240 240" role="img">
-<defs><radialGradient id="earthCore" cx="42%" cy="35%"><stop offset="0%"/><stop offset="65%"/><stop offset="100%"/></radialGradient><linearGradient id="earthLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%"/><stop offset="100%"/></linearGradient></defs>
+<defs><radialGradient id="earthCore" cx="42%" cy="35%"><stop offset="0%" stop-color="#5fd7ff"/><stop offset="65%" stop-color="#1768d8"/><stop offset="100%" stop-color="#081b56"/></radialGradient><linearGradient id="earthLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#76e4ff"/><stop offset="100%" stop-color="#754cff"/></linearGradient></defs>
 <circle cx="120" cy="120" r="82" fill="url(#earthCore)" stroke="url(#earthLine)" stroke-width="2"/>
 <ellipse cx="120" cy="120" rx="82" ry="32" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
 <ellipse cx="120" cy="120" rx="82" ry="58" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/>
