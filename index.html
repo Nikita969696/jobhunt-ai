@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>JobHunt AI 2.4 — Smart Global Search</title>
+<title>JobHunt AI 2.4 — Smart Search Fixed</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{--bg:#071126;--panel:#0d1831;--panel2:#111f3d;--text:#f7f8ff;--muted:#91a0bd;--line:#24365d;--blue:#5b8cff;--purple:#9b5cff;--green:#55e3bd}
@@ -84,10 +84,17 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 .bottom .nav{position:relative;z-index:2147483001;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
 .bottom .nav.active{background:linear-gradient(180deg,rgba(69,104,178,.32),rgba(67,56,138,.24));border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
 
-/* ===== Smart Global Search 2.4 ===== */
-.smart-search-btn:disabled{opacity:.72;cursor:wait}
-#smartCriteriaBadge{animation:smartBadgeIn .2s ease-out}
-@keyframes smartBadgeIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+/* ===== Smart Search 2.4 ===== */
+.smart-search-row{margin:8px 0 11px!important}
+.smart-search-btn{
+  display:block!important;
+  min-height:44px!important;
+  opacity:1!important;
+  visibility:visible!important;
+  position:relative!important;
+  z-index:5!important;
+}
+.smart-search-btn:disabled{opacity:.72!important}
 
 </style>
 </head>
@@ -219,13 +226,13 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 const WORKER_URL='https://rapid-wood-80b6.fetis969696.workers.dev';
 const API_URL=WORKER_URL+'/jobs';
 const AI_URL=WORKER_URL+'/ai';
-let selectedCountry='gb';
+let selectedCountry=null;
 const EUROPE_COUNTRIES=['gb','de','fr','it','es','nl','pl','at','be','ch','se','no','dk','fi','ie','pt','cz','gr','hu','ro'];
 const COUNTRY_NAMES={gb:'🇬🇧 Англия',eu:'🇪🇺 Европа',tr:'🇹🇷 Турция',ae:'🇦🇪 ОАЭ',de:'🇩🇪 Германия',fr:'🇫🇷 Франция',it:'🇮🇹 Италия',es:'🇪🇸 Испания',nl:'🇳🇱 Нидерланды',pl:'🇵🇱 Польша',at:'🇦🇹 Австрия',be:'🇧🇪 Бельгия',ch:'🇨🇭 Швейцария',se:'🇸🇪 Швеция',no:'🇳🇴 Норвегия',dk:'🇩🇰 Дания',fi:'🇫🇮 Финляндия',ie:'🇮🇪 Ирландия',pt:'🇵🇹 Португалия',cz:'🇨🇿 Чехия',gr:'🇬🇷 Греция',hu:'🇭🇺 Венгрия',ro:'🇷🇴 Румыния',ru:'🇷🇺 Россия',by:'🇧🇾 Беларусь',us:'🇺🇸 США',ca:'🇨🇦 Канада',au:'🇦🇺 Австралия'};
 let jobs=[];
 let currentFilter='all';
-let smartCriteria={country:null,remote:false,salaryMin:0,salaryCurrency:null,summary:''};
-let smartSearchMode=false;
+let smartCriteria={country:null,remote:false,salaryMin:0,salaryCurrency:null,location:'',summary:''};
+let activeSearchLocation='';
 let currentJobIndex=null;
 let searchTimer=null;
 let requestNumber=0;
@@ -329,7 +336,7 @@ if(q&&q!==serverQuery){
 const tokens=q.split(/\s+/).filter(Boolean).slice(0,8);
 if(tokens.length&&!tokens.every(token=>text.includes(token)))return false;
 }
-if(currentFilter==='remote'&&!j.remote&&!smartSearchMode)return false;
+if(currentFilter==='remote'&&!j.remote)return false;
 if(currentFilter==='today'&&!j.today)return false;
 if(currentFilter==='high'){
 const n=Number((j.money.match(/\d[\d,]*/)||['0'])[0].replace(/,/g,''));
@@ -384,132 +391,133 @@ loadJobs(q);
 
 
 function detectLocalSearchIntent(text){
-const raw=String(text||'').trim();
-const s=raw.toLowerCase().replace(/ё/g,'е');
+  const raw=String(text||'').trim();
+  const s=raw.toLowerCase().replace(/ё/g,'е');
 
-let country=null;
-const countryRules=[
-['ae',/(дубай|dubai|оаэ|uae|эмират|эмираты|абу[- ]даби|abu[- ]dhabi|шардж|sharjah)/i],
-['tr',/(турци|турция|turkey|istanbul|стамбул|анкара|ankara)/i],
-['ru',/(росси|россия|russia|москва|moscow|санкт[- ]петербург|питер)/i],
-['by',/(беларус|белорус|belarus|минск|minsk)/i],
-['de',/(германи|германия|germany|берлин|berlin)/i],
-['nl',/(нидерланд|голланд|netherlands|amsterdam|амстердам)/i],
-['fr',/(франци|франция|france|париж|paris)/i],
-['it',/(итал|италия|italy|рим|rome)/i],
-['es',/(испан|испания|spain|мадрид|madrid)/i],
-['pl',/(польш|польша|poland|варшав|warsaw)/i],
-['gb',/(англи|великобрит|uk|united kingdom|london|лондон)/i],
-['us',/(сша|америк|usa|united states|new york|нью[- ]йорк)/i],
-['ca',/(канада|canada|toronto|торонто)/i],
-['au',/(австрал|australia|sydney|сидней)/i]
-];
-for(const [code,re] of countryRules){if(re.test(s)){country=code;break}}
+  const countryRules=[
+    ['ae',/(дубай|dubai|оаэ|uae|эмират|эмираты|абу[ -]?даби|abu[ -]?dhabi|шардж|sharjah)/i],
+    ['tr',/(турци|турция|turkey|istanbul|стамбул|анкара|ankara)/i],
+    ['ru',/(росси|россия|russia|москва|moscow|санкт[ -]?петербург|питер)/i],
+    ['by',/(беларус|белорус|belarus|минск|minsk)/i],
+    ['de',/(германи|германия|germany|берлин|berlin)/i],
+    ['nl',/(нидерланд|голланд|netherlands|amsterdam|амстердам)/i],
+    ['fr',/(франци|франция|france|париж|paris)/i],
+    ['it',/(итал|италия|italy|рим|rome)/i],
+    ['es',/(испан|испания|spain|мадрид|madrid)/i],
+    ['pl',/(польш|польша|poland|варшав|warsaw)/i],
+    ['gb',/(англи|великобрит|uk|united kingdom|london|лондон)/i],
+    ['us',/(сша|америк|usa|united states|new york|нью[ -]?йорк)/i],
+    ['ca',/(канада|canada|toronto|торонто)/i],
+    ['au',/(австрал|australia|sydney|сидней)/i]
+  ];
 
-let profession='';
-const professionRules=[
-[/(ui[\/ ]?ux|ux[\/ ]?ui|дизайнер|дизайн|графическ.*дизайн|веб[- ]дизайн|product designer)/i,'designer'],
-[/(разработчик|программист|developer|software engineer|инженер|frontend|backend|full[ -]?stack)/i,'software developer'],
-[/(маркетинг|маркетолог|marketing|smm|соцсет)/i,'marketing'],
-[/(фотограф|фотография|photographer|photo)/i,'photographer'],
-[/(продаж|sales|seller|account manager)/i,'sales'],
-[/(аналитик|аналитика|analyst|data analyst)/i,'analyst'],
-[/(копирайтер|писатель|контент|writer|copywriter|content creator)/i,'content writer'],
-[/(девопс|devops)/i,'devops engineer'],
-[/(тестировщик|qa|quality assurance)/i,'qa tester']
-];
-for(const [re,value] of professionRules){if(re.test(s)){profession=value;break}}
+  let country=null;
+  for(const [code,re] of countryRules){
+    if(re.test(s)){country=code;break}
+  }
 
-const remote=/(удален|удаленн|remote|work from home|из дома|на дому|дистанцион)/i.test(s);
+  const professionRules=[
+    [/(ui[\/ -]?ux|ux[\/ -]?ui|дизайнер|дизайн|графическ.*дизайн|веб[ -]?дизайн|product designer)/i,'designer'],
+    [/(разработчик|программист|developer|software engineer|инженер|frontend|backend|full[ -]?stack)/i,'software developer'],
+    [/(маркетинг|маркетолог|marketing|smm|соцсет)/i,'marketing'],
+    [/(фотограф|фотография|photographer|photo)/i,'photographer'],
+    [/(продаж|sales|менеджер по продажам|account manager)/i,'sales'],
+    [/(аналитик|аналитика|analyst|data analyst)/i,'analyst'],
+    [/(копирайтер|писатель|контент|writer|copywriter|content creator)/i,'content writer'],
+    [/(девопс|devops)/i,'devops engineer'],
+    [/(тестировщик|qa|quality assurance)/i,'qa tester']
+  ];
 
-let salaryMin=0;
-let salaryCurrency=null;
-const salaryMatch=
-s.match(/(?:от|from|минимум|min(?:imum)?|>=|не менее)\s*([$€£₽])?\s*(\d[\d\s.,]*)(?:\s*(k|к))?\s*(доллар(?:ов|а)?|usd|евро|eur|фунт(?:ов|а)?|gbp|руб(?:лей|ля)?|rub)?/i)
-||s.match(/([$€£₽])\s*(\d[\d\s.,]*)(?:\s*(k|к))?\s*\+?/i)
-||s.match(/(\d[\d\s.,]*)(?:\s*(k|к))?\s*(доллар(?:ов|а)?|usd|евро|eur|фунт(?:ов|а)?|gbp|руб(?:лей|ля)?|rub)\s*\+?/i);
+  let profession='';
+  for(const [re,value] of professionRules){
+    if(re.test(s)){profession=value;break}
+  }
 
-if(salaryMatch){
-let rawNum=salaryMatch[2]||salaryMatch[1]||'';
-let n=Number(String(rawNum).replace(/\s/g,'').replace(',','.'));
-if(Number.isFinite(n)){
-if(/[kк]/i.test(String(salaryMatch[3]||'')))n*=1000;
-const cur=String(salaryMatch[4]||salaryMatch[1]||'').toLowerCase();
-if(cur.includes('€')||cur.includes('евро')||cur==='eur')salaryCurrency='EUR';
-else if(cur.includes('$')||cur.includes('доллар')||cur==='usd')salaryCurrency='USD';
-else if(cur.includes('£')||cur.includes('фунт')||cur==='gbp')salaryCurrency='GBP';
-else if(cur.includes('₽')||cur.includes('руб')||cur==='rub')salaryCurrency='RUB';
-salaryMin=n;
-}
-}
+  const remote=/(удален|удаленн|remote|work from home|из дома|на дому|дистанцион)/i.test(s);
 
-const countryWord={
-ae:'Dubai',
-tr:'Turkey',
-ru:'Russia',
-by:'Belarus',
-de:'Germany',
-nl:'Netherlands',
-fr:'France',
-it:'Italy',
-es:'Spain',
-pl:'Poland',
-gb:'United Kingdom',
-us:'United States',
-ca:'Canada',
-au:'Australia'
-};
+  let salaryMin=0;
+  let salaryCurrency=null;
+  const m=s.match(/(?:от|from|минимум|min(?:imum)?|>=|не менее)\s*([$€£₽])?\s*(\d[\d\s.,]*)(?:\s*(k|к))?\s*(доллар(?:ов|а)?|usd|евро|eur|фунт(?:ов|а)?|gbp|руб(?:лей|ля)?|rub)?/i)
+    ||s.match(/([$€£₽])\s*(\d[\d\s.,]*)(?:\s*(k|к))?\s*\+?/i)
+    ||s.match(/(\d[\d\s.,]*)(?:\s*(k|к))?\s*(доллар(?:ов|а)?|usd|евро|eur|фунт(?:ов|а)?|gbp|руб(?:лей|ля)?|rub)\s*\+?/i);
 
-let apiQuery=profession||raw;
-if(profession){
-if(country&&countryWord[country])apiQuery+=' '+countryWord[country];
-if(remote)apiQuery+=' remote';
-}else{
-apiQuery=raw
-.replace(/(удаленн?[а-я]*|дистанцион[а-я]*|remote|work from home|из дома|на дому)/ig,' ')
-.replace(/(дубай|dubai|оаэ|uae|турци[а-я]*|turkey|росси[а-я]*|russia|беларус[а-я]*|belarus)/ig,' ')
-.replace(/\s+/g,' ').trim()||raw;
-}
+  if(m){
+    const numberPart=m[2]||m[1]||'';
+    let n=Number(String(numberPart).replace(/\s/g,'').replace(',','.'));
+    if(Number.isFinite(n)){
+      if(/[kк]/i.test(String(m[3]||'')))n*=1000;
+      const cur=String(m[4]||m[1]||'').toLowerCase();
+      if(cur.includes('€')||cur.includes('евро')||cur==='eur')salaryCurrency='EUR';
+      else if(cur.includes('$')||cur.includes('доллар')||cur==='usd')salaryCurrency='USD';
+      else if(cur.includes('£')||cur.includes('фунт')||cur==='gbp')salaryCurrency='GBP';
+      else if(cur.includes('₽')||cur.includes('руб')||cur==='rub')salaryCurrency='RUB';
+      salaryMin=n;
+    }
+  }
 
-const summary=[];
-if(profession)summary.push('профессия: '+profession);
-if(country)summary.push('страна: '+(COUNTRY_NAMES[country]||country));
-if(remote)summary.push('удалённо');
-if(salaryMin)summary.push('от '+salaryMin.toLocaleString('ru-RU')+(salaryCurrency?' '+salaryCurrency:''));
+  const query=profession||raw
+    .replace(/(удаленн?[а-я]*|дистанцион[а-я]*|remote|work from home|из дома|на дому)/ig,' ')
+    .replace(/(дубай|dubai|оаэ|uae|эмират[а-я]*|абу[ -]?даби|abu[ -]?dhabi|шардж|sharjah|стамбул|istanbul|анкар[а-я]*|ankara|турци[а-я]*|turkey|росси[а-я]*|russia|беларус[а-я]*|belarus)/ig,' ')
+    .replace(/\s+/g,' ').trim()||raw;
 
-return{
-query:apiQuery.trim(),
-displayQuery:raw,
-country,
-remote,
-salaryMin,
-salaryCurrency,
-summary:summary.join(' · '),
-confidence:profession||country||remote?0.95:0.55
-};
+  const locationRules=[
+    ['Dubai',/(дубай|dubai)/i],
+    ['Abu Dhabi',/(абу[ -]?даби|abu[ -]?dhabi)/i],
+    ['Sharjah',/(шардж|sharjah)/i],
+    ['Istanbul',/(стамбул|istanbul)/i],
+    ['Ankara',/(анкар|ankara)/i],
+    ['London',/(лондон|london)/i],
+    ['Berlin',/(берлин|berlin)/i],
+    ['Amsterdam',/(амстердам|amsterdam)/i],
+    ['Paris',/(париж|paris)/i],
+    ['New York',/(нью[ -]?йорк|new york)/i]
+  ];
+  let location='';
+  for(const [value,re] of locationRules){
+    if(re.test(s)){location=value;break}
+  }
+
+  const summary=[];
+  if(profession)summary.push('профессия: '+profession);
+  if(location)summary.push('локация: '+location);
+  if(country)summary.push('страна: '+(COUNTRY_NAMES[country]||country));
+  if(remote)summary.push('удалённо');
+  if(salaryMin)summary.push('от '+salaryMin.toLocaleString('ru-RU')+(salaryCurrency?' '+salaryCurrency:''));
+
+  return {
+    query,
+    country,
+    remote,
+    salaryMin,
+    salaryCurrency,
+    location,
+    summary:summary.join(' · '),
+    confidence:(profession||country||remote||location)?0.95:0.60
+  };
 }
 
 function parseSmartSearchAnswer(answer){
-let text=String(answer||'').trim();
-text=text.replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
-try{
-const obj=JSON.parse(text);
-return {
-query:String(obj.query||'').trim(),
-country:COUNTRY_NAMES[obj.country]?obj.country:(obj.country==='eu'?'eu':null),
-remote:obj.remote===true,
-salaryMin:Number(obj.salary_min||0)||0,
-salaryCurrency:obj.salary_currency?String(obj.salary_currency).toUpperCase():null,
-summary:String(obj.summary||'').trim(),
-confidence:Math.max(0,Math.min(1,Number(obj.confidence||0)))
-};
-}catch(e){
-return {query:text.replace(/\s+/g,' ').trim().slice(0,180),country:null,remote:false,salaryMin:0,salaryCurrency:null,summary:'',confidence:0};
+ let text=String(answer||'').trim();
+ text=text.replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
+ try{
+ const obj=JSON.parse(text);
+ return {
+ query:String(obj.query||'').trim(),
+ country:COUNTRY_NAMES[obj.country]?obj.country:(obj.country==='eu'?'eu':null),
+ remote:obj.remote===true,
+ salaryMin:Number(obj.salary_min||0)||0,
+ salaryCurrency:obj.salary_currency?String(obj.salary_currency).toUpperCase():null,
+ location:String(obj.location||'').trim(),
+ summary:String(obj.summary||'').trim(),
+ confidence:Math.max(0,Math.min(1,Number(obj.confidence||0)))
+ };
+ }catch(e){
+ return {query:text.replace(/\s+/g,' ').trim().slice(0,180),country:null,remote:false,salaryMin:0,salaryCurrency:null,location:'',summary:'',confidence:0};
+ }
 }
-}
-
 function applySmartCriteria(criteria){
-smartCriteria=criteria||{country:null,remote:false,salaryMin:0,salaryCurrency:null,summary:''};
+smartCriteria=criteria||{country:null,remote:false,salaryMin:0,salaryCurrency:null,location:'',summary:''};
+ activeSearchLocation=String(smartCriteria.location||'').trim();
 if(criteria?.country&&COUNTRY_NAMES[criteria.country]){
 selectedCountry=criteria.country;
 updateCountryPicker();
@@ -571,7 +579,7 @@ return Array.isArray(data.jobs)?data.jobs:[];
 async function fetchJOA(query,country,signal){
 const url=new URL('https://api.jobopportunitiesapi.org/public/jobs');
 url.searchParams.set('country',country.toUpperCase());
-url.searchParams.set('limit','50');
+url.searchParams.set('limit','100');
 if(query.trim())url.searchParams.set('q',query.trim());
 const response=await fetch(url.toString(),{method:'GET',cache:'no-store',signal});
 if(!response.ok)throw new Error('JOA HTTP '+response.status);
@@ -582,35 +590,39 @@ return Array.isArray(data.data)?data.data:[];
 let activeSearchController=null;
 
 function buildSearchVariants(query){
-const q=String(query||'').trim().replace(/\s+/g,' ');
-if(!q)return ['designer'];
-const lower=q.toLowerCase();
-const variants=[q];
-const groups=[
-{re:/\bdesigner\b|дизайн|дизайнер/i,add:['graphic designer','ui designer','ux designer','product designer','web designer']},
-{re:/\bdeveloper\b|\bprogrammer\b|\bsoftware\b|разработчик|программист|фронтенд|бэкенд/i,add:['software developer','web developer','frontend developer','backend developer','full stack developer']},
-{re:/\bmarketing\b|маркетинг|маркетолог|smm/i,add:['digital marketing','marketing specialist','social media marketing','content marketing','marketing manager']},
-{re:/\bphotograph|фотограф/i,add:['photographer','photo editor','product photographer','fashion photographer','content photographer']},
-{re:/\bsales\b|\bseller\b|продаж|продажам/i,add:['sales specialist','sales manager','business development','account manager','sales representative']},
-{re:/\banalyst\b|\banalytics\b|аналитик|аналитика/i,add:['data analyst','business analyst','marketing analyst','financial analyst','research analyst']},
-{re:/\bwriter\b|\bcopywriter\b|\bcontent\b|копирайт|писатель|контент/i,add:['content writer','copywriter','content creator','technical writer','content specialist']},
-{re:/\bengineer\b|инженер/i,add:['software engineer','frontend engineer','backend engineer','devops engineer','data engineer']}
-];
-for(const g of groups){
-if(g.re.test(lower)){
-for(const v of g.add)variants.push(v);
-break;
+ const q=String(query||'').trim().replace(/\s+/g,' ');
+ if(!q)return ['designer'];
+ const lower=q.toLowerCase();
+ const variants=[q];
+ const location=String(activeSearchLocation||'').trim();
+ const groups=[
+  {re:/\bdesigner\b|дизайн|дизайнер/i,add:['graphic designer','ui designer','ux designer','ui ux designer','product designer','web designer','visual designer','brand designer','creative designer','interaction designer','digital designer','art director']},
+  {re:/\bdeveloper\b|\bprogrammer\b|\bsoftware\b|разработчик|программист|фронтенд|бэкенд/i,add:['software developer','web developer','frontend developer','backend developer','full stack developer','frontend engineer','backend engineer','software engineer','react developer','python developer','javascript developer','mobile developer']},
+  {re:/\bmarketing\b|маркетинг|маркетолог|smm/i,add:['digital marketing','marketing specialist','social media marketing','content marketing','marketing manager','performance marketing','growth marketing','brand manager','seo specialist','sem specialist','marketing coordinator','digital marketing specialist']},
+  {re:/\bphotograph|фотограф/i,add:['photographer','photo editor','product photographer','fashion photographer','content photographer','commercial photographer','wedding photographer','studio photographer','visual content creator']},
+  {re:/\bsales\b|\bseller\b|продаж|продажам/i,add:['sales specialist','sales manager','business development','account manager','sales representative','business development manager','account executive','inside sales','sales executive','key account manager']},
+  {re:/\banalyst\b|\banalytics\b|аналитик|аналитика/i,add:['data analyst','business analyst','marketing analyst','financial analyst','research analyst','product analyst','data scientist','bi analyst','reporting analyst','operations analyst']},
+  {re:/\bwriter\b|\bcopywriter\b|\bcontent\b|копирайт|писатель|контент/i,add:['content writer','copywriter','content creator','technical writer','content specialist','content manager','seo writer','editor','content strategist','social media content']},
+  {re:/\bengineer\b|инженер/i,add:['software engineer','frontend engineer','backend engineer','devops engineer','data engineer','qa engineer','cloud engineer','systems engineer','network engineer','solutions engineer']}
+ ];
+ for(const g of groups){
+  if(g.re.test(lower)){
+   for(const v of g.add)variants.push(v);
+   break;
+  }
+ }
+ if(variants.length===1){
+  const words=q.split(/\s+/).filter(Boolean);
+  if(words.length>1)variants.push(words[0],words.slice(-1)[0]);
+ }
+ const base=[...new Set(variants)];
+ if(location){
+  const locVariants=[];
+  for(const v of base.slice(0,12))locVariants.push(v+' '+location);
+  return [...new Set([...locVariants,...base])].slice(0,20);
+ }
+ return base.slice(0,12);
 }
-}
-if(variants.length===1){
-const words=q.split(/\s+/).filter(Boolean);
-if(words.length>1){
-variants.push(words[0],words.slice(-1)[0]);
-}
-}
-return [...new Set(variants)].slice(0,6);
-}
-
 async function fetchWithTimeout(loader,signal,ms=9000){
 const controller=new AbortController();
 const onAbort=()=>controller.abort();
@@ -624,21 +636,30 @@ signal.removeEventListener('abort',onAbort);
 }
 
 async function fetchManyJOA(queries,country,signal,onBatch){
-const raw=[];
-for(let i=0;i<queries.length;i++){
-if(signal.aborted)throw new DOMException('Aborted','AbortError');
-try{
-const result=await fetchWithTimeout(innerSignal=>fetchJOA(queries[i],country,innerSignal),signal,9000);
-if(Array.isArray(result)){raw.push(...result);if(onBatch)onBatch(result,i,queries[i]);}
-}catch(error){
-if(error?.name==='AbortError'&&signal.aborted)throw error;
-console.warn('JOA query error:',queries[i],error);
+ const raw=[];
+ const list=[...new Set((queries||[]).filter(Boolean))];
+ const batchSize=4;
+ for(let startIndex=0;startIndex<list.length;startIndex+=batchSize){
+  if(signal.aborted)throw new DOMException('Aborted','AbortError');
+  const batch=list.slice(startIndex,startIndex+batchSize);
+  const results=await Promise.all(batch.map(async q=>{
+   try{return await fetchWithTimeout(innerSignal=>fetchJOA(q,country,innerSignal),signal,10000)}
+   catch(error){
+    if(error?.name==='AbortError'&&signal.aborted)throw error;
+    console.warn('JOA query error:',q,error);
+    return [];
+   }
+  }));
+  for(let i=0;i<results.length;i++){
+   const result=Array.isArray(results[i])?results[i]:[];
+   if(result.length){
+    raw.push(...result);
+    if(onBatch)onBatch(result,startIndex+i,batch[i]);
+   }
+  }
+ }
+ return raw;
 }
-if(i<queries.length-1)await new Promise(r=>setTimeout(r,250));
-}
-return raw;
-}
-
 async function fetchManyWorker(queries,country,signal,onBatch){
 const raw=[];
 for(let i=0;i<queries.length;i++){
@@ -655,13 +676,33 @@ if(i<queries.length-1)await new Promise(r=>setTimeout(r,350));
 return raw;
 }
 
-function dedupeRawJobs(raw){
-return raw.map(normalizeJob).filter((j,i,a)=>{
-const key=(j.id||'')+'|'+(j.title||'').toLowerCase()+'|'+(j.company||'').toLowerCase()+'|'+(j.location||'').toLowerCase();
-return a.findIndex(x=>((x.id||'')+'|'+(x.title||'').toLowerCase()+'|'+(x.company||'').toLowerCase()+'|'+(x.location||'').toLowerCase())===key)===i;
-}).slice(0,300);
+function searchRelevance(job,query){
+ const q=String(query||'').toLowerCase();
+ const tokens=q.split(/\s+/).filter(x=>x.length>1);
+ const title=job.title.toLowerCase();
+ const location=job.location.toLowerCase();
+ const text=(job.title+' '+job.company+' '+job.location+' '+job.description).toLowerCase();
+ let score=0;
+ if(activeSearchLocation){
+  const loc=activeSearchLocation.toLowerCase();
+  if(location.includes(loc))score+=80;
+  else if(text.includes(loc))score+=45;
+ }
+ for(const token of tokens){
+  if(title.includes(token))score+=22;
+  else if(text.includes(token))score+=7;
+ }
+ if(smartCriteria.remote&&job.remote)score+=35;
+ if(job.today)score+=8;
+ return score;
 }
 
+function dedupeRawJobs(raw){
+ return raw.map(normalizeJob).filter((j,i,a)=>{
+ const key=(j.id||'')+'|'+(j.title||'').toLowerCase()+'|'+(j.company||'').toLowerCase()+'|'+(j.location||'').toLowerCase();
+ return a.findIndex(x=>((x.id||'')+'|'+(x.title||'').toLowerCase()+'|'+(x.company||'').toLowerCase()+'|'+(x.location||'').toLowerCase())===key)===i;
+ }).slice(0,500);
+}
 function paintJobs(raw,query){
 jobs=dedupeRawJobs(raw);
 loadedServerQuery=query;
@@ -761,7 +802,6 @@ searchTimer=setTimeout(()=>loadJobs(q||'designer'),450);
 }
 
 function setFilter(filter,el){
-smartSearchMode=false;
 currentFilter=filter;
 document.querySelectorAll('.filters .chip').forEach(x=>x.classList.remove('active'));
 el.classList.add('active');
@@ -971,69 +1011,74 @@ toast('✨ AI понял профессию, страну и условия');
 }
 
 async function runSmartSearch(){
-const input=document.getElementById('keywordSearch');
-const original=(input?.value||'').trim();
-if(!original){
-toast('Напиши запрос — например: дизайнер удалённо в Дубае');
-return;
-}
+  const input=document.getElementById('keywordSearch');
+  const text=(input?.value||'').trim();
 
-const button=document.querySelector('.smart-search-btn');
-if(button){button.disabled=true;button.innerText='🤖 AI понимает запрос…'}
+  if(!text){
+    toast('Напиши запрос — например: дизайнер удалённо в Дубае от 2000 USD');
+    return;
+  }
 
-const local=detectLocalSearchIntent(original);
-smartSearchMode=!!local.remote;
+  const button=document.querySelector('.smart-search-btn');
+  if(button){
+    button.disabled=true;
+    button.innerText='🤖 AI понимает запрос…';
+  }
 
-// Сразу применяем локально распознанные параметры.
-// Важно: исходный пользовательский текст НЕ заменяем на одно слово.
-applySmartCriteria(local);
-showSmartCriteria(local);
+  // Сначала разбираем запрос локально.
+  // Поэтому «дизайнер удалённо в Дубае» сразу становится AE + designer + remote,
+  // даже если ответ AI задержался.
+  const local=detectLocalSearchIntent(text);
+  applySmartCriteria(local);
+  showSmartCriteria(local);
 
-try{
-const response=await fetch(AI_URL,{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({type:'search',text:original})
-});
-const data=await response.json().catch(()=>({}));
+  if(input)input.value=local.query||text;
 
-if(response.ok&&data.ok){
-const ai=parseSmartSearchAnswer(data.answer||'');
-const merged={
-query:local.query||ai.query||original,
-displayQuery:original,
-country:local.country||ai.country,
-remote:local.remote||ai.remote,
-salaryMin:local.salaryMin||ai.salaryMin,
-salaryCurrency:local.salaryCurrency||ai.salaryCurrency,
-summary:local.summary||ai.summary,
-confidence:Math.max(local.confidence||0,ai.confidence||0)
-};
+  try{
+    const response=await fetch(AI_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({type:'search',text})
+    });
 
-applySmartCriteria(merged);
-showSmartCriteria(merged);
-}
+    const data=await response.json().catch(()=>({}));
 
-// Полный запрос остаётся в поле, чтобы пользователь видел, что именно искал.
-// API получает расширенный английский запрос из merged/local.
-if(input)input.value=original;
+    if(response.ok&&data.ok){
+      const ai=parseSmartSearchAnswer(data.answer||'');
 
-const apiQuery=(local.query||original).trim();
-await loadJobs(apiQuery);
-toast('✨ AI понял запрос и ищет по нему');
-}catch(error){
-console.warn('Smart Search AI fallback:',error);
-// Даже если AI недоступен, локально распознанные параметры уже применены.
-if(input)input.value=original;
-await loadJobs((local.query||original).trim());
-toast('✨ Умный поиск применил параметры запроса');
-}finally{
-if(button){button.disabled=false;button.innerText='✨ AI Smart Search'}
-}
+      const merged={
+        query:local.query||ai.query||text,
+        country:local.country||ai.country||null,
+        remote:local.remote||ai.remote===true,
+        salaryMin:local.salaryMin||ai.salaryMin||0,
+        salaryCurrency:local.salaryCurrency||ai.salaryCurrency||null,
+        summary:local.summary||ai.summary||'',
+        confidence:Math.max(local.confidence||0,ai.confidence||0)
+      };
+
+      applySmartCriteria(merged);
+      showSmartCriteria(merged);
+      if(input)input.value=merged.query||text;
+    }
+
+    await loadJobs(input?.value||text);
+    toast(local.country||local.remote||local.salaryMin
+      ? '✨ Запрос распознан: страна и условия применены'
+      : '✨ AI обработал запрос');
+  }catch(error){
+    console.warn('Smart Search AI fallback:',error);
+    // Даже при ошибке AI локальный разбор уже применён.
+    await loadJobs(input?.value||text);
+    toast('✨ Умный поиск применил параметры запроса');
+  }finally{
+    if(button){
+      button.disabled=false;
+      button.innerText='✨ AI Smart Search';
+    }
+  }
 }
 
 function quickSearch(query){
-smartSearchMode=false;
 const input=document.getElementById('keywordSearch');
 if(input)input.value=query;
 loadJobs(query);
