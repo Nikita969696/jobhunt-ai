@@ -64,38 +64,42 @@ body{background:radial-gradient(700px 360px at 12% -4%,#3b2c86 0,#19275a 32%,tra
 @media(max-width:360px){.app{padding-left:11px;padding-right:11px}.hero h1{font-size:27px}.ai-card{min-height:126px}.brand:after{display:none}}
 
 
-/* PREMIUM VISUAL — CSS ONLY; functional logic remains unchanged */
-body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparent 30%),radial-gradient(circle at 92% 18%,rgba(168,85,247,.18),transparent 28%),linear-gradient(180deg,#050b1b 0%,#071126 48%,#040916 100%);}
-.app{background:linear-gradient(180deg,rgba(7,15,38,.97),rgba(3,8,21,.99));}
-.hero{border:1px solid rgba(116,143,205,.26);background:linear-gradient(145deg,rgba(23,43,97,.95),rgba(10,20,48,.94) 58%,rgba(23,17,54,.94));box-shadow:0 22px 60px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.06);}
-.hero:after{content:"";position:absolute;width:150px;height:150px;right:-65px;top:-70px;border-radius:50%;background:rgba(124,92,255,.16);filter:blur(8px);pointer-events:none;}
-.hero>*{position:relative;z-index:1;}
-.hero h1{letter-spacing:-.045em;text-shadow:0 4px 28px rgba(124,92,255,.2);}
-.btn{box-shadow:0 12px 30px rgba(89,91,255,.22),inset 0 1px 0 rgba(255,255,255,.16);transition:transform .16s ease,filter .16s ease,box-shadow .16s ease;}
-.btn:active,.ai-card:active,.nav:active,.chip:active{transform:scale(.98);}
-.stat{background:linear-gradient(145deg,rgba(15,28,56,.92),rgba(7,15,34,.96));border-color:rgba(116,143,205,.18);box-shadow:0 10px 24px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.03);}
-.ai-card{border-color:rgba(116,143,205,.22);background:linear-gradient(145deg,rgba(20,35,70,.94),rgba(8,17,38,.97));box-shadow:0 12px 30px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.035);}
-.ai-card:hover{border-color:rgba(139,122,255,.45);box-shadow:0 16px 34px rgba(44,32,120,.22);}
-.pro-card{background:linear-gradient(135deg,rgba(43,25,82,.96),rgba(30,22,58,.96) 65%,rgba(10,20,42,.98));border-color:rgba(157,125,255,.42);box-shadow:0 18px 44px rgba(82,49,180,.2),inset 0 1px 0 rgba(255,255,255,.06);}
-.challenge{background:linear-gradient(145deg,rgba(20,43,85,.97),rgba(9,19,43,.98));border-color:rgba(92,128,204,.42);box-shadow:0 14px 34px rgba(0,0,0,.18);}
-.searchbox,.country-picker{box-shadow:0 10px 26px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.035);}
-.card{border-color:rgba(116,143,205,.2);background:linear-gradient(145deg,rgba(15,29,59,.94),rgba(7,15,34,.98));box-shadow:0 12px 30px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.035);}
-.bottom{background:rgba(4,10,25,.96);backdrop-filter:blur(20px);box-shadow:0 -14px 35px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.035);z-index:2147483000!important;pointer-events:auto!important;transform:none!important;left:0!important;right:0!important;position:fixed!important;}
-.bottom .nav{position:relative;z-index:2147483001;touch-action:manipulation;-webkit-user-select:none;user-select:none;}
-.bottom .nav.active{background:linear-gradient(180deg,rgba(69,104,178,.32),rgba(67,56,138,.24));border-radius:16px;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);}
+/* === JobHunt AI GLOBAL PREMIUM HOME === */
+body{background:radial-gradient(circle at 50% -10%,#1d2860 0,#0a1028 35%,#050914 72%);}
+.app{background:transparent;}
+.top{padding:12px 2px 8px;align-items:center;}
+.brand{font-size:18px;letter-spacing:-.4px;display:flex;align-items:center;gap:2px}.brand span{background:linear-gradient(90deg,#58a8ff,#bd5cff);-webkit-background-clip:text;background-clip:text;color:transparent}.brand small{font-size:7px;letter-spacing:.12em;color:#6e8dd1;border:1px solid #294b93;background:#0b1838;border-radius:999px;padding:4px 6px;margin-left:6px}.avatar{border:1px solid #6f4cff;background:linear-gradient(135deg,#2d8cff,#9c3fff);box-shadow:0 0 22px #5f55ff55}
+.hero-global{min-height:330px;padding:19px 17px 16px;border-radius:28px;background:linear-gradient(145deg,#0e1d49 0%,#081634 54%,#160d38 100%);border:1px solid #3156a0;box-shadow:0 24px 70px #0008,inset 0 1px 0 #ffffff16;overflow:hidden}
+.hero-global:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 22%,#2e70ff28,transparent 25%),radial-gradient(circle at 18% 90%,#9e3dff22,transparent 35%);pointer-events:none}
+.hero-glow{position:absolute;width:190px;height:190px;right:-15px;top:15px;border-radius:50%;background:#2578ff18;filter:blur(8px);pointer-events:none}.hero-earth{position:absolute;right:-36px;top:-17px;width:205px;height:205px;color:#45a8ff;opacity:.9;filter:drop-shadow(0 0 22px #2b86ff66);pointer-events:none}.hero-earth svg{width:100%;height:100%}.hero-earth circle:first-of-type{fill:#0b4a9f66}.hero-brandline{position:relative;z-index:2;font-size:13px;margin-bottom:13px;color:#f4f7ff}.hero-brandline span{color:#a75cff}.hero-brandline i{font-style:normal;font-size:7px;letter-spacing:.08em;color:#61e6bf;margin-left:8px;background:#153c46;border:1px solid #2b766d;border-radius:999px;padding:3px 6px}.hero-global .hero-kicker{position:relative;z-index:2;width:max-content;margin-bottom:7px}.hero-global h1{position:relative;z-index:2;font-size:31px;line-height:1.02;letter-spacing:-1.2px;max-width:290px;margin:0 0 10px}.hero-global h1::first-line{color:#fff}.hero-global p{position:relative;z-index:2;max-width:295px;font-size:13px;line-height:1.5;margin-bottom:15px;color:#b9c7e8}.hero-search{position:relative;z-index:3;display:flex;align-items:center;gap:9px;height:56px;padding:6px 7px 6px 15px;border-radius:18px;border:1px solid #2877e7;background:linear-gradient(90deg,#0b2e68dd,#1e1765dd);box-shadow:0 0 0 1px #6a4bff22,0 14px 35px #0004;cursor:pointer}.hero-search>span{font-size:23px;color:#8ec8ff}.hero-search b{flex:1;color:#dbe7ff;font-size:15px;font-weight:750}.hero-search button{width:42px;height:42px;border:0;border-radius:14px;color:#fff;font-size:24px;background:linear-gradient(135deg,#3e9cff,#a84dff);box-shadow:0 8px 22px #7247ff55;cursor:pointer}.hero-mini{position:relative;z-index:2;display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.hero-mini span{font-size:9px;color:#c7d6f4;background:#ffffff0a;border:1px solid #ffffff12;border-radius:999px;padding:5px 8px}.stats{margin-top:13px;gap:8px}.stat{min-height:56px}.stat b{font-size:19px}.section{margin-top:18px}.section h2{font-size:17px}.section>span{font-size:9px!important;letter-spacing:.08em}.ai-grid{gap:9px}.ai-card{min-height:128px;border-radius:19px;background:linear-gradient(145deg,#0e1c3b,#08132a);border-color:#28518e;box-shadow:0 12px 28px #0003}.ai-card:hover{border-color:#5d7fe0}.ai-icon{background:linear-gradient(135deg,#214d9e,#6733a4);box-shadow:0 0 20px #5a54ff33}.pro-card{background:linear-gradient(100deg,#17144d,#24104a);border-color:#7a3cff;box-shadow:0 0 30px #6c3cff1c}.challenge{border-color:#31548e}.bottom{left:0;right:0;transform:none;width:100%;margin:0;border-top-color:#273e70;background:#050c1df2;box-shadow:0 -16px 38px #0007}.nav.active{background:linear-gradient(180deg,#162c59,#102044);box-shadow:0 0 20px #2f69ff22}.nav.active .nav-icon{color:#78adff;text-shadow:0 0 15px #4e8dff}.app{padding-bottom:90px}
+@media(max-width:360px){.hero-global{min-height:325px;padding-left:15px;padding-right:15px}.hero-earth{right:-58px;opacity:.65}.hero-global h1{font-size:28px}}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="top"><div class="brand">JobHunt <span>AI</span></div><div class="avatar">A</div></div>
+<div class="top"><div class="brand">JobHunt <span>AI</span><small>GLOBAL</small></div><div class="avatar" id="topAvatar">J</div></div>
 
 <section id="home" class="screen active">
-<div class="hero">
+<div class="hero hero-global">
+<div class="hero-glow"></div>
+<div class="hero-earth" aria-hidden="true">
+<svg viewBox="0 0 240 240" role="img">
+<defs><radialGradient id="earthCore" cx="42%" cy="35%"><stop offset="0%"/><stop offset="65%"/><stop offset="100%"/></radialGradient><linearGradient id="earthLine" x1="0" y1="0" x2="1" y2="1"><stop offset="0%"/><stop offset="100%"/></linearGradient></defs>
+<circle cx="120" cy="120" r="82" fill="url(#earthCore)" stroke="url(#earthLine)" stroke-width="2"/>
+<ellipse cx="120" cy="120" rx="82" ry="32" fill="none" stroke="currentColor" stroke-width="1" opacity=".45"/>
+<ellipse cx="120" cy="120" rx="82" ry="58" fill="none" stroke="currentColor" stroke-width="1" opacity=".35"/>
+<ellipse cx="120" cy="120" rx="32" ry="82" fill="none" stroke="currentColor" stroke-width="1" opacity=".42"/>
+<ellipse cx="120" cy="120" rx="58" ry="82" fill="none" stroke="currentColor" stroke-width="1" opacity=".28"/>
+<path d="M53 101c20-13 33-4 48-10 16-7 22-21 42-18 14 2 20 11 31 10 7 0 12-4 18-5" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" opacity=".72"/>
+<path d="M67 143c17-5 27 2 39 10 13 8 27 5 38 1 13-5 26-3 35 8" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" opacity=".55"/>
+<circle cx="166" cy="82" r="4" fill="currentColor"/><circle cx="86" cy="134" r="3" fill="currentColor"/><circle cx="146" cy="151" r="3" fill="currentColor"/>
+</svg></div>
 <div class="hero-kicker"><span class="live-dot"></span> GLOBAL AI JOB SEARCH</div>
-<div class="hero-meta"><span class="hero-pill">🌍 Worldwide</span><span class="hero-pill">⚡ AI-powered</span><span class="hero-pill">🔎 Real jobs</span></div>
+<div class="hero-brandline"><b>JobHunt</b> <span>AI</span><i>● LIVE</i></div>
 <h1 id="welcomeTitle">Привет 👋</h1>
-<p>JobHunt AI собирает реальные возможности из разных стран и помогает быстрее понять, куда стоит откликаться.</p>
-<button class="btn" onclick="show('search')">🚀 Найти свою возможность</button>
+<p>Твоя карьера начинается здесь. Найди идеальную работу по всему миру с помощью AI.</p>
+<div class="hero-search" onclick="show('search')"><span>⌕</span><b>Найти работу...</b><button type="button" onclick="event.stopPropagation();show('search')">→</button></div>
+<div class="hero-mini"><span>🌍 Worldwide</span><span>⚡ AI-powered</span><span>✓ Реальные вакансии</span></div>
 </div>
 <div class="stats"><div class="stat"><b id="jobsCount">—</b><small>вакансий</small></div><div class="stat"><b id="savedCount">0</b><small>сохранено</small></div><div class="stat"><b id="bestMatch">—</b><small>лучший match</small></div></div>
 <div class="section"><h2>🤖 AI для тебя</h2><span style="color:#7f91b6">SMART TOOLS</span></div>
@@ -1050,21 +1054,20 @@ if(progress===3)alert(`🏆 Challenge выполнен!\n\nВ следующей
 else alert(`🔥 Прогресс: ${progress} из 3\n\nОткрой ещё одну подходящую вакансию, чтобы продолжить.`);
 }
 
-
 function getTelegramFirstName(){
- try{
-  const user=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initDataUnsafe&&window.Telegram.WebApp.initDataUnsafe.user;
-  return user&&user.first_name?String(user.first_name).trim():'';
- }catch(e){return ''}
+try{
+const user=window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initDataUnsafe&&window.Telegram.WebApp.initDataUnsafe.user;
+return user&&user.first_name?String(user.first_name).trim():'';
+}catch(e){return ''}
 }
 function updatePersonalization(){
- const name=getTelegramFirstName();
- const welcome=document.getElementById('welcomeTitle');
- const profile=document.getElementById('profileName');
- const avatar=document.querySelector('.avatar');
- if(welcome)welcome.textContent=name?'Привет, '+name+' 👋':'Привет 👋';
- if(profile)profile.textContent=name||'Профиль';
- if(avatar)avatar.textContent=(name?name.charAt(0):'J').toUpperCase();
+const name=getTelegramFirstName();
+const welcome=document.getElementById('welcomeTitle');
+const profile=document.getElementById('profileName');
+const avatar=document.getElementById('topAvatar');
+if(welcome)welcome.textContent=name?'Привет, '+name+' 👋':'Привет 👋';
+if(profile)profile.textContent=name||'Профиль';
+if(avatar)avatar.textContent=(name?name.charAt(0):'J').toUpperCase();
 }
 
 function initTelegram(){
