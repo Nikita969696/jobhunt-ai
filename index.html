@@ -1100,6 +1100,7 @@ async function runSmartSearch(){
         remote:local.remote||ai.remote===true,
         salaryMin:local.salaryMin||ai.salaryMin||0,
         salaryCurrency:local.salaryCurrency||ai.salaryCurrency||null,
+        location:local.location||ai.location||'',
         summary:local.summary||ai.summary||'',
         confidence:Math.max(local.confidence||0,ai.confidence||0)
       };
@@ -1110,8 +1111,8 @@ async function runSmartSearch(){
     }
 
     await loadJobs(input?.value||text);
-    toast(local.country||local.remote||local.salaryMin
-      ? '✨ Запрос распознан: страна и условия применены'
+    toast(local.country||local.remote||local.salaryMin||local.location
+      ? '✨ Запрос распознан: локация, страна и условия применены'
       : '✨ AI обработал запрос');
   }catch(error){
     console.warn('Smart Search AI fallback:',error);
