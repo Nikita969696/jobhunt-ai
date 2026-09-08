@@ -97,6 +97,13 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 .smart-search-btn:disabled{opacity:.72!important}
 
 </style>
+
+<style>
+.alert-box{margin-top:12px;padding:14px;border-radius:16px;background:linear-gradient(145deg,rgba(20,35,70,.94),rgba(8,17,38,.97));border:1px solid rgba(116,143,205,.22)}
+.alert-item{padding:11px 0;border-bottom:1px solid rgba(116,143,205,.14)}
+.alert-item:last-child{border-bottom:0}
+.alert-title{font-weight:800;font-size:14px}.alert-meta{color:#9ca9c8;font-size:12px;margin-top:4px}.alert-actions{display:flex;gap:8px;margin-top:8px}.alert-actions button{flex:1}
+</style>
 </head>
 <body>
 <div class="app">
@@ -163,7 +170,7 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 <section id="detail" class="screen"><div class="back" onclick="show('search')">← Назад</div><div id="detailContent"></div></section>
 <section id="apply" class="screen"><div class="back" onclick="show('detail')">← Назад</div><div class="box"><div class="tag">AI ОТКЛИК</div><h2>Готовое сообщение клиенту</h2><p id="msg">Hi! I’m a professional specialist and I’m interested in your project. I have relevant experience and would love to discuss the details. I can also share examples of my work.</p><button class="btn secondary" onclick="copyMessage()">Копировать</button></div><button class="btn" style="width:100%" onclick="openAI('reply')">Откликнуться</button></section>
 <section id="saved" class="screen"><div class="section"><h2>♡ Сохранённое</h2></div><div id="savedCards"></div></section>
-<section id="profile" class="screen"><div class="hero"><h1 id="profileName">Профиль</h1><p>Фотограф · Дизайнер</p><div class="stats"><div class="stat"><b id="profileJobs">—</b><small>возможности</small></div><div class="stat"><b>4.8</b><small>рейтинг</small></div><div class="stat"><b>156</b><small>просмотров</small></div></div></div><div class="card premium"><b>⚡ JobHunt AI PRO</b><p style="color:#c2b7d8">Больше возможностей, больше заработка.</p><div class="money">149 ⭐ / месяц</div><div id="profileProStatus" style="color:#9d8ab9;font-size:13px;margin-top:5px">Проверяем статус PRO…</div><button id="profileProButton" class="btn" style="margin-top:10px" onclick="openPro()">Подключить PRO</button></div></section>
+<section id="profile" class="screen"><div class="hero"><h1 id="profileName">Профиль</h1><p>Фотограф · Дизайнер</p><div class="stats"><div class="stat"><b id="profileJobs">—</b><small>возможности</small></div><div class="stat"><b>4.8</b><small>рейтинг</small></div><div class="stat"><b>156</b><small>просмотров</small></div></div></div><div class="card alert-box"><b>🔔 Smart Alerts</b><p style="color:#9ca9c8;margin:6px 0 10px">Получай новые вакансии в Telegram по своему последнему Smart Search.</p><div id="alertStatus" class="alert-meta">Проверяем уведомления…</div><button class="btn" style="width:100%;margin-top:10px" onclick="createCurrentAlert()">🔔 Включить уведомления</button><div id="alertList"></div></div><div class="card premium"><b>⚡ JobHunt AI PRO</b><p style="color:#c2b7d8">Больше возможностей, больше заработка.</p><div class="money">149 ⭐ / месяц</div><div id="profileProStatus" style="color:#9d8ab9;font-size:13px;margin-top:5px">Проверяем статус PRO…</div><button id="profileProButton" class="btn" style="margin-top:10px" onclick="openPro()">Подключить PRO</button></div></section>
 </div>
 
 <div id="countryModal" class="country-modal" onclick="if(event.target===this)closeCountryPicker()">
@@ -241,6 +248,7 @@ let saved=[];
 let savedJobsStore={};
 let proState={active:false,expiresAt:null,subscriptionCanceled:false};
 let tgWebApp=null;
+let smartAlerts=[];
 
 try{saved=JSON.parse(localStorage.getItem('jobhunt_saved')||'[]');if(!Array.isArray(saved))saved=[]}catch(e){saved=[]}
 try{savedJobsStore=JSON.parse(localStorage.getItem('jobhunt_saved_jobs')||'{}');if(!savedJobsStore||typeof savedJobsStore!=='object'||Array.isArray(savedJobsStore))savedJobsStore={}}catch(e){savedJobsStore={}}
@@ -574,7 +582,7 @@ el.style.cssText='margin:10px 0;padding:10px 12px;border-radius:14px;background:
 const target=document.getElementById('searchCards');
 if(target?.parentNode)target.parentNode.insertBefore(el,target);
 }
-el.innerHTML='✨ <b>AI понял:</b> '+escapeHtml(label);
+el.innerHTML='✨ <b>AI понял:</b> '+escapeHtml(label)+'<button class="btn secondary" style="width:100%;margin-top:9px" onclick="createCurrentAlert()">🔔 Получать новые вакансии в Telegram</button>';
 }
 
 function renderLoading(message='Ищем вакансии…'){
@@ -1217,6 +1225,78 @@ function telegramAvailable(){
 return !!(window.Telegram&&window.Telegram.WebApp&&window.Telegram.WebApp.initData);
 }
 
+async function alertsRequest(action,extra={}){
+if(!telegramAvailable())return {ok:false,error:'Открой приложение внутри Telegram'};
+try{
+const response=await fetch(WORKER_URL+'/alerts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({initData:window.Telegram.WebApp.initData,action,...extra})});
+const data=await response.json().catch(()=>({}));
+if(!response.ok||!data.ok)throw new Error(data.error||data.details||('HTTP '+response.status));
+return data;
+}catch(error){console.error('Alerts error:',error);return {ok:false,error:error.message||'Ошибка'};}
+}
+
+function alertDescription(a){
+const parts=[a.query];
+if(a.location)parts.push(a.location);
+if(a.remote)parts.push('Remote');
+if(a.salaryMin)parts.push('от '+a.salaryMin+(a.salaryCurrency?' '+a.salaryCurrency:''));
+return parts.join(' · ');
+}
+
+function renderAlerts(){
+const box=document.getElementById('alertList');
+const status=document.getElementById('alertStatus');
+if(!box||!status)return;
+if(!telegramAvailable()){
+status.textContent='Открой приложение внутри Telegram, чтобы получать уведомления.';
+box.innerHTML='';
+return;
+}
+if(!smartAlerts.length){
+status.textContent='Уведомления пока не включены.';
+box.innerHTML='';
+return;
+}
+status.textContent='Активных уведомлений: '+smartAlerts.length;
+box.innerHTML=smartAlerts.map(a=>`<div class="alert-item"><div class="alert-title">🔔 ${escapeHtml(alertDescription(a))}</div><div class="alert-meta">Проверяем новые вакансии автоматически</div><div class="alert-actions"><button class="btn secondary" onclick="deleteAlert('${String(a.id).replace(/'/g,"\\'")}')">Удалить</button></div></div>`).join('');
+}
+
+async function refreshAlerts(){
+const data=await alertsRequest('list');
+if(data.ok){smartAlerts=Array.isArray(data.alerts)?data.alerts:[];renderAlerts();}
+else renderAlerts();
+}
+
+async function createCurrentAlert(){
+if(!telegramAvailable()){toast('Открой JobHunt AI внутри Telegram');return;}
+const query=String(smartCriteria.query||document.getElementById('keywordSearch')?.value||'designer').trim();
+const data=await alertsRequest('create',{
+query,
+country:selectedCountry,
+location:activeSearchLocation||'',
+remote:!!smartCriteria.remote,
+salaryMin:Number(smartCriteria.salaryMin||0),
+salaryCurrency:smartCriteria.salaryCurrency||null
+});
+if(!data.ok){
+if(data.code==='ALERT_LIMIT'&&!data.pro){
+openPro();
+ toast('Бесплатное уведомление уже создано. PRO — до 5 уведомлений ⭐');
+}else if(data.code==='ALERT_LIMIT')toast('Лимит уведомлений: '+data.limit+' ⭐');
+else toast('❌ '+data.error);
+return;
+}
+smartAlerts.push(data.alert);
+renderAlerts();
+toast('🔔 Уведомления включены');
+}
+
+async function deleteAlert(id){
+const data=await alertsRequest('delete',{id});
+if(data.ok){smartAlerts=smartAlerts.filter(a=>String(a.id)!==String(id));renderAlerts();toast('Уведомление удалено');}
+else toast('❌ '+data.error);
+}
+
 async function refreshProStatus(){
 try{
 if(!telegramAvailable()){updateProUI();return}
@@ -1403,6 +1483,7 @@ updateCountryPicker();
 renderSaved();
 updateChallenge();
 refreshProStatus();
+refreshAlerts();
 loadJobs('designer');
 </script>
 </body>
