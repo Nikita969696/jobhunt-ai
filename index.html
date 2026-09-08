@@ -343,6 +343,10 @@ const n=Number((j.money.match(/\d[\d,]*/)||['0'])[0].replace(/,/g,''));
 if(n<500)return false;
 }
 return true;
+}).sort((a,b)=>{
+  const rb=Number(b.job.smartRank||b.job.match||0);
+  const ra=Number(a.job.smartRank||a.job.match||0);
+  return rb-ra;
 }).map(x=>x.index);
 }
 
@@ -679,22 +683,50 @@ return raw;
 function searchRelevance(job,query){
  const q=String(query||'').toLowerCase();
  const tokens=q.split(/\s+/).filter(x=>x.length>1);
- const title=job.title.toLowerCase();
- const location=job.location.toLowerCase();
+ const title=String(job.title||'').toLowerCase();
+ const location=String(job.location||'').toLowerCase();
  const text=(job.title+' '+job.company+' '+job.location+' '+job.description).toLowerCase();
  let score=0;
+
+ // Smart Search: location is a strong signal. A job in the requested city
+ // must outrank a merely related job from another city.
  if(activeSearchLocation){
   const loc=activeSearchLocation.toLowerCase();
-  if(location.includes(loc))score+=80;
-  else if(text.includes(loc))score+=45;
+  if(location.includes(loc))score+=100;
+  else if(text.includes(loc))score+=35;
+  else score-=18;
  }
+
+ // Profession/title relevance. Exact title matches beat generic description matches.
  for(const token of tokens){
-  if(title.includes(token))score+=22;
-  else if(text.includes(token))score+=7;
+  if(title.includes(token))score+=24;
+  else if(text.includes(token))score+=6;
  }
- if(smartCriteria.remote&&job.remote)score+=35;
+
+ if(smartCriteria.remote){
+  if(job.remote)score+=28;
+  else score-=12;
+ }
  if(job.today)score+=8;
  return score;
+}
+
+function applySmartRanking(list,query){
+ const base=Array.isArray(list)?list:[];
+ const smartActive=!!(activeSearchLocation||smartCriteria.remote||smartCriteria.salaryMin);
+ return base.map(job=>{
+  if(!smartActive){
+   job.smartRank=Number(job.match||0);
+   return job;
+  }
+  const relevance=searchRelevance(job,query);
+  // Keep the visible match score stable and understandable, but make it reflect
+  // Smart Search relevance when location/remote/other criteria are active.
+  const raw=70+relevance;
+  job.smartRank=raw;
+  job.match=Math.max(55,Math.min(99,Math.round(raw)));
+  return job;
+ });
 }
 
 function dedupeRawJobs(raw){
@@ -704,7 +736,7 @@ function dedupeRawJobs(raw){
  }).slice(0,500);
 }
 function paintJobs(raw,query){
-jobs=dedupeRawJobs(raw);
+jobs=applySmartRanking(dedupeRawJobs(raw),query);
 loadedServerQuery=query;
 renderHome();
 renderSearch();
