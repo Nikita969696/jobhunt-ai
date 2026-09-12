@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>JobHunt AI 2.4 — Smart Search Fixed</title>
+<title>JobHunt AI 2.4 — Smart Search Fixed + HH</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{--bg:#071126;--panel:#0d1831;--panel2:#111f3d;--text:#f7f8ff;--muted:#91a0bd;--line:#24365d;--blue:#5b8cff;--purple:#9b5cff;--green:#55e3bd}
@@ -112,13 +112,13 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 <section id="home" class="screen active">
 <div class="hero">
 <div class="hero-kicker"><span class="live-dot"></span> GLOBAL AI JOB SEARCH</div>
-<div class="hero-meta"><span class="hero-pill">🌍 Worldwide</span><span class="hero-pill">⚡ AI-powered</span><span class="hero-pill">🔎 Real jobs</span></div>
+<div class="hero-meta"><span class="hero-pill">🌍 Worldwide</span><span class="hero-pill"> AI-powered</span><span class="hero-pill">🔎 Real jobs</span></div>
 <h1 id="welcomeTitle">Привет 👋</h1>
 <p>JobHunt AI собирает реальные возможности из разных стран и помогает быстрее понять, куда стоит откликаться.</p>
 <button class="btn" onclick="show('search')">🚀 Найти свою возможность</button>
 </div>
 <div class="stats"><div class="stat"><b id="jobsCount">—</b><small>вакансий</small></div><div class="stat"><b id="savedCount">0</b><small>сохранено</small></div><div class="stat"><b id="bestMatch">—</b><small>лучший match</small></div></div>
-<div class="section"><h2>🤖 AI для тебя</h2><span style="color:#7f91b6">SMART TOOLS</span></div>
+<div class="section"><h2> AI для тебя</h2><span style="color:#7f91b6">SMART TOOLS</span></div>
 <div class="ai-grid">
 <button class="ai-card" onclick="openAI('resume')"><span class="ai-icon">📄</span><b>Анализ резюме</b><small>Проверь навыки и усили CV</small></button>
 <button class="ai-card" onclick="openAI('reply')"><span class="ai-icon">✍️</span><b>Написать отклик</b><small>Получить персональный текст</small></button>
@@ -134,7 +134,7 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 <small id="homeProStatus" class="pro-note">Ежемесячная подписка через Telegram Stars</small>
 </div>
 
-<div class="section"><h2>🏆 JobHunt Challenge</h2><span style="color:#7f91b6">Сегодня</span></div>
+<div class="section"><h2> JobHunt Challenge</h2><span style="color:#7f91b6">Сегодня</span></div>
 <div class="challenge">
 <div class="challenge-top"><div><b>Найди 3 подходящие вакансии</b><small>За выполнение получишь бонус PRO</small></div><div class="challenge-badge">🔥</div></div>
 <div class="progress"><div id="challengeProgress" class="progress-fill"></div></div>
@@ -148,13 +148,13 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 
 <section id="search" class="screen">
 <div class="section"><h2>🌍 Найди возможности по миру</h2><span style="color:#7f91b6">GLOBAL</span></div>
-<div class="hero-meta" style="margin-bottom:10px"><span class="hero-pill">⚡ AI Search</span><span class="hero-pill">🌐 20+ regions</span><span class="hero-pill">🔒 Telegram-ready</span></div>
+<div class="hero-meta" style="margin-bottom:10px"><span class="hero-pill"> AI Search</span><span class="hero-pill">🌐 20+ regions</span><span class="hero-pill">🔒 Telegram-ready</span></div>
 <input id="keywordSearch" class="searchbox" type="text" placeholder="Например: designer, developer, photographer…" oninput="filterJobs()"> 
 <div class="smart-search-row"><button class="smart-search-btn" onclick="runSmartSearch()">✨ AI Smart Search</button></div>
-<div class="quick-row"><button class="quick-chip" onclick="quickSearch('remote designer')">🏠 Remote designer</button><button class="quick-chip" onclick="quickSearch('junior developer')">🌱 Junior developer</button><button class="quick-chip" onclick="quickSearch('photographer')">📸 Photographer</button><button class="quick-chip" onclick="quickSearch('marketing')">📱 Marketing</button></div>
+<div class="quick-row"><button class="quick-chip" onclick="quickSearch('remote designer')">🏠 Remote designer</button><button class="quick-chip" onclick="quickSearch('junior developer')">🌱 Junior developer</button><button class="quick-chip" onclick="quickSearch('photographer')"> Photographer</button><button class="quick-chip" onclick="quickSearch('marketing')"> Marketing</button></div>
 <div class="country-label">🌍 Страна / регион</div>
 <button id="countryPickerButton" class="country-picker" onclick="openCountryPicker()">
-<span class="country-picker-main"><span id="countryPickerFlag">🇬🇧</span><span><strong id="countryPickerName">Англия</strong><span class="country-picker-sub">Нажми, чтобы выбрать страну</span></span></span>
+<span class="country-picker-main"><span id="countryPickerFlag">🇬</span><span><strong id="countryPickerName">Англия</strong><span class="country-picker-sub">Нажми, чтобы выбрать страну</span></span></span>
 <span class="country-picker-arrow">⌄</span>
 </button>
 <div class="filters">
@@ -164,11 +164,11 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 <button class="chip" onclick="setFilter('high',this)">£500+</button>
 </div>
 <div id="searchCards"><div class="loading">Введите профессию или запрос…</div></div>
-<div class="source">Источники: Adzuna · Arbeitnow · Job Opportunities API · Careerjet</div>
+<div class="source">Источники: Adzuna · Arbeitnow · Job Opportunities API · Careerjet · HeadHunter</div>
 </section>
 
 <section id="detail" class="screen"><div class="back" onclick="show('search')">← Назад</div><div id="detailContent"></div></section>
-<section id="apply" class="screen"><div class="back" onclick="show('detail')">← Назад</div><div class="box"><div class="tag">AI ОТКЛИК</div><h2>Готовое сообщение клиенту</h2><p id="msg">Hi! I’m a professional specialist and I’m interested in your project. I have relevant experience and would love to discuss the details. I can also share examples of my work.</p><button class="btn secondary" onclick="copyMessage()">Копировать</button></div><button class="btn" style="width:100%" onclick="openAI('reply')">Откликнуться</button></section>
+<section id="apply" class="screen"><div class="back" onclick="show('detail')">← Назад</div><div class="box"><div class="tag">AI ОТКЛИК</div><h2>Готовое сообщение клиенту</h2><p id="msg">Hi! I'm a professional specialist and I'm interested in your project. I have relevant experience and would love to discuss the details. I can also share examples of my work.</p><button class="btn secondary" onclick="copyMessage()">Копировать</button></div><button class="btn" style="width:100%" onclick="openAI('reply')">Откликнуться</button></section>
 <section id="saved" class="screen"><div class="section"><h2>♡ Сохранённое</h2></div><div id="savedCards"></div></section>
 <section id="profile" class="screen"><div class="hero"><h1 id="profileName">Профиль</h1><p>Фотограф · Дизайнер</p><div class="stats"><div class="stat"><b id="profileJobs">—</b><small>возможности</small></div><div class="stat"><b>4.8</b><small>рейтинг</small></div><div class="stat"><b>156</b><small>просмотров</small></div></div></div><div class="card alert-box"><b>🔔 Smart Alerts</b><p style="color:#9ca9c8;margin:6px 0 10px">Получай новые вакансии в Telegram по своему последнему Smart Search.</p><div id="alertStatus" class="alert-meta">Проверяем уведомления…</div><button class="btn" style="width:100%;margin-top:10px" onclick="createCurrentAlert()">🔔 Включить уведомления</button><div id="alertList"></div></div><div class="card premium"><b>⚡ JobHunt AI PRO</b><p style="color:#c2b7d8">Больше возможностей, больше заработка.</p><div class="money">149 ⭐ / месяц</div><div id="profileProStatus" style="color:#9d8ab9;font-size:13px;margin-top:5px">Проверяем статус PRO…</div><button id="profileProButton" class="btn" style="margin-top:10px" onclick="openPro()">Подключить PRO</button></div></section>
 </div>
@@ -178,37 +178,41 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 <div class="country-head"><h2>🌍 Выбрать страну</h2><button class="country-close" onclick="closeCountryPicker()">×</button></div>
 <div class="country-grid">
 <div class="country-group">Популярные направления</div>
-<button class="country-option" data-country-option="gb" onclick="setCountry('gb')"><span class="country-option-title">🇬🇧 Англия</span></button>
+<button class="country-option" data-country-option="gb" onclick="setCountry('gb')"><span class="country-option-title">🇬 Англия</span></button>
 <button class="country-option" data-country-option="eu" onclick="setCountry('eu')"><span class="country-option-title">🇪🇺 Европа</span><span class="country-option-note">Все основные страны Европы</span></button>
 <button class="country-option" data-country-option="tr" onclick="setCountry('tr')"><span class="country-option-title">🇹🇷 Турция</span></button>
 <button class="country-option" data-country-option="ae" onclick="setCountry('ae')"><span class="country-option-title">🇦🇪 ОАЭ</span></button>
 
 <div class="country-group">Европа</div>
 <button class="country-option" data-country-option="de" onclick="setCountry('de')"><span class="country-option-title">🇩🇪 Германия</span></button>
-<button class="country-option" data-country-option="fr" onclick="setCountry('fr')"><span class="country-option-title">🇫🇷 Франция</span></button>
-<button class="country-option" data-country-option="it" onclick="setCountry('it')"><span class="country-option-title">🇮🇹 Италия</span></button>
-<button class="country-option" data-country-option="es" onclick="setCountry('es')"><span class="country-option-title">🇪🇸 Испания</span></button>
+<button class="country-option" data-country-option="fr" onclick="setCountry('fr')"><span class="country-option-title">🇷 Франция</span></button>
+<button class="country-option" data-country-option="it" onclick="setCountry('it')"><span class="country-option-title">🇹 Италия</span></button>
+<button class="country-option" data-country-option="es" onclick="setCountry('es')"><span class="country-option-title">🇸 Испания</span></button>
 <button class="country-option" data-country-option="nl" onclick="setCountry('nl')"><span class="country-option-title">🇳🇱 Нидерланды</span></button>
 <button class="country-option" data-country-option="pl" onclick="setCountry('pl')"><span class="country-option-title">🇵🇱 Польша</span></button>
 <button class="country-option" data-country-option="at" onclick="setCountry('at')"><span class="country-option-title">🇦🇹 Австрия</span></button>
 <button class="country-option" data-country-option="be" onclick="setCountry('be')"><span class="country-option-title">🇧🇪 Бельгия</span></button>
 <button class="country-option" data-country-option="ch" onclick="setCountry('ch')"><span class="country-option-title">🇨🇭 Швейцария</span></button>
-<button class="country-option" data-country-option="se" onclick="setCountry('se')"><span class="country-option-title">🇸🇪 Швеция</span></button>
-<button class="country-option" data-country-option="no" onclick="setCountry('no')"><span class="country-option-title">🇳🇴 Норвегия</span></button>
-<button class="country-option" data-country-option="dk" onclick="setCountry('dk')"><span class="country-option-title">🇩🇰 Дания</span></button>
+<button class="country-option" data-country-option="se" onclick="setCountry('se')"><span class="country-option-title">🇪 Швеция</span></button>
+<button class="country-option" data-country-option="no" onclick="setCountry('no')"><span class="country-option-title">🇴 Норвегия</span></button>
+<button class="country-option" data-country-option="dk" onclick="setCountry('dk')"><span class="country-option-title">🇰 Дания</span></button>
 <button class="country-option" data-country-option="fi" onclick="setCountry('fi')"><span class="country-option-title">🇫🇮 Финляндия</span></button>
 <button class="country-option" data-country-option="ie" onclick="setCountry('ie')"><span class="country-option-title">🇮🇪 Ирландия</span></button>
 <button class="country-option" data-country-option="pt" onclick="setCountry('pt')"><span class="country-option-title">🇵🇹 Португалия</span></button>
 <button class="country-option" data-country-option="cz" onclick="setCountry('cz')"><span class="country-option-title">🇨🇿 Чехия</span></button>
 <button class="country-option" data-country-option="gr" onclick="setCountry('gr')"><span class="country-option-title">🇬🇷 Греция</span></button>
-<button class="country-option" data-country-option="hu" onclick="setCountry('hu')"><span class="country-option-title">🇭🇺 Венгрия</span></button>
+<button class="country-option" data-country-option="hu" onclick="setCountry('hu')"><span class="country-option-title">🇭 Венгрия</span></button>
 <button class="country-option" data-country-option="ro" onclick="setCountry('ro')"><span class="country-option-title">🇷🇴 Румыния</span></button>
 
 <div class="country-group">Другие страны</div>
 <button class="country-option" data-country-option="us" onclick="setCountry('us')"><span class="country-option-title">🇺🇸 США</span></button>
 <button class="country-option" data-country-option="ca" onclick="setCountry('ca')"><span class="country-option-title">🇨🇦 Канада</span></button>
 <button class="country-option" data-country-option="au" onclick="setCountry('au')"><span class="country-option-title">🇦🇺 Австралия</span></button>
-<button class="country-option disabled" data-country-option="ru" onclick="setCountry('ru')"><span class="country-option-title">🇷🇺 Россия</span><span class="country-option-note">Источник пока не подключён</span></button>
+<!-- ИЗМЕНЕНО: Россия теперь активна -->
+<button class="country-option" data-country-option="ru" onclick="setCountry('ru')">
+    <span class="country-option-title">🇷🇺 Россия</span>
+    <span class="country-option-note">HeadHunter API</span>
+</button>
 <button class="country-option disabled" data-country-option="by" onclick="setCountry('by')"><span class="country-option-title">🇧🇾 Беларусь</span><span class="country-option-note">Источник пока не подключён</span></button>
 </div>
 </div>
@@ -216,14 +220,14 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 
 <div id="aiModal" class="ai-modal" onclick="if(event.target===this)closeAI()">
 <div class="ai-sheet">
-<div class="ai-head"><h2 id="aiTitle">🤖 JobHunt AI</h2><button class="close" onclick="closeAI()">×</button></div>
+<div class="ai-head"><h2 id="aiTitle"> JobHunt AI</h2><button class="close" onclick="closeAI()">×</button></div>
 <div id="aiBody"></div>
 </div>
 </div>
 
 <div id="toast" class="toast"></div>
 <div class="bottom">
-<button type="button" class="nav active" onclick="show('home',this)"><span class="nav-icon">⌂</span>Главная</button>
+<button type="button" class="nav active" onclick="show('home',this)"><span class="nav-icon"></span>Главная</button>
 <button type="button" class="nav" onclick="show('search',this)"><span class="nav-icon">⌕</span>Поиск</button>
 <button type="button" class="nav" onclick="show('saved',this)"><span class="nav-icon">♡</span>Сохранённое</button>
 <button type="button" class="nav" onclick="show('profile',this)"><span class="nav-icon">◉</span>Профиль</button>
@@ -235,7 +239,7 @@ const API_URL=WORKER_URL+'/jobs';
 const AI_URL=WORKER_URL+'/ai';
 let selectedCountry='gb';
 const EUROPE_COUNTRIES=['gb','de','fr','it','es','nl','pl','at','be','ch','se','no','dk','fi','ie','pt','cz','gr','hu','ro'];
-const COUNTRY_NAMES={gb:'🇬🇧 Англия',eu:'🇪🇺 Европа',tr:'🇹🇷 Турция',ae:'🇦🇪 ОАЭ',de:'🇩🇪 Германия',fr:'🇫🇷 Франция',it:'🇮🇹 Италия',es:'🇪🇸 Испания',nl:'🇳🇱 Нидерланды',pl:'🇵🇱 Польша',at:'🇦🇹 Австрия',be:'🇧🇪 Бельгия',ch:'🇨🇭 Швейцария',se:'🇸🇪 Швеция',no:'🇳🇴 Норвегия',dk:'🇩🇰 Дания',fi:'🇫🇮 Финляндия',ie:'🇮🇪 Ирландия',pt:'🇵🇹 Португалия',cz:'🇨🇿 Чехия',gr:'🇬🇷 Греция',hu:'🇭🇺 Венгрия',ro:'🇷🇴 Румыния',ru:'🇷🇺 Россия',by:'🇧🇾 Беларусь',us:'🇺🇸 США',ca:'🇨🇦 Канада',au:'🇦🇺 Австралия'};
+const COUNTRY_NAMES={gb:'🇬🇧 Англия',eu:'🇪🇺 Европа',tr:'🇹🇷 Турция',ae:'🇦🇪 ОАЭ',de:'🇩🇪 Германия',fr:'🇷 Франция',it:'🇮🇹 Италия',es:'🇪🇸 Испания',nl:'🇳🇱 Нидерланды',pl:'🇵🇱 Польша',at:'🇦🇹 Австрия',be:'🇧🇪 Бельгия',ch:'🇨🇭 Швейцария',se:'🇪 Швеция',no:'🇳🇴 Норвегия',dk:'🇰 Дания',fi:'🇫🇮 Финляндия',ie:'🇮🇪 Ирландия',pt:'🇵🇹 Португалия',cz:'🇨🇿 Чехия',gr:'🇬🇷 Греция',hu:'🇺 Венгрия',ro:'🇷🇴 Румыния',ru:'🇷🇺 Россия',by:'🇧🇾 Беларусь',us:'🇺🇸 США',ca:'🇨🇦 Канада',au:'🇦🇺 Австралия'};
 let jobs=[];
 let currentFilter='all';
 let smartCriteria={country:null,remote:false,salaryMin:0,salaryCurrency:null,location:'',summary:''};
@@ -263,7 +267,7 @@ if(/design|ux|ui|graphic|creative/.test(text))return '🎨';
 if(/photo|photograph/.test(text))return '📸';
 if(/video|film|editor/.test(text))return '🎬';
 if(/developer|software|engineer|program/.test(text))return '💻';
-if(/marketing|social|media/.test(text))return '📱';
+if(/marketing|social|media/.test(text))return '';
 if(/copy|writer|content/.test(text))return '✍️';
 if(/data|analyst|finance/.test(text))return '📊';
 return '💼';
@@ -408,11 +412,21 @@ document.getElementById('countryModal')?.classList.remove('open');
 }
 
 function setCountry(country){
-selectedCountry=country;
-updateCountryPicker();
-closeCountryPicker();
-const q=(document.getElementById('keywordSearch')?.value||'').trim()||'designer';
-loadJobs(q);
+    selectedCountry = country;
+    updateCountryPicker();
+    closeCountryPicker();
+    
+    const q = (document.getElementById('keywordSearch')?.value || '').trim() || 'designer';
+
+    // ДОБАВЛЕННЫЙ БЛОК ДЛЯ HEADHUNTER
+    if (country === 'ru') {
+        // Вместо обычного loadJobs запускаем специальный для HH
+        loadHhJobs(q); 
+        return; 
+    }
+    // КОНЕЦ ДОБАВЛЕННОГО БЛОКА
+
+    loadJobs(q);
 }
 
 
@@ -924,6 +938,77 @@ document.getElementById('searchCards').innerHTML='<div class="empty">Источ�
 }
 }
 
+// === HEADHUNTER INTEGRATION START ===
+
+// Функция получения токена через твой Worker (чтобы не светить секреты в браузере)
+async function getHhToken() {
+    try {
+        const response = await fetch(WORKER_URL + '/auth/hh', { method: 'POST' });
+        if (!response.ok) throw new Error('Ошибка авторизации HH');
+        const data = await response.json();
+        return data.access_token;
+    } catch (e) {
+        console.error('HH Auth Error:', e);
+        toast('Не удалось подключиться к HeadHunter');
+        return null;
+    }
+}
+
+// Функция поиска вакансий на HH
+async function loadHhJobs(query = 'designer') {
+    renderLoading('Ищем вакансии на HeadHunter...');
+    
+    // 1. Получаем токен
+    const token = await getHhToken();
+    if (!token) {
+        document.getElementById('searchCards').innerHTML = '<div class="empty">Ошибка авторизации HH. Проверь настройки Worker.</div>';
+        return;
+    }
+
+    try {
+        // 2. Загружаем вакансии через твой Worker (который пробросит запрос к API HH)
+        const url = `${WORKER_URL}/jobs/hh?text=${encodeURIComponent(query)}`;
+        
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: { 'Authorization': `Bearer ${token}` } 
+        });
+
+        if (!response.ok) throw new Error('API Error');
+        
+        const data = await response.json();
+        
+        // Нормализация данных HH под твой формат карточек
+        let rawJobs = [];
+        if (data.items && Array.isArray(data.items)) {
+            rawJobs = data.items.map(item => ({
+                id: item.id,
+                title: item.name,
+                company: item.employer?.name || 'Компания не указана',
+                location: item.address?.city || item.area?.name || 'Россия',
+                salary_min: item.salary?.from || 0,
+                salary_max: item.salary?.to || 0,
+                currency: item.salary?.currency || 'RUB',
+                description: item.snippet?.requirement ? item.snippet.requirement : (item.description || ''),
+                url: item.alternate_url,
+                created: item.published_at,
+                source: 'HeadHunter',
+                remote: /удален|remote/i.test(item.name + ' ' + (item.snippet?.requirement || ''))
+            }));
+        }
+
+        paintJobs(rawJobs, query);
+        if (jobs.length) toast(`Найдено ${jobs.length} вакансий на HH`);
+        else document.getElementById('searchCards').innerHTML = '<div class="empty">Ничего не найдено на HH.</div>';
+
+    } catch (error) {
+        console.error('HH Load Error:', error);
+        document.getElementById('searchCards').innerHTML = '<div class="empty">Ошибка загрузки HeadHunter.<br>Проверь консоль и настройки Worker.</div>';
+    }
+}
+
+// === HEADHUNTER INTEGRATION END ===
+
 function filterJobs(){
 clearTimeout(searchTimer);
 renderSearch();
@@ -948,14 +1033,14 @@ const shortDesc=desc.length>900?desc.slice(0,900)+'…':desc;
 document.getElementById('detailContent').innerHTML=`
 <div class="tag">${j.match}% MATCH</div>
 <h1>${escapeHtml(j.title)}</h1>
-<div class="meta">📍 ${escapeHtml(j.location)} · 🏢 ${escapeHtml(j.company)}</div>
+<div class="meta">📍 ${escapeHtml(j.location)} ·  ${escapeHtml(j.company)}</div>
 <div class="money">${escapeHtml(j.money)}</div>
 <div class="box"><b>Почему подходит тебе</b><p>AI предварительно оценил соответствие этой возможности в ${j.match}%.</p><div class="score">${j.match}%</div><small style="color:#9ca9c8">AI Match Score</small></div>
 <div class="box"><b>Описание вакансии</b><p>${escapeHtml(shortDesc)}</p></div>
 <button class="btn" style="width:100%;margin-bottom:10px" onclick="show('apply')">✨ AI подготовит отклик</button>
 ${j.url?`<a class="btn" style="display:block;text-align:center;text-decoration:none;margin-bottom:10px" href="${escapeHtml(j.url)}" target="_blank" rel="noopener">Открыть вакансию</a>`:''}
 <button class="btn secondary" style="width:100%" onclick="toggleSave(${index})">${isSaved?'♥ Убрать из сохранённых':'♡ Сохранить'}</button>
-<div class="source">Источники: Adzuna · Arbeitnow · Job Opportunities API · Careerjet</div>`;
+<div class="source">Источники: Adzuna · Arbeitnow · Job Opportunities API · Careerjet · HeadHunter</div>`;
 show('detail');
 }
 
@@ -1056,7 +1141,7 @@ const modal=document.getElementById('aiModal');
 const title=document.getElementById('aiTitle');
 const body=document.getElementById('aiBody');
 const titles={resume:'📄 Анализ резюме',reply:'✍️ AI-отклик',match:'🎯 Стоит ли откликаться?',search:'🔎 Умный поиск'};
-title.innerText=titles[type]||'🤖 JobHunt AI';
+title.innerText=titles[type]||' JobHunt AI';
 const job=currentJobIndex!==null?jobs[currentJobIndex]:null;
 
 if(type==='resume'){
@@ -1066,7 +1151,7 @@ body.innerHTML=`<label class="ai-label">Вакансия</label><div class="box"
 }else if(type==='match'){
 if(!job){body.innerHTML='<div class="empty">Открой любую вакансию и нажми «Стоит ли откликаться?» ещё раз.</div>';}else{body.innerHTML=`<div class="box" style="margin-top:0"><b>${escapeHtml(job.title)}</b><div class="meta">${escapeHtml(job.company)} · ${escapeHtml(job.location)}</div><div class="score">${job.match}%</div><small style="color:#9ca9c8">Предварительный Match</small></div><button class="btn" style="width:100%" onclick="analyzeJob()">✨ Разобрать вакансию</button><div id="aiResult"></div>`;}
 }else{
-body.innerHTML=`<label class="ai-label">Какая работа тебе нужна?</label><textarea id="aiText" class="ai-input" placeholder="Например: удалённая работа дизайнером, от £30k..."></textarea><button class="btn" style="width:100%;margin-top:10px" onclick="smartSearch()">🔎 Подобрать</button><div id="aiResult"></div>`;
+body.innerHTML=`<label class="ai-label">Какая работа тебе нужна?</label><textarea id="aiText" class="ai-input" placeholder="Например: удалённая работа дизайнером, от £30k..."></textarea><button class="btn" style="width:100%;margin-top:10px" onclick="smartSearch()"> Подобрать</button><div id="aiResult"></div>`;
 }
 modal.classList.add('open');
 }
@@ -1076,7 +1161,7 @@ function closeAI(){document.getElementById('aiModal').classList.remove('open')}
 async function callAI(type,text='',job=null,extra=''){
 const r=document.getElementById('aiResult');
 if(!r)return null;
-r.innerHTML='<div class="ai-result">🤖 AI анализирует запрос…<br><br>Это может занять несколько секунд.</div>';
+r.innerHTML='<div class="ai-result"> AI анализирует запрос…<br><br>Это может занять несколько секунд.</div>';
 try{
 const response=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type,text,job,extra})});
 const data=await response.json().catch(()=>({}));
@@ -1259,7 +1344,7 @@ box.innerHTML='';
 return;
 }
 status.textContent='Активных уведомлений: '+smartAlerts.length;
-box.innerHTML=smartAlerts.map(a=>`<div class="alert-item"><div class="alert-title">🔔 ${escapeHtml(alertDescription(a))}</div><div class="alert-meta">Проверяем новые вакансии автоматически</div><div class="alert-actions"><button class="btn secondary" onclick="deleteAlert('${String(a.id).replace(/'/g,"\\'")}')">Удалить</button></div></div>`).join('');
+box.innerHTML=smartAlerts.map(a=>`<div class="alert-item"><div class="alert-title"> ${escapeHtml(alertDescription(a))}</div><div class="alert-meta">Проверяем новые вакансии автоматически</div><div class="alert-actions"><button class="btn secondary" onclick="deleteAlert('${String(a.id).replace(/'/g,"\\'")}')">Удалить</button></div></div>`).join('');
 }
 
 async function refreshAlerts(){
@@ -1282,7 +1367,7 @@ salaryCurrency:smartCriteria.salaryCurrency||null
 if(!data.ok){
 if(data.code==='ALERT_LIMIT'&&!data.pro){
 openPro();
- toast('Бесплатное уведомление уже создано. PRO — до 5 уведомлений ⭐');
+ toast('Бесплатное уведомление уже создано. PRO — до 5 уведомлений ');
 }else if(data.code==='ALERT_LIMIT')toast('Лимит уведомлений: '+data.limit+' ⭐');
 else toast('❌ '+data.error);
 return;
@@ -1290,7 +1375,7 @@ return;
 smartAlerts.push(data.alert);
 trackAnalytics('alert_creates');
 renderAlerts();
-toast('🔔 Уведомления включены');
+toast(' Уведомления включены');
 }
 
 async function deleteAlert(id){
@@ -1353,7 +1438,7 @@ if(data.already_active){
 proState={active:true,expiresAt:data.expires_at||null,subscriptionCanceled:!!data.subscription_canceled};
 updateProUI();
 renderProModal();
-toast('PRO уже активен ⭐');
+toast('PRO уже активен ');
 return;
 }
 
@@ -1365,7 +1450,7 @@ toast('Оплата получена ⭐ Проверяем PRO…');
 await new Promise(resolve=>setTimeout(resolve,1200));
 await refreshProStatus();
 renderProModal();
-if(isPro())toast('🎉 JobHunt AI PRO активирован!');
+if(isPro())toast(' JobHunt AI PRO активирован!');
 }else if(status==='cancelled'){
 toast('Оплата отменена');
 }else if(status==='failed'){
