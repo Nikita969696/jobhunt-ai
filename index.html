@@ -495,7 +495,23 @@ function detectLocalSearchIntent(text){
     }
   }
 
-  const query=profession||raw
+  const effectiveCountry=country||selectedCountry||null;
+  const russianQueryMap={
+    designer:'дизайнер',
+    'software developer':'разработчик',
+    marketing:'маркетинг',
+    photographer:'фотограф',
+    sales:'продажи',
+    analyst:'аналитик',
+    'content writer':'копирайтер',
+    'devops engineer':'DevOps',
+    'qa tester':'тестировщик'
+  };
+  const professionQuery=(effectiveCountry==='ru'||effectiveCountry==='by')&&russianQueryMap[profession]
+    ? russianQueryMap[profession]
+    : profession;
+
+  const query=professionQuery||raw
     .replace(/(удаленн?[а-я]*|дистанцион[а-я]*|remote|work from home|из дома|на дому)/ig,' ')
     .replace(/(дубай|dubai|оаэ|uae|эмират[а-я]*|абу[ -]?даби|abu[ -]?dhabi|шардж|sharjah|стамбул|istanbul|анкар[а-я]*|ankara|турци[а-я]*|turkey|росси[а-я]*|russia|беларус[а-я]*|belarus)/ig,' ')
     .replace(/\s+/g,' ').trim()||raw;
@@ -1000,10 +1016,24 @@ if(contactPhone||contactEmail){contacts.innerHTML=`<div class="box"><b>📞 Ко
 
 loadJobDetail(j).then(detail=>{
  if(!detail)return;
- if(detail.description)document.querySelector('#detailContent .box:nth-of-type(2) p').innerText=cleanJobDescription(detail.description);
+ if(detail.description){
+   const box=document.querySelector('#detailContent .box:nth-of-type(2) p');
+   if(box)box.innerText=cleanJobDescription(detail.description);
+ }
  const c=document.getElementById('detailContacts');
- const phone=detail.contacts?.[0]?.number||''; const email=detail.email||'';
- if(phone||email){c.innerHTML=`<div class="box"><b>📞 Публичные контакты из HH</b><div style="display:grid;gap:8px;margin-top:10px">${phone?`<a class="btn contact-btn" href="tel:${encodeURIComponent(phone)}">📞 Позвонить</a>`:''}${email?`<a class="btn contact-btn" href="mailto:${encodeURIComponent(email)}">✉️ Написать</a>`:''}</div></div>`;}
+ if(!c)return;
+ const phone=detail.contacts?.[0]?.number||'';
+ const email=detail.email||'';
+ const site=detail.employer_site||'';
+ const apply=detail.apply_url||'';
+ let html=`<div class="box"><b>📞 Связь с работодателем</b><div style="display:grid;gap:8px;margin-top:10px">`;
+ if(phone)html+=`<a class="btn contact-btn" href="tel:${encodeURIComponent(phone)}">📞 ${escapeHtml(phone)} · Позвонить</a>`;
+ if(email)html+=`<a class="btn contact-btn" href="mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Отклик на вакансию: '+(detail.title||j.title))}">✉️ ${escapeHtml(email)} · Написать</a>`;
+ if(site)html+=`<a class="btn secondary contact-btn" href="${escapeHtml(site)}" target="_blank" rel="noopener">🌐 Сайт компании</a>`;
+ if(apply)html+=`<a class="btn secondary contact-btn" href="${escapeHtml(apply)}" target="_blank" rel="noopener">↗️ Откликнуться через HH</a>`;
+ if(!phone&&!email&&!site&&!apply)html+=`<div style="color:#9ca9c8;font-size:13px;line-height:1.45">В этой вакансии работодатель не передал публичный телефон или email через API. Мы не придумываем контакты. Персональный отклик можно создать прямо здесь и скопировать.</div>`;
+ html+='</div></div>';
+ c.innerHTML=html;
 });
 }
 
@@ -1071,6 +1101,8 @@ window.scrollTo(0,0);
 }
 
 // Надёжная нижняя навигация: работает даже если Telegram WebView капризничает с inline onclick.
+document.addEventListener('submit',function(event){event.preventDefault();},true);
+
 document.addEventListener('click',function(event){
 const nav=event.target.closest('.bottom .nav');
 if(!nav)return;
@@ -1151,7 +1183,17 @@ const extra=(document.getElementById('aiText')?.value||'').trim();
 const r=document.getElementById('aiResult');
 if(!job){r.innerHTML='<div class="ai-result">Сначала открой вакансию.</div>';return}
 const answer=await callAI('reply','',job,extra);
-if(answer)r.innerHTML=`<div class="ai-result" id="generatedReply">${escapeHtml(answer)}</div><button class="btn secondary" style="width:100%;margin-top:8px" onclick="copyGeneratedReply()">Копировать отклик</button>`;
+if(answer){
+  const phone=job.phone||job.contact_phone||'';
+  const email=job.email||job.contact_email||'';
+  r.innerHTML=`<div class="ai-result" id="generatedReply">${escapeHtml(answer)}</div>
+  <div style="display:grid;gap:8px;margin-top:8px">
+    <button class="btn" style="width:100%" onclick="copyGeneratedReply()">📋 Скопировать готовый отклик</button>
+    ${email?`<a class="btn secondary" style="width:100%;text-align:center;text-decoration:none" href="mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Отклик на вакансию: '+(job.title||''))}&body=${encodeURIComponent(answer)}">✉️ Отправить на email</a>`:''}
+    ${phone?`<a class="btn secondary" style="width:100%;text-align:center;text-decoration:none" href="tel:${encodeURIComponent(phone)}">📞 Позвонить работодателю</a>`:''}
+  </div>
+  <div style="margin-top:8px;color:#9ca9c8;font-size:12px">Если у вакансии нет публичного email/телефона, HH не позволяет стороннему приложению отправить отклик от имени пользователя без авторизации соискателя. Поэтому мы оставляем готовый текст внутри Mini App и не придумываем контакты.</div>`;
+}
 }
 
 function copyGeneratedReply(){
@@ -1225,7 +1267,7 @@ async function runSmartSearch(){
       const ai=parseSmartSearchAnswer(data.answer||'');
 
       const merged={
-        query:local.query||ai.query||text,
+        query:((local.country==='ru'||local.country==='by'||selectedCountry==='ru'||selectedCountry==='by') ? (local.query||text) : (local.query||ai.query||text)),
         country:local.country||ai.country||null,
         remote:local.remote||ai.remote===true,
         salaryMin:local.salaryMin||ai.salaryMin||0,
