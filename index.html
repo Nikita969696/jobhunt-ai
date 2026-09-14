@@ -108,6 +108,18 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 .alert-item:last-child{border-bottom:0}
 .alert-title{font-weight:800;font-size:14px}.alert-meta{color:#9ca9c8;font-size:12px;margin-top:4px}.alert-actions{display:flex;gap:8px;margin-top:8px}.alert-actions button{flex:1}
 </style>
+
+<style>
+/* FINAL FIX: AI windows always stay above Telegram app navigation */
+.ai-modal{z-index:2147483100!important;background:#020714e8!important;overscroll-behavior:contain}
+.ai-modal.open{display:flex!important}
+.ai-sheet{max-height:calc(100dvh - 20px)!important;overflow:auto!important;overscroll-behavior:contain;padding-bottom:calc(28px + env(safe-area-inset-bottom))!important}
+.country-modal{z-index:2147483050!important}
+body.modal-open{overflow:hidden!important}
+.detail-screen{padding-bottom:130px!important}
+.contact-item{width:100%;box-sizing:border-box;border:1px solid #2b416c;background:#0c1730;color:#fff;border-radius:13px;padding:11px;text-align:left;display:flex;align-items:center;gap:10px;font:inherit;cursor:pointer}
+.contact-item small{display:block;color:#8fa0c0;font-size:11px;margin-top:3px}
+</style>
 </head>
 <body>
 <div class="app">
@@ -404,11 +416,11 @@ document.querySelectorAll('[data-country-option]').forEach(x=>x.classList.toggle
 
 function openCountryPicker(){
 updateCountryPicker();
-document.getElementById('countryModal')?.classList.add('open');
+document.getElementById('countryModal')?.classList.add('open');document.body.classList.add('modal-open');
 }
 
 function closeCountryPicker(){
-document.getElementById('countryModal')?.classList.remove('open');
+document.getElementById('countryModal')?.classList.remove('open');if(!document.getElementById('aiModal')?.classList.contains('open'))document.body.classList.remove('modal-open');
 }
 
 function setCountry(country){
@@ -959,13 +971,18 @@ function renderContacts(detail,j){
 const phoneList=Array.isArray(detail?.contacts)?detail.contacts.map(x=>x.number||x.formatted||'').filter(Boolean):[];
 const email=detail?.email||'';
 const site=detail?.employer_site||'';
-const apply=detail?.apply_url||detail?.url||j.url||'';
 let html='';
-if(phoneList.length)phoneList.forEach((phone,i)=>{html+=`<a class="contact-item" href="tel:${escapeHtml(phone.replace(/[^+\d]/g,''))}"><span class="contact-icon">📞</span><span><b>${escapeHtml(phone)}</b><small>${escapeHtml(detail.contacts[i]?.comment||'Позвонить работодателю')}</small></span></a>`});
-if(email)html+=`<a class="contact-item" href="mailto:${escapeHtml(email)}"><span class="contact-icon">✉️</span><span><b>${escapeHtml(email)}</b><small>Написать на email</small></span></a>`;
-if(site)html+=`<a class="contact-item" href="${escapeHtml(site)}" target="_blank" rel="noopener"><span class="contact-icon">🌐</span><span><b>Сайт работодателя</b><small>${escapeHtml(site)}</small></span></a>`;
-if(!html)html=`<div class="contact-empty">Публичный телефон или email в данных вакансии не передан. Это не значит, что контакта нет: работодатель может принимать отклики только через HH.</div>`;
-return `<div class="box detail-contacts"><b>📞 Контакты работодателя</b><div class="contact-grid" style="margin-top:10px">${html}</div>${apply?`<a class="btn secondary" style="display:block;text-align:center;text-decoration:none;margin-top:10px;min-height:48px" href="${escapeHtml(apply)}" target="_blank" rel="noopener">Откликнуться через источник</a>`:''}</div>`;
+phoneList.forEach((phone,i)=>{html+=`<button type="button" class="contact-item" onclick="copyContact(${JSON.stringify(phone)})"><span class="contact-icon">📞</span><span><b>${escapeHtml(phone)}</b><small>${escapeHtml(detail.contacts[i]?.comment||'Нажми, чтобы скопировать номер')}</small></span></button>`});
+if(email)html+=`<button type="button" class="contact-item" onclick="copyContact(${JSON.stringify(email)})"><span class="contact-icon">✉️</span><span><b>${escapeHtml(email)}</b><small>Нажми, чтобы скопировать email</small></span></button>`;
+if(site)html+=`<div class="contact-item" style="cursor:default"><span class="contact-icon">🌐</span><span><b>Сайт работодателя</b><small>${escapeHtml(site)}</small></span></div>`;
+if(!html)html=`<div class="contact-empty">Публичный телефон или email в данных вакансии не передан. Мы не отправляем пользователя на сторонний сайт и не придумываем контакты.</div>`;
+return `<div class="box detail-contacts"><b>📞 Контакты работодателя</b><div class="contact-grid" style="margin-top:10px">${html}</div><button type="button" class="btn" style="width:100%;margin-top:10px;min-height:48px" onclick="openAI('reply')">✍️ Создать отклик прямо здесь</button></div>`;
+}
+
+async function copyContact(value){
+const text=String(value||'').trim();
+if(!text)return;
+try{await navigator.clipboard.writeText(text);toast('Контакт скопирован ✅')}catch(e){toast('Не удалось скопировать контакт')}
 }
 
 async function openJob(index){
@@ -1113,10 +1130,10 @@ if(!job){body.innerHTML='<div class="empty">Открой любую ваканс
 }else{
 body.innerHTML=`<label class="ai-label">Какая работа тебе нужна?</label><textarea id="aiText" class="ai-input" placeholder="Например: удалённая работа дизайнером, от £30k..."></textarea><button class="btn" style="width:100%;margin-top:10px" onclick="smartSearch()">🔎 Подобрать</button><div id="aiResult"></div>`;
 }
-modal.classList.add('open');
+modal.classList.add('open');document.body.classList.add('modal-open');
 }
 
-function closeAI(){document.getElementById('aiModal').classList.remove('open')}
+function closeAI(){document.getElementById('aiModal').classList.remove('open');document.body.classList.remove('modal-open')}
 
 async function callAI(type,text='',job=null,extra=''){
 const r=document.getElementById('aiResult');
