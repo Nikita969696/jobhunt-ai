@@ -24,6 +24,10 @@ button{-webkit-tap-highlight-color:transparent}
 #searchCards{margin-top:8px}.loading{text-align:center;color:var(--muted);padding:28px 12px}.empty{text-align:center;color:var(--muted);padding:28px 12px}
 .card{background:linear-gradient(160deg,#101e3c,#0a142a);border:1px solid #24385f;border-radius:18px;padding:14px;margin:9px 0;cursor:pointer;box-shadow:0 8px 24px #0002}.row{display:flex;gap:11px;align-items:flex-start}.thumb{width:54px;height:54px;border-radius:14px;display:grid;place-items:center;font-size:25px;background:linear-gradient(135deg,#213a72,#632c79);flex:0 0 54px}.grow{flex:1;min-width:0}.tag{display:inline-block;font-size:11px;padding:3px 7px;border-radius:999px;background:#0e4b45;color:#56e3bf;margin-bottom:5px}.title{font-weight:850;font-size:15px;line-height:1.25}.meta{color:var(--muted);font-size:12px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.money{font-weight:900;font-size:17px;margin-top:9px}.match{float:right;color:#55e3bd;font-weight:800;font-size:12px}.card-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px}.source-mini{color:#687b9f;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.save-mini{border:1px solid #2c4270;background:#142446;color:#dce5f8;border-radius:10px;padding:6px 10px;font-size:12px;font-weight:800;cursor:pointer}.save-mini.saved{color:#55e3bd;border-color:#326f68}.source{color:#687b9f;font-size:10px;margin:12px 2px 0;text-align:center}.source a{color:#9db7ff}
 .box{background:#0d1932;border:1px solid #2a3d68;border-radius:18px;padding:15px;margin:12px 0}.score{font-size:42px;font-weight:900;color:#56e3bd}.back{margin-bottom:15px;color:#a9b8d8;cursor:pointer}.detail h1{font-size:28px;line-height:1.1}
+
+/* === DETAIL / AI ACTIONS FIX v4 === */
+.detail-actions{display:grid;gap:10px;margin:14px 0 18px}.detail-action{width:100%;min-height:58px;border:1px solid #344d7d;border-radius:16px;background:linear-gradient(145deg,#13264e,#0b1730);color:#fff;text-align:left;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:12px;touch-action:manipulation}.detail-action .detail-action-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#243b70;font-size:20px;flex:0 0 38px}.detail-action b{display:block;font-size:14px}.detail-action small{display:block;color:#9ca9c8;font-size:11px;margin-top:2px}.detail-action:active{transform:scale(.99)}
+.detail-contacts{margin:12px 0}.contact-grid{display:grid;gap:8px}.contact-item{display:flex;align-items:center;gap:10px;border:1px solid #2b416c;background:#0b1730;border-radius:14px;padding:11px 12px;color:#fff;text-decoration:none;min-height:48px}.contact-item .contact-icon{font-size:20px;width:28px;text-align:center}.contact-item b{font-size:12px;display:block}.contact-item small{font-size:10px;color:#93a3c3;display:block;margin-top:2px;overflow-wrap:anywhere}.contact-empty{color:#9ca9c8;font-size:12px;line-height:1.5}.ai-result pre{white-space:pre-wrap;font:inherit;margin:0}.match-section{margin-top:10px}.match-line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid #1d2e50;font-size:12px}.match-line:last-child{border-bottom:0}.match-status{font-weight:900}.match-status.strong{color:#55e3bd}.match-status.partial{color:#f1c75b}.match-status.missing{color:#ff8b9e}.match-status.unknown{color:#9ca9c8}.ai-modal{z-index:2000!important}.ai-sheet{padding-bottom:calc(18px + env(safe-area-inset-bottom));}.ai-sheet .btn{position:relative;z-index:2;min-height:48px}.generated-reply{background:#0a1730;border:1px solid #29416d;border-radius:16px;padding:14px;white-space:pre-wrap;line-height:1.55;margin-top:12px}.reply-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:9px}.reply-actions .btn{width:100%;min-height:48px}.detail-source{font-size:10px;color:#7183a4;text-align:center;margin:16px 0 4px}.detail-loading{text-align:center;color:#9ca9c8;padding:12px;border:1px dashed #2d426f;border-radius:14px;margin:12px 0}
 .bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);display:flex;justify-content:space-around;background:#071126f5;backdrop-filter:blur(16px);border-top:1px solid #1d2e50;padding:8px 7px calc(8px + env(safe-area-inset-bottom));z-index:1000;pointer-events:auto}.nav{background:none;border:0;color:#8292b5;font-size:11px;line-height:1.15;font-weight:800;cursor:pointer;min-width:70px;padding:2px 4px}.nav-icon{display:block;font-size:25px;line-height:27px;margin-bottom:3px;font-weight:500}.nav.active{color:#fff}
 .premium{border-color:#7547a9;background:linear-gradient(145deg,#25134d,#0e1832)}
 .ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.ai-card{border:1px solid #283e69;background:linear-gradient(145deg,#101e3d,#0b152c);border-radius:18px;padding:14px;text-align:left;color:#fff;cursor:pointer;min-height:126px}.ai-card:active,.challenge:active,.pro-card:active{transform:scale(.99)}.ai-icon{display:block;font-size:25px;margin-bottom:8px}.ai-card b{display:block;font-size:14px}.ai-card small{display:block;color:#9ca9c8;margin-top:5px;line-height:1.3}.pro-card{padding:16px}.pro-title{display:flex;gap:9px;align-items:center;font-size:16px}.pro-title span{font-size:22px}.pro-list{display:grid;gap:6px;margin-top:12px;color:#d8cbed;font-size:13px}.pro-note{display:block;text-align:center;color:#9d8ab9;margin-top:8px}.challenge{background:linear-gradient(145deg,#122448,#0b1730);border:1px solid #2c4779;border-radius:20px;padding:16px}.challenge-top{display:flex;justify-content:space-between;gap:12px;align-items:center}.challenge-top b{display:block;font-size:15px}.challenge-top small{display:block;color:#9ca9c8;margin-top:4px}.challenge-badge{font-size:30px}.progress{height:9px;border-radius:999px;background:#1b2b4b;overflow:hidden;margin:14px 0 10px}.progress-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,#55e3bd,#5b8cff)}.challenge-bottom{display:flex;justify-content:space-between;align-items:center;color:#aebbd5;font-size:13px}.challenge-bottom .chip{padding:7px 11px;color:#fff;background:#1d3767}
@@ -103,20 +107,6 @@ body{background:radial-gradient(circle at 12% 5%,rgba(99,102,241,.24),transparen
 .alert-item{padding:11px 0;border-bottom:1px solid rgba(116,143,205,.14)}
 .alert-item:last-child{border-bottom:0}
 .alert-title{font-weight:800;font-size:14px}.alert-meta{color:#9ca9c8;font-size:12px;margin-top:4px}.alert-actions{display:flex;gap:8px;margin-top:8px}.alert-actions button{flex:1}
-</style>
-
-<style>
-/* JobHunt AI CareerOps-style vacancy experience */
-.detail-screen{padding-bottom:calc(110px + env(safe-area-inset-bottom));}
-#detailContent{padding-bottom:calc(100px + env(safe-area-inset-bottom));}
-.career-actions{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom));z-index:50;background:rgba(5,12,28,.96);backdrop-filter:blur(16px);padding:10px;border-radius:18px;margin:14px -2px 0;box-shadow:0 -10px 30px rgba(0,0,0,.35);}
-.career-actions .btn{min-height:54px!important;touch-action:manipulation;-webkit-tap-highlight-color:transparent;}
-.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
-.match-pill{padding:10px;border:1px solid rgba(116,143,205,.2);border-radius:12px;background:rgba(12,24,50,.8);}
-.contact-btn{display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none!important;}
-.ai-variant-row{display:flex;gap:8px;overflow:auto;margin:8px 0;}
-.ai-variant-row button{flex:0 0 auto;min-height:42px;}
-@media(max-width:520px){.match-grid{grid-template-columns:1fr}.career-actions{margin-left:-4px;margin-right:-4px}}
 </style>
 </head>
 <body>
@@ -495,23 +485,7 @@ function detectLocalSearchIntent(text){
     }
   }
 
-  const effectiveCountry=country||selectedCountry||null;
-  const russianQueryMap={
-    designer:'дизайнер',
-    'software developer':'разработчик',
-    marketing:'маркетинг',
-    photographer:'фотограф',
-    sales:'продажи',
-    analyst:'аналитик',
-    'content writer':'копирайтер',
-    'devops engineer':'DevOps',
-    'qa tester':'тестировщик'
-  };
-  const professionQuery=(effectiveCountry==='ru'||effectiveCountry==='by')&&russianQueryMap[profession]
-    ? russianQueryMap[profession]
-    : profession;
-
-  const query=professionQuery||raw
+  const query=profession||raw
     .replace(/(удаленн?[а-я]*|дистанцион[а-я]*|remote|work from home|из дома|на дому)/ig,' ')
     .replace(/(дубай|dubai|оаэ|uae|эмират[а-я]*|абу[ -]?даби|abu[ -]?dhabi|шардж|sharjah|стамбул|istanbul|анкар[а-я]*|ankara|турци[а-я]*|turkey|росси[а-я]*|russia|беларус[а-я]*|belarus)/ig,' ')
     .replace(/\s+/g,' ').trim()||raw;
@@ -960,81 +934,74 @@ el.classList.add('active');
 renderSearch();
 }
 
-function formatSalaryDetailed(j){
-const cur=j.salary_currency||''; const map={RUR:'₽',RUB:'₽',EUR:'€',USD:'$',GBP:'£',AED:'AED',TRY:'₺'}; const c=map[cur]||cur;
-if(j.salary_min&&j.salary_max)return `${j.salary_min.toLocaleString()}–${j.salary_max.toLocaleString()} ${c}`;
-if(j.salary_min)return `от ${j.salary_min.toLocaleString()} ${c}`;
-if(j.salary_max)return `до ${j.salary_max.toLocaleString()} ${c}`;
-return j.money||'Зарплата не указана';
-}
-
-function cleanJobDescription(value){return String(value||'').replace(/<br\s*\/?>(?=.)/gi,'\n').replace(/<[^>]*>/g,' ').replace(/&nbsp;/gi,' ').replace(/\s+/g,' ').trim()}
-
 async function loadJobDetail(job){
 if(!job||!String(job.source||'').toLowerCase().includes('headhunter'))return null;
 try{
- const id=String(job.id||'').replace(/^hh_/,'');
- const r=await fetch(`${API_URL.replace(/\/jobs$/,'')}/job-detail?id=${encodeURIComponent(id)}&source=HeadHunter`);
- const d=await r.json().catch(()=>({}));
- if(r.ok&&d.ok)return d.vacancy;
+const id=String(job.id||'').replace(/^hh_/,'');
+const r=await fetch(`${API_URL.replace(/\/jobs$/,'')}/job-detail?id=${encodeURIComponent(id)}&source=HeadHunter`);
+const d=await r.json().catch(()=>({}));
+if(r.ok&&d.ok&&d.vacancy)return d.vacancy;
 }catch(e){console.warn('job detail',e)}
 return null;
 }
 
-function openJob(index){
-const j=jobs[index]; if(!j)return; currentJobIndex=index;
+function cleanJobDescription(value){return String(value||'').replace(/<br\s*\/?\s*>/gi,'\n').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim()}
+function formatSalaryDetailed(j){
+const min=Number(j.salary_min||0),max=Number(j.salary_max||0),cur=String(j.salary_currency||'').toUpperCase();
+const sym=cur==='RUR'||cur==='RUB'?'₽':cur==='GBP'?'£':cur==='EUR'?'€':cur==='USD'?'$':'';
+if(min&&max)return `${sym}${Math.round(min).toLocaleString('ru-RU')}–${sym}${Math.round(max).toLocaleString('ru-RU')}`;
+if(min)return `от ${sym}${Math.round(min).toLocaleString('ru-RU')}`;
+if(max)return `до ${sym}${Math.round(max).toLocaleString('ru-RU')}`;
+return j.money||'Зарплата не указана';
+}
+
+function renderContacts(detail,j){
+const phoneList=Array.isArray(detail?.contacts)?detail.contacts.map(x=>x.number||x.formatted||'').filter(Boolean):[];
+const email=detail?.email||'';
+const site=detail?.employer_site||'';
+const apply=detail?.apply_url||detail?.url||j.url||'';
+let html='';
+if(phoneList.length)phoneList.forEach((phone,i)=>{html+=`<a class="contact-item" href="tel:${escapeHtml(phone.replace(/[^+\d]/g,''))}"><span class="contact-icon">📞</span><span><b>${escapeHtml(phone)}</b><small>${escapeHtml(detail.contacts[i]?.comment||'Позвонить работодателю')}</small></span></a>`});
+if(email)html+=`<a class="contact-item" href="mailto:${escapeHtml(email)}"><span class="contact-icon">✉️</span><span><b>${escapeHtml(email)}</b><small>Написать на email</small></span></a>`;
+if(site)html+=`<a class="contact-item" href="${escapeHtml(site)}" target="_blank" rel="noopener"><span class="contact-icon">🌐</span><span><b>Сайт работодателя</b><small>${escapeHtml(site)}</small></span></a>`;
+if(!html)html=`<div class="contact-empty">Публичный телефон или email в данных вакансии не передан. Это не значит, что контакта нет: работодатель может принимать отклики только через HH.</div>`;
+return `<div class="box detail-contacts"><b>📞 Контакты работодателя</b><div class="contact-grid" style="margin-top:10px">${html}</div>${apply?`<a class="btn secondary" style="display:block;text-align:center;text-decoration:none;margin-top:10px;min-height:48px" href="${escapeHtml(apply)}" target="_blank" rel="noopener">Откликнуться через источник</a>`:''}</div>`;
+}
+
+async function openJob(index){
+const j=jobs[index];if(!j)return;currentJobIndex=index;
 const isSaved=saved.includes(j.id);
 const desc=cleanJobDescription(j.description)||'Описание вакансии недоступно.';
-const lang=String(j.source||'').toLowerCase().includes('headhunter')?'ru':'en';
-const contactPhone=j.phone||j.contact_phone||''; const contactEmail=j.email||j.contact_email||'';
-const sourceName=j.source||'Источник';
+const shortDesc=desc.length>1800?desc.slice(0,1800)+'…':desc;
+const isHH=String(j.source||'').toLowerCase().includes('headhunter');
 document.getElementById('detailContent').innerHTML=`
 <div class="tag">${j.match}% MATCH</div>
 <h1>${escapeHtml(j.title||'Вакансия')}</h1>
 <div class="meta">📍 ${escapeHtml(j.location||'')} · 🏢 ${escapeHtml(j.company||'')}</div>
 <div class="money">${escapeHtml(formatSalaryDetailed(j))}</div>
-<div class="match-grid">
-<div class="match-pill"><b>🎯 ${j.match}%</b><small style="display:block;color:#9ca9c8;margin-top:4px">AI Match</small></div>
-<div class="match-pill"><b>${j.remote?'🏠 Remote':'📍 On-site / Hybrid'}</b><small style="display:block;color:#9ca9c8;margin-top:4px">Формат</small></div>
+<div class="match-grid"><div class="match-pill"><b>🎯 ${j.match}%</b><small style="display:block;color:#9ca9c8;margin-top:4px">AI Match</small></div><div class="match-pill"><b>${j.remote?'🏠 Remote':'📍 On-site / Hybrid'}</b><small style="display:block;color:#9ca9c8;margin-top:4px">Формат</small></div></div>
+<div class="box"><b>🧠 Почему подходит</b><p>Предварительная оценка JobHunt AI: <strong>${j.match}%</strong>. Полный разбор учитывает требования вакансии, навыки, уровень, формат работы и доступные сигналы.</p></div>
+<div class="box"><b>Описание вакансии</b><p style="white-space:pre-wrap">${escapeHtml(shortDesc)}</p></div>
+${isHH?'<div id="detailContactSlot" class="detail-loading">📞 Загружаем контакты и полные данные HH…</div>':''}
+<div class="detail-actions">
+<button class="detail-action" onclick="openAI('reply')"><span class="detail-action-icon">✍️</span><span><b>Создать персональный отклик</b><small>AI напишет конкретный текст по этой вакансии</small></span></button>
+<button class="detail-action" onclick="openAI('match')"><span class="detail-action-icon">🎯</span><span><b>Разобрать соответствие</b><small>Сильные стороны, пробелы, блокеры и следующий шаг</small></span></button>
 </div>
-<div class="box"><b>🧠 Почему подходит</b><p>AI учитывает требования роли, навыки, уровень, зарплату и формат работы. Полный разбор можно запустить ниже.</p></div>
-<div class="box"><b>📋 Описание вакансии</b><p style="white-space:normal">${escapeHtml(desc)}</p></div>
-<div id="detailContacts"></div>
-<div class="career-actions">
-<button class="btn" style="width:100%;margin:0 0 8px" onclick="openAI('reply')">✨ Создать персональный отклик</button>
-<button class="btn secondary" style="width:100%;margin:0" onclick="analyzeJob()">🎯 Разобрать соответствие</button>
-</div>
-<div style="margin-top:12px">
-<button class="btn secondary" style="width:100%;margin-bottom:8px" onclick="toggleSave(${index})">${isSaved?'♥ Убрать из сохранённых':'♡ Сохранить'}</button>
-${j.url?`<a class="btn secondary" style="display:block;text-align:center;text-decoration:none" href="${escapeHtml(j.url)}" target="_blank" rel="noopener">Открыть источник · ${escapeHtml(sourceName)}</a>`:''}
-</div>
-<div class="source">AI выводы являются рекомендацией. Контакты показываем только если источник реально их предоставил.</div>`;
+<button class="btn secondary" style="width:100%;min-height:48px" onclick="toggleSave(${index})">${isSaved?'♥ Убрать из сохранённых':'♡ Сохранить вакансию'}</button>
+<div class="detail-source">Источник: ${escapeHtml(j.source||'JobHunt AI')}</div>`;
 show('detail');
-
-const contacts=document.getElementById('detailContacts');
-if(contactPhone||contactEmail){contacts.innerHTML=`<div class="box"><b>📞 Контакты работодателя</b><div style="display:grid;gap:8px;margin-top:10px">${contactPhone?`<a class="btn contact-btn" href="tel:${encodeURIComponent(contactPhone)}">📞 Позвонить</a>`:''}${contactEmail?`<a class="btn contact-btn" href="mailto:${encodeURIComponent(contactEmail)}">✉️ Написать</a>`:''}</div></div>`;}
-
-loadJobDetail(j).then(detail=>{
- if(!detail)return;
- if(detail.description){
-   const box=document.querySelector('#detailContent .box:nth-of-type(2) p');
-   if(box)box.innerText=cleanJobDescription(detail.description);
- }
- const c=document.getElementById('detailContacts');
- if(!c)return;
- const phone=detail.contacts?.[0]?.number||'';
- const email=detail.email||'';
- const site=detail.employer_site||'';
- const apply=detail.apply_url||'';
- let html=`<div class="box"><b>📞 Связь с работодателем</b><div style="display:grid;gap:8px;margin-top:10px">`;
- if(phone)html+=`<a class="btn contact-btn" href="tel:${encodeURIComponent(phone)}">📞 ${escapeHtml(phone)} · Позвонить</a>`;
- if(email)html+=`<a class="btn contact-btn" href="mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Отклик на вакансию: '+(detail.title||j.title))}">✉️ ${escapeHtml(email)} · Написать</a>`;
- if(site)html+=`<a class="btn secondary contact-btn" href="${escapeHtml(site)}" target="_blank" rel="noopener">🌐 Сайт компании</a>`;
- if(apply)html+=`<a class="btn secondary contact-btn" href="${escapeHtml(apply)}" target="_blank" rel="noopener">↗️ Откликнуться через HH</a>`;
- if(!phone&&!email&&!site&&!apply)html+=`<div style="color:#9ca9c8;font-size:13px;line-height:1.45">В этой вакансии работодатель не передал публичный телефон или email через API. Мы не придумываем контакты. Персональный отклик можно создать прямо здесь и скопировать.</div>`;
- html+='</div></div>';
- c.innerHTML=html;
-});
+if(isHH){
+const detail=await loadJobDetail(j);
+const slot=document.getElementById('detailContactSlot');
+if(detail){
+slot.outerHTML=renderContacts(detail,j);
+if(detail.description){
+const boxes=document.querySelectorAll('#detailContent .box');
+const last=boxes[boxes.length-1];
+if(last&&last.querySelector('b')?.innerText==='Описание вакансии')last.querySelector('p').innerText=cleanJobDescription(detail.description).slice(0,3500);
+}
+}else if(slot)slot.outerHTML=renderContacts(null,j);
+}
 }
 
 function persistSaved(){
@@ -1101,8 +1068,6 @@ window.scrollTo(0,0);
 }
 
 // Надёжная нижняя навигация: работает даже если Telegram WebView капризничает с inline onclick.
-document.addEventListener('submit',function(event){event.preventDefault();},true);
-
 document.addEventListener('click',function(event){
 const nav=event.target.closest('.bottom .nav');
 if(!nav)return;
@@ -1183,17 +1148,7 @@ const extra=(document.getElementById('aiText')?.value||'').trim();
 const r=document.getElementById('aiResult');
 if(!job){r.innerHTML='<div class="ai-result">Сначала открой вакансию.</div>';return}
 const answer=await callAI('reply','',job,extra);
-if(answer){
-  const phone=job.phone||job.contact_phone||'';
-  const email=job.email||job.contact_email||'';
-  r.innerHTML=`<div class="ai-result" id="generatedReply">${escapeHtml(answer)}</div>
-  <div style="display:grid;gap:8px;margin-top:8px">
-    <button class="btn" style="width:100%" onclick="copyGeneratedReply()">📋 Скопировать готовый отклик</button>
-    ${email?`<a class="btn secondary" style="width:100%;text-align:center;text-decoration:none" href="mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent('Отклик на вакансию: '+(job.title||''))}&body=${encodeURIComponent(answer)}">✉️ Отправить на email</a>`:''}
-    ${phone?`<a class="btn secondary" style="width:100%;text-align:center;text-decoration:none" href="tel:${encodeURIComponent(phone)}">📞 Позвонить работодателю</a>`:''}
-  </div>
-  <div style="margin-top:8px;color:#9ca9c8;font-size:12px">Если у вакансии нет публичного email/телефона, HH не позволяет стороннему приложению отправить отклик от имени пользователя без авторизации соискателя. Поэтому мы оставляем готовый текст внутри Mini App и не придумываем контакты.</div>`;
-}
+if(answer)r.innerHTML=`<div class="generated-reply" id="generatedReply">${escapeHtml(answer)}</div><div class="reply-actions"><button class="btn secondary" onclick="copyGeneratedReply()">Копировать</button><button class="btn" onclick="toast('Готово — отклик можно отправить работодателю')">Отправить</button></div>`;
 }
 
 function copyGeneratedReply(){
@@ -1204,12 +1159,20 @@ if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>toast('От�
 else toast('Выдели текст и скопируй вручную.');
 }
 
+function renderMatchAnswer(answer,job){
+let data=null;try{data=JSON.parse(answer)}catch(e){}
+if(!data)return `<div class="ai-result">${escapeHtml(answer)}</div>`;
+const statusLabel={strong:'Сильное соответствие',possible:'Есть смысл откликнуться',weak:'Слабое соответствие'};
+const riskLabel={'low-risk':'Низкий риск','review':'Нужна проверка','high-risk':'Высокий риск','unknown':'Недостаточно данных'};
+let req='';
+if(Array.isArray(data.requirements))req=data.requirements.slice(0,8).map(x=>`<div class="match-line"><span>${escapeHtml(x.requirement||'Требование')}</span><span class="match-status ${escapeHtml(x.status||'unknown')}">${escapeHtml(x.status||'unknown')}</span></div>`).join('');
+return `<div class="ai-result"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><b>${escapeHtml(statusLabel[data.verdict]||'Оценка вакансии')}</b><strong style="font-size:24px;color:#55e3bd">${Number(data.score||job.match||0)}%</strong></div><div class="ai-meter"><i style="width:${Math.max(0,Math.min(100,Number(data.score||job.match||0)))}%"></i></div>${data.recommendation?`<p><b>Рекомендация:</b> ${escapeHtml(data.recommendation)}</p>`:''}${data.next_step?`<p><b>Следующий шаг:</b> ${escapeHtml(data.next_step)}</p>`:''}<div class="match-section"><b>Сильные стороны</b>${(data.strengths||[]).map(x=>`<div class="match-line"><span>✓ ${escapeHtml(x)}</span></div>`).join('')||'<div class="match-line"><span>Данных пока нет</span></div>'}</div><div class="match-section"><b>Пробелы</b>${(data.gaps||[]).map(x=>`<div class="match-line"><span>• ${escapeHtml(x)}</span></div>`).join('')||'<div class="match-line"><span>Явных пробелов не выявлено</span></div>'}</div>${data.blockers?.length?`<div class="match-section"><b>Блокеры</b>${data.blockers.map(x=>`<div class="match-line"><span>⚠️ ${escapeHtml(x)}</span></div>`).join('')}</div>`:''}${req?`<div class="match-section"><b>Требования</b>${req}</div>`:''}<div class="match-line"><span>Проверка объявления</span><span>${escapeHtml(riskLabel[data.legitimacy?.level]||'Недостаточно данных')}</span></div><div class="match-line"><span>Разрешение на работу</span><span>${escapeHtml(data.work_authorization||'unknown')}</span></div></div>`;
+}
+
 async function analyzeJob(){
-const job=currentJobIndex!==null?jobs[currentJobIndex]:null;
-const r=document.getElementById('aiResult');
-if(!job)return;
+const job=currentJobIndex!==null?jobs[currentJobIndex]:null;const r=document.getElementById('aiResult');if(!job||!r)return;
 const answer=await callAI('match','',job);
-if(answer)r.innerHTML=`<div class="ai-result"><b>Предварительный Match: ${job.match}%</b><div class="ai-meter"><i style="width:${job.match}%"></i></div><br>${escapeHtml(answer)}</div>`;
+if(answer)r.innerHTML=renderMatchAnswer(answer,job);
 }
 
 async function smartSearch(){
@@ -1267,7 +1230,7 @@ async function runSmartSearch(){
       const ai=parseSmartSearchAnswer(data.answer||'');
 
       const merged={
-        query:((local.country==='ru'||local.country==='by'||selectedCountry==='ru'||selectedCountry==='by') ? (local.query||text) : (local.query||ai.query||text)),
+        query:local.query||ai.query||text,
         country:local.country||ai.country||null,
         remote:local.remote||ai.remote===true,
         salaryMin:local.salaryMin||ai.salaryMin||0,
@@ -1592,37 +1555,6 @@ updateChallenge();
 refreshProStatus();
 refreshAlerts();
 loadJobs('designer');
-
-/* CareerOps-inspired AI upgrades */
-async function analyzeJob(){
-const job=currentJobIndex!==null?jobs[currentJobIndex]:null; const r=document.getElementById('aiResult'); if(!job||!r)return;
-r.innerHTML='<div class="ai-result">🤖 Разбираю требования вакансии…</div>';
-try{
- const response=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'match',job,extra:''})});
- const data=await response.json().catch(()=>({})); if(!response.ok||!data.ok)throw new Error(data.error||'AI error');
- let parsed=null; try{parsed=JSON.parse(data.answer)}catch{}
- if(!parsed){r.innerHTML=`<div class="ai-result">${escapeHtml(data.answer||'Нет результата')}</div>`;return}
- const score=Math.max(0,Math.min(100,Number(parsed.score)||job.match||0));
- r.innerHTML=`<div class="ai-result"><div class="score">${score}%</div><b>${escapeHtml(parsed.recommendation||'Оценка готова')}</b><div class="ai-meter"><i style="width:${score}%"></i></div><div class="box"><b>✅ Сильные стороны</b><p>${(parsed.strengths||[]).map(escapeHtml).join('<br>')||'—'}</p></div><div class="box"><b>⚠️ Пробелы</b><p>${(parsed.gaps||[]).map(escapeHtml).join('<br>')||'—'}</p></div><div class="box"><b>🚧 Блокеры</b><p>${(parsed.blockers||[]).map(escapeHtml).join('<br>')||'—'}</p></div><div class="box"><b>🔎 Требования</b><p>${(parsed.requirements||[]).map(x=>`<b>${escapeHtml(x.requirement||'')}</b> — ${escapeHtml(x.status||'unknown')} · ${escapeHtml(x.importance||'medium')}<br><small>${escapeHtml(x.reason||'')}</small>`).join('<br><br>')||'—'}</p></div><div class="box"><b>🛡️ Надёжность объявления</b><p>${escapeHtml(parsed.legitimacy?.level||'unknown')}<br>${(parsed.legitimacy?.signals||[]).map(escapeHtml).join('<br>')||'Недостаточно данных для оценки.'}</p></div><div class="box"><b>➡️ Следующий шаг</b><p>${escapeHtml(parsed.next_step||'')}</p></div></div>`;
-}catch(e){r.innerHTML=`<div class="ai-result">❌ ${escapeHtml(e.message||'Не удалось получить анализ')}</div>`}
-}
-
-const _oldGenerateReply=generateReply;
-generateReply=async function(){
- const job=currentJobIndex!==null?jobs[currentJobIndex]:null; const extra=(document.getElementById('aiText')?.value||'').trim(); const r=document.getElementById('aiResult');
- if(!job){r.innerHTML='<div class="ai-result">Сначала открой вакансию.</div>';return}
- r.innerHTML=`<div class="ai-variant-row"><button class="btn secondary" onclick="generateReplyVariant('professional')">Профессиональный</button><button class="btn secondary" onclick="generateReplyVariant('warm')">Живой</button><button class="btn secondary" onclick="generateReplyVariant('direct')">Прямой</button></div><div id="replyResult" class="ai-result">Выбери стиль отклика.</div>`;
- window._replyExtra=extra;
- await generateReplyVariant('professional');
-}
-async function generateReplyVariant(style){
- const job=currentJobIndex!==null?jobs[currentJobIndex]:null; const r=document.getElementById('replyResult'); if(!job||!r)return;
- r.innerHTML='🤖 Пишу персональный отклик…';
- const extra=window._replyExtra||'';
- const styleText={professional:'professional and precise',warm:'warm and human',direct:'direct and confident'}[style]||'professional';
- try{const response=await fetch(AI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'reply',job,extra:`${extra}\nSTYLE: ${styleText}`})}); const data=await response.json().catch(()=>({})); if(!response.ok||!data.ok)throw new Error(data.error||'AI error'); r.innerHTML=`<div id="generatedReply" style="white-space:pre-wrap">${escapeHtml(data.answer||'')}</div><button class="btn secondary" style="width:100%;margin-top:8px" onclick="copyGeneratedReply()">Копировать отклик</button>`;}catch(e){r.innerHTML=`❌ ${escapeHtml(e.message||'Ошибка')}`}
-}
-
 </script>
 </body>
 </html>
